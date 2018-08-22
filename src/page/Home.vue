@@ -82,7 +82,7 @@
                         <span>全部</span>
                     </p>
                     <div v-for="(item, index) in allList.user" class="suggested-users">
-                        <Row v-if="uinfo.id!=item.id">
+                        <Row v-if="(uinfo && uinfo.id == item.id) ? false : true">
                             <Col span="8">
                             <Poptip trigger="hover" placement="top" width="400">
                                 <div class="user-portrait">
@@ -151,7 +151,7 @@
                 </ul> -->
                 </Col>
                 <Col span="13" class="main-middle">
-                <Card class="card-mgb">
+                <Card v-if="uinfo" class="card-mgb">
                     <div>
                         <p class="title">有什么新鲜事想告诉大家?</p>
                         <Form @submit.native.prevent="publishWeibo()">
@@ -358,6 +358,10 @@ export default {
         },
         // 关注某用户
         follower(userId) {
+            if(!this.uinfo) {
+                this.$router.push('/signIn');
+                return;
+            }
             api
                 .api("user/bind", {
                     model: "user",
