@@ -55,9 +55,6 @@
     min-width: 100%;
 }
 
-.weibo-content-item .info-head .userinfo {
-}
-
 .weibo-content-item .info-head .userinfo .username {
     font-weight: bold;
     font-size: 1.1rem;
@@ -75,9 +72,6 @@
 
 .detail-text {
     font-size: 1rem;
-}
-
-.detail-thumbnail-items {
 }
 
 /* .weibo-card-item底部 */
@@ -117,21 +111,32 @@
     min-height: 100%;
 }
 
-.comments-wrap {
+/* 评论区 */
+
+.comment-wrap {
     border-top: 1px solid #ccc;
     padding-top: 10px;
+}
+
+.comment-wrap .user-portrait {
+    height: 35px;
+    width: 35px;
+}
+
+.comment-text {
+    margin-bottom: 10px;
 }
 </style>
 
 <template>
     <div>
         <Card class="weibo-content-item card-mgb">
-            <Row>
+            <Row :gutter="18">
                 <Col span="3">
                 <Poptip trigger="hover" placement="top" width="400">
                     <div class="user-portrait">
                         <router-link to="/">
-                            <img :src="item && item.portrait || 'http://placekitten.com/150/75'" alt="">
+                            <img :src="weibo && weibo.portrait || 'http://placekitten.com/150/75'" alt="">
                         </router-link>
                     </div>
                     <div slot="content" class="user-poptip">
@@ -143,7 +148,7 @@
                 <div class="info-head cf">
                     <div class="userinfo col">
                         <router-link to="/" class="username">
-                            {{item && item.$user && item.$user.username || '账号已注销'}}
+                            {{weibo && weibo.$user && weibo.$user.username || '账号已注销'}}
                         </router-link>
                     </div>
                     <Dropdown class="flr">
@@ -158,14 +163,14 @@
                     </Dropdown>
                 </div>
                 <div class="weibo-time">
-                    {{item && item.time || '-'}}
+                    {{weibo && weibo.time || '-'}}
                 </div>
                 <div class="weibo-detail-wrap">
                     <p class="detail-text">
-                        {{item && item.text || '文字内容'}}
+                        {{weibo && weibo.text || '微博内容'}}
                     </p>
                     <div class="detail-thumbnail-items">
-                        <img :src="item && item.portrait || 'http://placekitten.com/230/150'" alt="">
+                        <img :src="weibo && weibo.portrait || 'http://placekitten.com/230/150'" alt="">
                     </div>
                 </div>
                 </Col>
@@ -190,11 +195,12 @@
                 </span>
                 </Col>
                 <Col span="6">
-                <span class="operation-item db">
+                <span @click="showComment(weibo.id)" class="operation-item db">
                     <span class="tooltip">
                         <em class="icon">
                             <Icon type="md-text" size="24" />
-                        </em>999
+                        </em>
+                        <span>评论</span>
                     </span>
                 </span>
                 </Col>
@@ -208,47 +214,103 @@
                 </span>
                 </Col>
             </Row>
-            <Row class="comments-wrap">
-                <Col span="3">
-                <Poptip trigger="hover" placement="top" width="400">
-                    <div class="user-portrait">
-                        <router-link to="/">
-                            <img :src="item && item.portrait || 'http://placekitten.com/150/75'" alt="">
-                        </router-link>
+            <div v-if="commentVisible" class="comment-wrap">
+                <Row :gutter="18" type="flex">
+                    <Col span="2">
+                    <Poptip trigger="hover" placement="top" width="400">
+                        <div class="user-portrait">
+                            <router-link to="/">
+                                <img :src="weibo && weibo.portrait || 'http://placekitten.com/150/100'" alt="">
+                            </router-link>
+                        </div>
+                        <div slot="content" class="user-poptip">
+                            <img src="http://placekitten.com/230/75" alt="">
+                        </div>
+                    </Poptip>
+                    </Col>
+                    <Col span="22">
+                    <Form @submit.native.prevent="publishComment(weibo.id)">
+                        <FormItem class="comment-text">
+                            <Input v-model="commentContent.text" type="text" placeholder="说点什么吧？" />
+                        </FormItem>
+                        <FormItem>
+                            <Row>
+                                <Col span="18">
+                                <ul class="extras tal cp-all dib-all cl-hv-all">
+                                    <li>
+                                        <em class="icon-mgr">
+                                            <Icon type="md-images" size="24" color="#72a305" />
+                                        </em>
+                                    </li>
+                                    <li>
+                                        <em class="icon-mgr">
+                                            <Icon type="md-videocam" size="24" color="#2b85e4" />
+                                        </em>
+                                    </li>
+                                </ul>
+                                </Col>
+                                <Col span="6 tar">
+                                <Button @click.native="publishComment(weibo.id)" type="primary">评论</Button>
+                                </Col>
+                            </Row>
+                        </FormItem>
+                    </Form>
+                    </Col>
+                </Row>
+                <Row v-for="(comment, index) in allList.comment" :key="index" :gutter="18">
+                    <Col span="2">
+                    <Poptip trigger="hover" placement="top" width="400">
+                        <div class="user-portrait">
+                            <router-link to="/">
+                                <img :src="comment && comment.portrait || 'http://placekitten.com/150/75'" alt="">
+                            </router-link>
+                        </div>
+                        <div slot="content" class="user-poptip">
+                            <img src="http://placekitten.com/230/75" alt="">
+                        </div>
+                    </Poptip>
+                    </Col>
+                    <Col span="22">
+                    <div class="info-head cf">
+                        <div class="userinfo col">
+                            <router-link to="/" class="username">
+                                {{comment && comment.$user && comment.$user.username || '账号已注销'}}
+                            </router-link>
+                        </div>
                     </div>
-                    <div slot="content" class="user-poptip">
-                        <img src="http://placekitten.com/230/75" alt="">
+                    <Row class="weibo-time">
+                        <Col span="12">
+                            {{comment && comment.$weibo && comment.$weibo.time || '-'}}
+                        </Col>
+                        <Col span="12" class="tar cp-all">
+                            <span>回复</span>
+                        </Col>
+                        
+                    </Row>
+                    <div class="weibo-detail-wrap">
+                        <p class="detail-text">
+                            {{comment && comment.text || '评论内容'}}
+                        </p>
                     </div>
-                </Poptip>
-                </Col>
-                <Col span="21">
-                <div class="info-head cf">
-                    <div class="userinfo col">
-                        <router-link to="/" class="username">
-                            {{item && item.$user && item.$user.username || '账号已注销'}}
-                        </router-link>
-                    </div>
-                </div>
-                <div class="weibo-time">
-                    {{item && item.time || '-'}}
-                </div>
-                <div class="weibo-detail-wrap">
-                    <p class="detail-text">
-                        {{item && item.text || '文字内容'}}
-                    </p>
-                </div>
-                </Col>
-            </Row>
+                    </Col>
+                </Row>
+
+            </div>
+
         </Card>
     </div>
 </template>
 
 <script>
+import api from "../lib/api";
 import Header from "../components/Header";
+import GReadInfo from "../mixins/GReadInfo";
+import session from "../lib/session";
 
 export default {
+    mixins: [GReadInfo],
     props: {
-        item: {
+        weibo: {
             default() {
                 return {};
             }
@@ -259,11 +321,77 @@ export default {
     },
     data() {
         return {
-            weiboTime: ""
+            uinfo: session.uinfo(),
+            allList: {},
+            commentContent: {},
+            commentVisible: false
         };
     },
-    mounted() {},
-    methods: {}
+    mounted() {
+        
+    },
+    methods: {
+        // 显示或关闭评论区
+        showComment(weiboId) {
+            if(!this.commentVisible) {
+                this.readComment(weiboId)
+            }
+            this.commentVisible = !this.commentVisible;
+            console.log('this.commentVisible:', this.commentVisible);
+            
+            
+        },
+        // 渲染当前微博的评论
+        readComment(weiboId) {
+            this.gReadInfo("comment", this.allList, {
+                where: {weibo_id: weiboId},
+                with: [
+                    {
+                        relation: "belongs_to",
+                        model: "user"
+                    }
+                ]
+            });
+        },
+        // 发表评论
+        publishComment(weiboId) {
+
+            this.commentContent.user_id = this.uinfo.id;
+            this.commentContent.weibo_id = weiboId;
+            this.commentContent.time = this.getCurrentTime();
+
+            api.api("comment/create", this.commentContent).then(res => {
+                this.commentContent = {};
+                this.readComment(weiboId);
+            });
+        },
+        // 获取系统当前时间
+        getCurrentTime() {
+            let date = new Date();
+            let y = date.getFullYear(),
+                m = date.getMonth() + 1,
+                d = date.getDate(),
+                h = date.getHours(),
+                min = date.getMinutes(),
+                s = date.getSeconds();
+            if (date.getMonth() < 10) {
+                m = "0" + m;
+            }
+            if (date.getDate() < 10) {
+                d = "0" + d;
+            }
+            if (date.getHours() < 10) {
+                h = "0" + h;
+            }
+            if (date.getMinutes() < 10) {
+                min = "0" + min;
+            }
+            if (date.getSeconds() < 10) {
+                s = "0" + s;
+            }
+            return `${y}-${m}-${d} ${h}:${min}:${s}`;
+        }
+    }
 };
 </script>
 

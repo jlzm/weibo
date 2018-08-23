@@ -156,7 +156,7 @@
                         <p class="title">有什么新鲜事想告诉大家?</p>
                         <Form @submit.native.prevent="publishWeibo()">
                             <FormItem>
-                                <Input v-model="publishContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." />
+                                <Input v-model="weiboContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." />
                             </FormItem>
                             <FormItem>
                                 <Col span="18">
@@ -220,7 +220,7 @@
                         </Row>
 
                     </Card>
-                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :item="item" />
+                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weibo="item" />
                 </Row>
                 </Col>
                 <Col span="6" class="main-right">
@@ -293,7 +293,7 @@ export default {
             itemList: {
                 follower: []
             },
-            publishContent: {},
+            weiboContent: {},
             uinfo: session.uinfo(),
         };
     },
@@ -313,11 +313,11 @@ export default {
 
         // 发布微博
         publishWeibo() {
-            this.publishContent.time = this.getCurrentTime();
-            this.publishContent.user_id = this.uinfo.id;
-            api.api("weibo/create", this.publishContent).then(res => {
-                this.publishContent = {};
-                this.allList.weibo.push(res.data);
+            this.weiboContent.time = this.getCurrentTime();
+            this.weiboContent.user_id = this.uinfo.id;
+            api.api("weibo/create", this.weiboContent).then(res => {
+                this.weiboContent = {};
+                // this.allList.weibo.push(res.data);
                 this.readFollowerWeibo();
             });
         },
