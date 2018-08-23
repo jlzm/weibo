@@ -136,7 +136,7 @@
                 <Poptip trigger="hover" placement="top" width="400">
                     <div class="user-portrait">
                         <router-link to="/">
-                            <img :src="weibo && weibo.portrait || 'http://placekitten.com/150/75'" alt="">
+                            <img :src="weibo && weibo.portrait || 'http://placekitten.com/100/150'" alt="">
                         </router-link>
                     </div>
                     <div slot="content" class="user-poptip">
@@ -220,7 +220,7 @@
                     <Poptip trigger="hover" placement="top" width="400">
                         <div class="user-portrait">
                             <router-link to="/">
-                                <img :src="weibo && weibo.portrait || 'http://placekitten.com/150/100'" alt="">
+                                <img :src="weibo && weibo.portrait || 'http://placekitten.com/100/150'" alt="">
                             </router-link>
                         </div>
                         <div slot="content" class="user-poptip">
@@ -262,7 +262,7 @@
                     <Poptip trigger="hover" placement="top" width="400">
                         <div class="user-portrait">
                             <router-link to="/">
-                                <img :src="comment && comment.portrait || 'http://placekitten.com/150/75'" alt="">
+                                <img :src="comment && comment.portrait || 'http://placekitten.com/100/150'" alt="">
                             </router-link>
                         </div>
                         <div slot="content" class="user-poptip">

@@ -87,7 +87,7 @@
                             <Poptip trigger="hover" placement="top" width="400">
                                 <div class="user-portrait">
                                     <router-link to="/">
-                                        <img :src="item.portrait || 'http://placekitten.com/150/75'" alt="">
+                                        <img :src="item.portrait || 'http://placekitten.com/100/150'" alt="">
                                     </router-link>
                                 </div>
                                 <div slot="content" class="user-poptip">
