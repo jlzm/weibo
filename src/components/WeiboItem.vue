@@ -164,7 +164,7 @@
                             <DropdownItem>炸酱面</DropdownItem>
                             <DropdownItem disabled>豆汁儿</DropdownItem>
                             <DropdownItem>冰糖葫芦</DropdownItem>
-                            <DropdownItem divided>北京烤鸭</DropdownItem>
+                            <DropdownItem v-if="uinfo && uinfo.id==weibo.user_id" divided @click.native="_removeWeibo(weibo.id)">删除</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -201,7 +201,7 @@
                 </span>
                 </Col>
                 <Col span="6">
-                <span @click="showComment(weibo.id)" class="operation-item db">
+                <span @click="showComment(weibo.id)" :class="{'cl-act': commentVisible}" class="operation-item db">
                     <span class="tooltip">
                         <em class="icon">
                             <Icon type="md-text" size="24" />
@@ -288,8 +288,9 @@
                         <Col span="12"> {{comment && comment.time || '-'}}
                         </Col>
                         <Col span="12" class="tar cp-all">
-                        
+
                         <span v-if="uinfo.id!=comment.user_id" @click="showReplyModal(comment.id)" class="cl-hv">回复</span>
+                        <span v-else @click="removeReply(weibo.id, comment.id)">删除</span>
                         <!-- 回复区 -->
                         <Modal v-model="commentContent.reply_id == comment.id" :closable="false" :mask-closable="false" :footer-hide="true" title="Title" okText="评论" :loading="loading">
                             <Row :gutter="18" class="comment-item">
@@ -397,6 +398,9 @@ export default {
             default() {
                 return {};
             }
+        },
+        removeWeibo: {
+            default: ""
         }
     },
     components: {
@@ -413,6 +417,24 @@ export default {
     },
     mounted() {},
     methods: {
+        //删除微博
+        _removeWeibo(weiboId) {
+            if (this.removeWeibo) {
+                this.removeWeibo(weiboId);
+            }
+        },
+        // 删除评论或者回复
+        removeReply(weiboId, commentId) {
+            if (!confirm("确认删除？")) return;
+            api
+                .api("comment/delete", {
+                    id: commentId
+                })
+                .then(res => {
+                    this.$Message.info("删除成功");
+                    this.readComment(weiboId);
+                });
+        },
         showReplyModal(replyId) {
             this.$set(this.commentContent, "reply_id", replyId);
         },

@@ -142,7 +142,7 @@
                         </Row>
 
                     </Card>
-                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weibo="item" />
+                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weibo="item" :removeWeibo="removeWeibo"/>
                 </Row>
                 </Col>
                 <Col span="7" class="main-right">
@@ -262,6 +262,17 @@ export default {
         }
     },
     methods: {
+         //删除微博
+        removeWeibo(weiboId) {
+            if (!confirm('确认删除？'))
+                    return;
+            api.api('weibo/delete', {
+                id: weiboId
+            }).then(res => {
+                this.$Message.info('删除成功');
+                this.readFollowerWeibo();
+            })
+        },
         // 发布微博
         publishWeibo() {
             this.weiboContent.time = this.getCurrentTime();
