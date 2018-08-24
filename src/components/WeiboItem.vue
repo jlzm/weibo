@@ -368,7 +368,7 @@
                         <div class="reply-wrap">
                             <div v-if="comment.reply_id == item.id" v-for="(item, index) in allList.comment" :key="index">
                                 <div>
-                                    <router-link to="/" v-if="comment.reply_id">@{{item.$user && item.$user.username}}</router-link>
+                                    <router-link to="/" v-if="comment.reply_id">@{{item.$user && item.$user.username}}:</router-link>
                                     <span>{{item.text}}</span>
                                 </div>
                             </div>
