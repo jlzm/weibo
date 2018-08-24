@@ -362,12 +362,20 @@
                         </Col>
                     </Row>
                     <div class="weibo-detail-wrap">
-                        <span class="detail-text">
-                            {{comment && comment.text || '评论内容'}}
-                        </span>
+                        <div class="detail-text">
+                            {{comment.text || '评论内容'}}
+                        </div>
+                        <div class="reply-wrap">
+                            <div v-if="comment.reply_id == item.id" v-for="(item, index) in allList.comment" :key="index">
+                                <div>
+                                    <router-link to="/" v-if="comment.reply_id">@{{item.$user && item.$user.username}}</router-link>
+                                    <span>{{item.text}}</span>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
                     </Col>
-
                 </Row>
             </div>
 
@@ -398,7 +406,6 @@ export default {
             loading: true,
             uinfo: session.uinfo(),
             allList: {},
-            replyModal: false,
             commentContent: {},
             commentVisible: false
         };
@@ -407,16 +414,13 @@ export default {
     methods: {
         showReplyModal(replyId) {
             this.$set(this.commentContent, "reply_id", replyId);
-            if (this.commentContent.reply_id == replyId) {
-                this.replyModal = true;
-            }
         },
-        // 回复评论
         hiddenReplyModal() {
             this.$set(this.commentContent, "reply_id", null);
         },
-        replyComment() {
-            this.$set(this.commentContent, "reply_id", null);
+        // 回复评论
+        replyComment(weiboId) {
+            this.publishComment(weiboId);
         },
         // 显示或关闭评论区
         showComment(weiboId) {
