@@ -288,7 +288,8 @@
                         <Col span="12"> {{comment && comment.time || '-'}}
                         </Col>
                         <Col span="12" class="tar cp-all">
-                        <span @click="showReplyModal(comment.id)" class="cl-hv">回复</span>
+                        
+                        <span v-if="uinfo.id!=comment.user_id" @click="showReplyModal(comment.id)" class="cl-hv">回复</span>
                         <!-- 回复区 -->
                         <Modal v-model="commentContent.reply_id == comment.id" :closable="false" :mask-closable="false" :footer-hide="true" title="Title" okText="评论" :loading="loading">
                             <Row :gutter="18" class="comment-item">
