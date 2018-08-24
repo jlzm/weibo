@@ -81,7 +81,7 @@
                         <p class="title">有什么新鲜事想告诉大家?</p>
                         <Form @submit.native.prevent="publishWeibo()">
                             <FormItem>
-                                <Input v-model.trim="weiboContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." />
+                                <Input v-model.trim="weiboContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />
                             </FormItem>
                             <FormItem>
                                 <Col span="18">
@@ -142,7 +142,7 @@
                         </Row>
 
                     </Card>
-                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weibo="item" :removeWeibo="removeWeibo"/>
+                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weibo="item" :readFollowerWeibo="readFollowerWeibo"/>
                 </Row>
                 </Col>
                 <Col span="7" class="main-right">
@@ -262,17 +262,6 @@ export default {
         }
     },
     methods: {
-         //删除微博
-        removeWeibo(weiboId) {
-            if (!confirm('确认删除？'))
-                    return;
-            api.api('weibo/delete', {
-                id: weiboId
-            }).then(res => {
-                this.$Message.info('删除成功');
-                this.readFollowerWeibo();
-            })
-        },
         // 发布微博
         publishWeibo() {
             this.weiboContent.time = this.getCurrentTime();

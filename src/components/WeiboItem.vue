@@ -164,7 +164,7 @@
                             <DropdownItem>炸酱面</DropdownItem>
                             <DropdownItem disabled>豆汁儿</DropdownItem>
                             <DropdownItem>冰糖葫芦</DropdownItem>
-                            <DropdownItem v-if="uinfo && uinfo.id==weibo.user_id" divided @click.native="_removeWeibo(weibo.id)">删除</DropdownItem>
+                            <DropdownItem v-if="uinfo && uinfo.id==weibo.user_id" divided @click.native="removeWeibo(weibo.id)">删除</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>
                 </div>
@@ -399,7 +399,7 @@ export default {
                 return {};
             }
         },
-        removeWeibo: {
+        readFollowerWeibo: {
             default: ""
         }
     },
@@ -417,11 +417,28 @@ export default {
     },
     mounted() {},
     methods: {
+        
+        // 转发评论
+        relayWeibo(weiboid) {
+            this.weiboContent.time = this.getCurrentTime();
+            this.weiboContent.user_id = this.uinfo.id;
+            api.api("weibo/create", this.weiboContent).then(res => {
+                this.weiboContent = {};
+                // this.allList.weibo.push(res.data);
+                this.readFollowerWeibo();
+            });
+        },
         //删除微博
-        _removeWeibo(weiboId) {
-            if (this.removeWeibo) {
-                this.removeWeibo(weiboId);
-            }
+        removeWeibo(weiboId) {
+            if (!confirm('确认删除？'))
+                    return;
+            api.api('weibo/delete', {
+                id: weiboId
+            }).then(res => {
+                this.$Message.info('删除成功');
+                if(this.readFollowerWeibo)
+                    this.readFollowerWeibo();
+            })
         },
         // 删除评论或者回复
         removeReply(weiboId, commentId) {
