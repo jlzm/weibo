@@ -51,12 +51,12 @@
     <div>
         <div class="header">
             <Row type="flex" class="nav-wrap" align="middle">
-                <Col span="5" class="logo tar">
+                <Col span="6" class="logo tar">
                 <router-link to="/">
                     Logooooooooooo
                 </router-link>
                 </Col>
-                <Col span="14">
+                <Col span="12">
                 <Row type="flex" class="nav" align="middle">
                     <Col span="11 " class="nav-left">
                     <AutoComplete icon="ios-search" placeholder="input here">
@@ -90,7 +90,7 @@
                     </Col>
                 </Row>
                 </Col>
-                <Col span="5" class="tal">
+                <Col span="6" class="tal">
                 <Dropdown trigger="hover">
                     <span class="cp">
                         <Icon type="md-settings cl-hv" size="24" />

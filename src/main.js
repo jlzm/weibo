@@ -18,6 +18,7 @@ import Found from "./page/Found";
 import PersonalPage from "./page/PersonalPage";
 import SignIn from "./page/SignIn";
 import SignUp from "./page/SignUp";
+import test from "./page/test";
 
 Vue.use(VueRouter);
 Vue.use(iView);
@@ -29,6 +30,13 @@ const routerConfig = {
       component: Home,
       meta: {
         title: '首页'
+      }
+    },
+    {
+      path: '/test',
+      component: test,
+      meta: {
+        title: '测试'
       }
     },
     {

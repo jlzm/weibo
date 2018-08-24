@@ -237,7 +237,7 @@
                     <Col span="22">
                     <Form @submit.native.prevent="publishComment(weibo.id)">
                         <FormItem class="comment-text">
-                            <Input v-model.trim="commentContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="说点什么吧？" />
+                            <Input v-model="commentContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="说点什么吧？" />
                         </FormItem>
                         <FormItem>
                             <Row>
@@ -256,7 +256,7 @@
                                 </ul>
                                 </Col>
                                 <Col span="6 tar">
-                                <Button @click.native="publishComment(weibo.id)" :disabled="!commentContent.text" type="primary">评论</Button>
+                                <Button @click.native="publishComment(weibo.id)" type="primary">评论</Button>
                                 </Col>
                             </Row>
                         </FormItem>
@@ -288,52 +288,17 @@
                         <Col span="12"> {{comment && comment.time || '-'}}
                         </Col>
                         <Col span="12" class="tar cp-all">
-                        <span @click="showReplyModal(comment.id)" class="cl-hv">回复</span>
+                        <span @click="showCommentModal()" class="cl-hv">回复</span>
                         <!-- 回复区 -->
-                        <Modal v-model="commentContent.reply_id == comment.id" :closable="false" :mask-closable="false" :footer-hide="true" title="Title" okText="评论" :loading="loading">
-                            <Row :gutter="18" class="comment-item">
-                                <Col span="3">
-                                <Poptip trigger="hover" placement="top" width="400">
-                                    <div class="user-portrait">
-                                        <router-link to="/">
-                                            <img :src="comment && comment.portrait || 'http://placekitten.com/100/150'" alt="">
-                                        </router-link>
-                                    </div>
-                                    <div slot="content" class="user-poptip">
-                                        <img src="http://placekitten.com/230/75" alt="">
-                                    </div>
-                                </Poptip>
-                                </Col>
-                                <Col span="21">
-                                <div class="info-head">
-                                    <div class="userinfo col">
-                                        <router-link to="/" class="username">
-                                            {{comment && comment.$user && comment.$user.username || '账号已注销'}}
-                                        </router-link>
-                                    </div>
-                                </div>
-                                <Row class="weibo-time">
-                                    <Col span="12"> {{comment && comment.time || '-'}}
-                                    </Col>
-                                    <Col span="12" class="tar cp-all">
-                                    </Col>
-                                </Row>
-                                <div class="weibo-detail-wrap">
-                                    <span class="detail-text">
-                                        {{comment && comment.text || '评论内容'}}
-                                    </span>
-                                </div>
-                                </Col>
-
-                            </Row>
+                        <div v-if="commentModal" class="reply-comment">
                             <p>
                                 <router-link to="/" class="username">
-                                    {{comment && comment.$user && comment.$user.username || '账号已注销'}}
+                                    {{comment.text}}
                                 </router-link>
                             </p>
                             <Form @submit.native.prevent="replyComment(weibo.id)">
                                 <FormItem class="comment-text">
-                                    <Input v-model.trim="commentContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." />
+                                    <Input v-model="commentContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." />
                                 </FormItem>
                                 <FormItem>
                                     <Row>
@@ -352,13 +317,12 @@
                                         </ul>
                                         </Col>
                                         <Col span="6 tar">
-                                        <Button @click.native="hiddenReplyModal()" style="margin-right: 8px">取消</Button>
-                                        <Button @click.native="replyComment(weibo.id)" :disabled="!commentContent.text" type="primary">评论</Button>
+                                        <Button @click.native="replyComment(weibo.id)" type="primary">评论</Button>
                                         </Col>
                                     </Row>
                                 </FormItem>
                             </Form>
-                        </Modal>
+                        </div>
                         </Col>
                     </Row>
                     <div class="weibo-detail-wrap">
@@ -395,28 +359,22 @@ export default {
     },
     data() {
         return {
+            commentModal: false,
             loading: true,
             uinfo: session.uinfo(),
             allList: {},
-            replyModal: false,
             commentContent: {},
             commentVisible: false
         };
     },
     mounted() {},
     methods: {
-        showReplyModal(replyId) {
-            this.$set(this.commentContent, "reply_id", replyId);
-            if (this.commentContent.reply_id == replyId) {
-                this.replyModal = true;
-            }
+        showCommentModal() {
+            this.commentModal = true;
         },
         // 回复评论
-        hiddenReplyModal() {
-            this.$set(this.commentContent, "reply_id", null);
-        },
         replyComment() {
-            this.$set(this.commentContent, "reply_id", null);
+            this.commentModal = false;
         },
         // 显示或关闭评论区
         showComment(weiboId) {
@@ -428,6 +386,7 @@ export default {
                 this.readComment(weiboId);
             }
             this.commentVisible = !this.commentVisible;
+            console.log("this.commentVisible:", this.commentVisible);
         },
         // 渲染当前微博的评论
         readComment(weiboId) {
