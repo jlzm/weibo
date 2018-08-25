@@ -176,7 +176,16 @@
                         {{weibo && weibo.text || '微博内容'}}
                     </p>
                     <div class="detail-thumbnail-items">
-                        <img :src="weibo && weibo.portrait || 'http://placekitten.com/230/150'" alt="">
+                        <img :src="weibo && weibo.portrait" alt="">
+                    </div>
+                    <div class="reply-wrap">
+                        <div v-if="weibo.relay_id == item.id" v-for="(item, index) in weiboList" :key="index">
+                            <div>
+                                <span>转发：</span>
+                                <router-link to="/" v-if="weibo.relay_id">@{{item.$user && item.$user.username}}：</router-link>
+                                <span>{{item.text}}</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 </Col>
@@ -192,7 +201,7 @@
                 </span>
                 </Col>
                 <Col span="6">
-                <span class="operation-item db">
+                <span @click="showRelay(weibo.id)" class="operation-item db">
                     <span class="tooltip">
                         <em class="icon">
                             <Icon type="md-share" size="24" />
@@ -220,6 +229,70 @@
                 </span>
                 </Col>
             </Row>
+
+            <div class="relay-wrap">
+                <Modal v-model="relayVisible" :closable="false" :mask-closable="false" :footer-hide="true" title="转发评论" okText="评论" :loading="loading">
+                    <Row :gutter="18">
+                        <Col span="3">
+                        <Poptip trigger="hover" placement="top" width="400">
+                            <div class="user-portrait">
+                                <router-link to="/">
+                                    <img :src="weibo && weibo.portrait || 'http://placekitten.com/100/150'" alt="">
+                                </router-link>
+                            </div>
+                            <div slot="content" class="user-poptip">
+                                <img src="http://placekitten.com/230/75" alt="">
+                            </div>
+                        </Poptip>
+                        </Col>
+                        <Col span="21">
+                        <div class="info-head">
+                            <div class="userinfo col">
+                                <router-link to="/" class="username">
+                                    {{weibo && weibo.$user && weibo.$user.username || '账号已注销'}}
+                                </router-link>
+                            </div>
+                        </div>
+                        <div class="weibo-time">
+                            {{weibo && weibo.time || '-'}}
+                        </div>
+                        <div class="weibo-detail-wrap">
+                            <p class="detail-text">
+                                {{weibo && weibo.text || '微博内容'}}
+                            </p>
+                        </div>
+                        </Col>
+                    </Row>
+                    <Form @submit.native.prevent="relayWeibo(weibo.id)">
+                        <FormItem class="comment-text">
+                            <Input v-model.trim="weiboContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." />
+                        </FormItem>
+                        <FormItem>
+                            <Row>
+                                <Col span="18">
+                                <ul class="extras tal cp-all dib-all cl-hv-all">
+                                    <li>
+                                        <em class="icon-mgr">
+                                            <Icon type="md-images" size="24" color="#72a305" />
+                                        </em>
+                                    </li>
+                                    <li>
+                                        <em class="icon-mgr">
+                                            <Icon type="md-videocam" size="24" color="#2b85e4" />
+                                        </em>
+                                    </li>
+                                </ul>
+                                </Col>
+                                <Col span="6 tar">
+                                <Button @click.native="hiddenRelayModal()" style="margin-right: 8px">取消</Button>
+                                <Button @click.native="relayWeibo(weibo.id)" :disabled="!weiboContent.text" type="primary">转发</Button>
+                                </Col>
+                            </Row>
+                        </FormItem>
+                    </Form>
+                </Modal>
+            </div>
+
             <div v-if="commentVisible" class="comment-wrap">
                 <Row :gutter="18" type="flex">
                     <Col span="2">
@@ -370,11 +443,11 @@
                         <div class="reply-wrap">
                             <div v-if="comment.reply_id == item.id" v-for="(item, index) in allList.comment" :key="index">
                                 <div>
-                                    <router-link to="/" v-if="comment.reply_id">@{{item.$user && item.$user.username}}:</router-link>
+                                    <span>回复：</span>
+                                    <router-link to="/" v-if="comment.reply_id">@{{item.$user && item.$user.username}}：</router-link>
                                     <span>{{item.text}}</span>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                     </Col>
@@ -399,6 +472,11 @@ export default {
                 return {};
             }
         },
+        weiboList: {
+            default() {
+                return {};
+            }
+        },
         readFollowerWeibo: {
             default: ""
         }
@@ -412,33 +490,50 @@ export default {
             uinfo: session.uinfo(),
             allList: {},
             commentContent: {},
+            weiboContent: {},
+            relayVisible: false,
             commentVisible: false
         };
     },
     mounted() {},
     methods: {
-        
-        // 转发评论
-        relayWeibo(weiboid) {
+        // 打开转发微博弹出层
+        showRelay(relayId) {
+            if (!this.uinfo) {
+                this.$router.push("/signIn");
+                return;
+            }
+            this.$set(this.weiboContent, "relay_id", relayId);
+            this.relayVisible = !this.relayVisible;
+        },
+        // 转发微博
+        relayWeibo(weiboId) {
+            if (!this.weiboContent.text) {
+                this.$set(this.weiboContent, "text", "转发微博");
+            }
             this.weiboContent.time = this.getCurrentTime();
             this.weiboContent.user_id = this.uinfo.id;
             api.api("weibo/create", this.weiboContent).then(res => {
                 this.weiboContent = {};
-                // this.allList.weibo.push(res.data);
                 this.readFollowerWeibo();
+                this.relayVisible = false;
             });
+        },
+        // 隐藏转发弹出层
+        hiddenRelayModal() {
+            this.relayVisible = false;
         },
         //删除微博
         removeWeibo(weiboId) {
-            if (!confirm('确认删除？'))
-                    return;
-            api.api('weibo/delete', {
-                id: weiboId
-            }).then(res => {
-                this.$Message.info('删除成功');
-                if(this.readFollowerWeibo)
-                    this.readFollowerWeibo();
-            })
+            if (!confirm("确认删除？")) return;
+            api
+                .api("weibo/delete", {
+                    id: weiboId
+                })
+                .then(res => {
+                    this.$Message.info("删除成功");
+                    if (this.readFollowerWeibo) this.readFollowerWeibo();
+                });
         },
         // 删除评论或者回复
         removeReply(weiboId, commentId) {
@@ -452,9 +547,11 @@ export default {
                     this.readComment(weiboId);
                 });
         },
+        // 打开回复评论弹出层
         showReplyModal(replyId) {
             this.$set(this.commentContent, "reply_id", replyId);
         },
+        // 关闭回复评论弹出层
         hiddenReplyModal() {
             this.$set(this.commentContent, "reply_id", null);
         },

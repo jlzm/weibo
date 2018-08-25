@@ -7,20 +7,10 @@
     position: fixed;
     background: #fff;
     box-shadow: 0px 1px 1px #888888;
-    /* display: flex; */
-    /* align-items: center; */
     width: 100%;
     z-index: 1;
 }
 
-.nav {
-    /* display: flex;
-    align-items: center; */
-}
-
-.nav-router-item {
-    /* float: right; */
-}
 
 /* logo样式 */
 .logo {
@@ -81,7 +71,7 @@
                             <Icon type="md-person " size="24" />
                             <span>登入</span>
                             </MenuItem>
-                            <MenuItem name="/signUp" to="/signUp" class="nav-router-item">
+                            <MenuItem v-if="!uinfo" name="/signUp" to="/signUp" class="nav-router-item">
                             <Icon type="md-person-add" size="24" />
                             <span>注册</span>
                             </MenuItem>

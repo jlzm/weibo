@@ -142,7 +142,7 @@
                         </Row>
 
                     </Card>
-                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weibo="item" :readFollowerWeibo="readFollowerWeibo"/>
+                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo"/>
                 </Row>
                 </Col>
                 <Col span="7" class="main-right">
