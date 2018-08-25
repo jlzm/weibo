@@ -150,7 +150,7 @@
                     <div class="user-intro-wrap">
                         <div class="user-bg">
                             <img src="http://placekitten.com/230/75" alt="">
-                            <router-link to="/" class="head-portrait">
+                            <router-link to="/PersonalPage" class="head-portrait">
                                 <!-- <img src="http://placekitten.com/230/75" alt=""> -->
                             </router-link>
                         </div>

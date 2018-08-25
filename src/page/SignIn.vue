@@ -57,7 +57,7 @@
                         </FormItem>
                     </div>
                     <FormItem prop="interest">
-                        <span @click="accountSignIn=!accountSignIn" class="cp cl-hv">手机验证码登入</span>
+                        <span @click="chooseSignIn()" class="cp cl-hv">{{chooseBtnText}}</span>
                     </FormItem>
                     <FormItem>
                         <Button html-type="submit" type="primary">登入</Button>
@@ -105,6 +105,7 @@ export default {
         };
         return {
             accountSignIn: true,
+            chooseBtnText: '手机验证码登入',
             formValidate: {
                 account: "",
                 password: "",
@@ -130,6 +131,17 @@ export default {
         };
     },
     methods: {
+        chooseSignIn() {
+            this.accountSignIn = !this.accountSignIn;
+            // if(this.accountSignIn == false) {
+            //     this.chooseBtnText = '账号密码登入';
+            // } else {
+            //     this.chooseBtnText = '手机验证码登入';
+            // }
+
+           this.chooseBtnText = this.accountSignIn ? '手机验证码登入' : '账号密码登入'
+
+        },
         handleSubmit(name) {
             this.$refs[name].validate(valid => {
                 if (valid) {
