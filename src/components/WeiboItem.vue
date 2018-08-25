@@ -194,8 +194,8 @@
                 <Col span="6">
                 <span class="operation-item db">
                     <span class="tooltip">
-                        <em class="icon">
-                            <Icon type="md-heart" size="24" />
+                        <em class="icon-mgr">
+                            <Icon type="md-heart" size="18" />
                         </em>收藏
                     </span>
                 </span>
@@ -203,8 +203,8 @@
                 <Col span="6">
                 <span @click="showRelay(weibo.id)" class="operation-item db">
                     <span class="tooltip">
-                        <em class="icon">
-                            <Icon type="md-share" size="24" />
+                        <em class="icon-mgr">
+                            <Icon type="md-share" size="18" />
                         </em>转发
                     </span>
                 </span>
@@ -212,8 +212,8 @@
                 <Col span="6">
                 <span @click="showComment(weibo.id)" :class="{'cl-act': commentVisible}" class="operation-item db">
                     <span class="tooltip">
-                        <em class="icon">
-                            <Icon type="md-text" size="24" />
+                        <em class="icon-mgr">
+                            <Icon type="md-text" size="18" />
                         </em>
                         <span>评论</span>
                     </span>
@@ -222,8 +222,8 @@
                 <Col span="6">
                 <span class="operation-item db">
                     <span>
-                        <em class="icon">
-                            <Icon type="md-thumbs-up" size="24" />
+                        <em class="icon-mgr">
+                            <Icon type="md-thumbs-up" size="18" />
                         </em>999
                     </span>
                 </span>
@@ -273,12 +273,12 @@
                                 <ul class="extras tal cp-all dib-all cl-hv-all">
                                     <li>
                                         <em class="icon-mgr">
-                                            <Icon type="md-images" size="24" color="#72a305" />
+                                            <Icon type="md-images" size="18" color="#72a305" />
                                         </em>
                                     </li>
                                     <li>
                                         <em class="icon-mgr">
-                                            <Icon type="md-videocam" size="24" color="#2b85e4" />
+                                            <Icon type="md-videocam" size="18" color="#2b85e4" />
                                         </em>
                                     </li>
                                 </ul>
@@ -318,12 +318,12 @@
                                 <ul class="extras tal cp-all dib-all cl-hv-all">
                                     <li>
                                         <em class="icon-mgr">
-                                            <Icon type="md-images" size="24" color="#72a305" />
+                                            <Icon type="md-images" size="18" color="#72a305" />
                                         </em>
                                     </li>
                                     <li>
                                         <em class="icon-mgr">
-                                            <Icon type="md-videocam" size="24" color="#2b85e4" />
+                                            <Icon type="md-videocam" size="18" color="#2b85e4" />
                                         </em>
                                     </li>
                                 </ul>

@@ -29,13 +29,23 @@
     padding: 10px 0;
     border-bottom: 1px solid #eee;
 }
+
+/* 额外信息 */
+.extras li {
+    margin-right: 15px;
+}
+
+.icon-mgr {
+    font-style: normal;
+    padding-right: 4px;
+}
 </style>
 
 <template>
     <div>
         <Header defRouter="/personalPage" />
         <Row class="main">
-            <Col span="11" class="container user-cover-wrap">
+            <Col span="12" class="container user-cover-wrap">
             <Card class="card-mgb">
                 <div class="user-cover">
                     <img src="http://placekitten.com/1024/512" alt="">
@@ -48,11 +58,11 @@
                     <Icon type="md-home " size="20" />
                     <span>主页</span>
                     </MenuItem>
-                    <MenuItem name="/signUp" to="/signUp" class="cover-operation-item">
+                    <MenuItem name="/signUp" to="/personalPage" class="cover-operation-item">
                     <Icon type="md-home" size="20" />
                     <span>相册</span>
                     </MenuItem>
-                    <MenuItem name="/" to="/" class="cover-operation-item">
+                    <MenuItem name="/" to="/personalPage" class="cover-operation-item">
                     <Icon type="md-home" size="20" />
                     <span>设置</span>
                     </MenuItem>
@@ -107,8 +117,73 @@
                 <Card></Card>
                 </Col>
                 <Col span="16">
+                <Card v-if="uinfo" class="card-mgb">
+                    <div>
+                        <p class="title">有什么新鲜事想告诉大家?</p>
+                        <Form @submit.native.prevent="publishWeibo()">
+                            <FormItem>
+                                <Input v-model.trim="weiboContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />
+                            </FormItem>
+                            <FormItem>
+                                <Col span="18">
+                                <ul class="extras tal cp-all dib-all cl-hv-all">
+                                    <li>
+                                        <em class="icon-mgr">
+                                            <Icon type="md-images" size="24" color="#72a305" />
+                                        </em>
+                                        <span>图片</span>
+                                    </li>
+                                    <li>
+                                        <em class="icon-mgr">
+                                            <Icon type="md-videocam" size="24" color="#2b85e4" />
+                                        </em>
+                                        <span>视频</span>
+                                    </li>
+                                    <li>
+                                        <em class="icon-mgr">
+                                            <Icon type="ios-grid-outline" size="24" color="#2db7f5" />
+                                        </em>
+                                        <span>话题</span>
+                                    </li>
+                                </ul>
+                                </Col>
+                                <Col span="6 tar">
+                                <Button @click.native="publishWeibo()" :disabled="!weiboContent.text" type="primary">发布</Button>
+                                </Col>
+                            </FormItem>
+                        </Form>
+                    </div>
+                </Card>
                 <Row class="weibo-items">
-                    <WeiboItem/>
+                    <Card class="weibo-nav-card card-mgb">
+                        <Row class="weibo-nav-wrap">
+                            <Col span="12">
+                            <Menu mode="horizontal" theme="light" class="weibo-nav-items dib">
+                                <MenuItem name="1" class="weibo-nav-item">
+                                <span>全部</span>
+                                </MenuItem>
+                                <Submenu name="2" class="weibo-nav-item">
+                                    <template slot="title">
+                                        <span>原创</span>
+                                    </template>
+                                    <MenuItem name="3-1">图片</MenuItem>
+                                    <MenuItem name="3-2">视频</MenuItem>
+                                    <MenuItem name="3-3">音乐</MenuItem>
+                                    <MenuItem name="3-3">文章</MenuItem>
+                                </Submenu>
+                            </Menu>
+                            </Col>
+                            <Col span="10">
+                            <Form @submit.native="test()" class="weibo-search-wrap">
+                                <FormItem class="weibo-form">
+                                    <Input icon="md-search" @on-click="test()" placeholder="Enter something..." />
+                                </FormItem>
+                            </Form>
+                            </Col>
+                        </Row>
+
+                    </Card>
+                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
                 </Col>
             </Row>
@@ -118,16 +193,170 @@
 </template>
 
 <script>
+import api from "../lib/api";
+
 import WeiboItem from "../components/WeiboItem";
 import Header from "../components/Header";
+import GReadInfo from "../mixins/GReadInfo";
+import session from "../lib/session";
 
 export default {
+    mixins: [GReadInfo],
+
     components: {
         Header,
         WeiboItem
     },
     data() {
-        return {};
+        return {
+            allList: {},
+            itemList: {
+                follower: []
+            },
+            weiboContent: {},
+            uinfo: session.uinfo()
+        };
+    },
+    mounted() {
+        // this.readSuggestedUser();
+        this.readPublicWeibo();
+        // this.readFollowerWeibo()
+    },
+    methods: {
+        // 发布微博
+        publishWeibo() {
+            this.weiboContent.time = this.getCurrentTime();
+            this.weiboContent.user_id = this.uinfo.id;
+            api.api("weibo/create", this.weiboContent).then(res => {
+                this.weiboContent = {};
+                // this.allList.weibo.push(res.data);
+                this.readFollowerWeibo();
+            });
+        },
+        // 渲染全部微博
+        readPublicWeibo() {
+            this.gReadInfo("weibo", this.allList, {
+                with: [
+                    {
+                        relation: "belongs_to",
+                        model: "user"
+                    }
+                ]
+            });
+        },
+        // 渲染关注人微博
+        readFollowerWeibo() {
+            this.gReadInfo("weibo", this.allList, {
+                where: [
+                    [
+                        "user_id",
+                        "in",
+                        this.pluck(this.itemList.follower, "id").concat(
+                            this.uinfo.id
+                        )
+                    ]
+                ],
+                with: [
+                    {
+                        relation: "belongs_to",
+                        model: "user"
+                    }
+                ]
+            });
+        },
+        // 渲染推荐用户
+        readSuggestedUser() {
+            this.gReadInfo("user", this.allList);
+        },
+        // 关注某用户
+        follower(userId) {
+            if (!this.uinfo) {
+                this.$router.push("/signIn");
+                return;
+            }
+            api
+                .api("user/bind", {
+                    model: "user",
+                    glue: {
+                        [this.uinfo.id]: userId
+                    }
+                })
+                .then(res => {
+                    this.readFollowerUser();
+                });
+        },
+        // 取关某用户
+        unfollower(userId) {
+            api
+                .api("user/unbind", {
+                    model: "user",
+                    glue: {
+                        [this.uinfo.id]: userId
+                    }
+                })
+                .then(res => {
+                    this.readFollowerUser();
+                });
+        },
+        // 渲染关注用户
+        readFollowerUser() {
+            return api
+                .api("user/find", {
+                    id: this.uinfo.id,
+                    with: [
+                        {
+                            relation: "belongs_to_many",
+                            model: "user"
+                        }
+                    ]
+                })
+                .then(res => {
+                    // this.$set(this.allList, 'follower', res.data.$user);
+                    this.itemList.follower = res.data.$user;
+                });
+        },
+        // 判断是否关注
+        hasFollower(targetId) {
+            if (!this.itemList.follower) return false;
+            return !!this.itemList.follower.find(item => {
+                return item.id == targetId;
+            });
+        },
+        pluck(arr, key) {
+            const result = [];
+            if (!arr) return result;
+            arr.forEach(item => {
+                result.push(item[key]);
+            });
+
+            return result;
+        },
+        // 获取当前时间
+        getCurrentTime() {
+            let date = new Date();
+            let y = date.getFullYear(),
+                m = date.getMonth() + 1,
+                d = date.getDate(),
+                h = date.getHours(),
+                min = date.getMinutes(),
+                s = date.getSeconds();
+            if (date.getMonth() < 10) {
+                m = "0" + m;
+            }
+            if (date.getDate() < 10) {
+                d = "0" + d;
+            }
+            if (date.getHours() < 10) {
+                h = "0" + h;
+            }
+            if (date.getMinutes() < 10) {
+                min = "0" + min;
+            }
+            if (date.getSeconds() < 10) {
+                s = "0" + s;
+            }
+            return `${y}-${m}-${d} ${h}:${min}:${s}`;
+        }
     }
 };
 </script>

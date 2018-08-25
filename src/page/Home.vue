@@ -74,7 +74,6 @@
             <!-- <Col span="6"></Col> -->
             <Col span="12" class="container">
             <Row :gutter="14">
-
                 <Col span="17" class="main-middle">
                 <Card v-if="uinfo" class="card-mgb">
                     <div>
@@ -88,19 +87,19 @@
                                 <ul class="extras tal cp-all dib-all cl-hv-all">
                                     <li>
                                         <em class="icon-mgr">
-                                            <Icon type="md-images" size="24" color="#72a305" />
+                                            <Icon type="md-images" size="18" color="#72a305" />
                                         </em>
                                         <span>图片</span>
                                     </li>
                                     <li>
                                         <em class="icon-mgr">
-                                            <Icon type="md-videocam" size="24" color="#2b85e4" />
+                                            <Icon type="md-videocam" size="18" color="#2b85e4" />
                                         </em>
                                         <span>视频</span>
                                     </li>
                                     <li>
                                         <em class="icon-mgr">
-                                            <Icon type="ios-grid-outline" size="24" color="#2db7f5" />
+                                            <Icon type="ios-grid-outline" size="18" color="#2db7f5" />
                                         </em>
                                         <span>话题</span>
                                     </li>
@@ -255,11 +254,11 @@ export default {
         this.readSuggestedUser();
         this.readPublicWeibo();
 
-        if (session.signIned()) {
-            this.readFollowerUser().then(res => this.readFollowerWeibo());
-        } else {
-            this.readPublicWeibo();
-        }
+        // if (session.signIned()) {
+        //     this.readFollowerUser().then(res => this.readFollowerWeibo());
+        // } else {
+        //     this.readPublicWeibo();
+        // }
     },
     methods: {
         // 发布微博
