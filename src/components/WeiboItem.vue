@@ -161,9 +161,7 @@
                         <Icon type="md-arrow-dropdown" class="cp cl-hv" size="30" />
                         <DropdownMenu slot="list">
                             <DropdownItem>驴打滚</DropdownItem>
-                            <DropdownItem>炸酱面</DropdownItem>
-                            <DropdownItem disabled>豆汁儿</DropdownItem>
-                            <DropdownItem>冰糖葫芦</DropdownItem>
+
                             <DropdownItem v-if="uinfo && uinfo.id==weibo.user_id" divided @click.native="removeWeibo(weibo.id)">删除</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>

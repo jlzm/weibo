@@ -252,13 +252,13 @@ export default {
     },
     mounted() {
         this.readSuggestedUser();
-        this.readPublicWeibo();
+        // this.readPublicWeibo();
 
-        // if (session.signIned()) {
-        //     this.readFollowerUser().then(res => this.readFollowerWeibo());
-        // } else {
-        //     this.readPublicWeibo();
-        // }
+        if (session.signIned()) {
+            this.readFollowerUser().then(res => this.readFollowerWeibo());
+        } else {
+            this.readPublicWeibo();
+        }
     },
     methods: {
         // 发布微博
