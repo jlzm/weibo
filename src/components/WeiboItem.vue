@@ -104,8 +104,8 @@
 }
 
 .user-portrait {
+    width: 10%;
     height: 54px;
-    width: 54px;
 }
 
 .user-portrait img {
@@ -137,8 +137,8 @@
 <template>
     <div>
         <Card class="weibo-content-item card-mgb">
-            <Row :gutter="18">
-                <Col span="3">
+            <Row>
+                <Col span="4">
                 <Poptip trigger="hover" placement="top" width="400">
                     <div class="user-portrait">
                         <router-link to="/">
@@ -150,7 +150,7 @@
                     </div>
                 </Poptip>
                 </Col>
-                <Col span="21">
+                <Col span="20">
                 <div class="info-head cf">
                     <div class="userinfo col">
                         <router-link to="/" class="username">
@@ -161,7 +161,6 @@
                         <Icon type="md-arrow-dropdown" class="cp cl-hv" size="30" />
                         <DropdownMenu slot="list">
                             <DropdownItem>驴打滚</DropdownItem>
-
                             <DropdownItem v-if="uinfo && uinfo.id==weibo.user_id" divided @click.native="removeWeibo(weibo.id)">删除</DropdownItem>
                         </DropdownMenu>
                     </Dropdown>

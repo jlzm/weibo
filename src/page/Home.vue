@@ -72,9 +72,85 @@
         <Header defRouter="/" />
         <Row class="main">
             <!-- <Col span="6"></Col> -->
-            <Col span="12" class="container">
+            <Col :md="12" :sm="24" :xs="24" class="container">
             <Row :gutter="14">
-                <Col span="17" class="main-middle">
+                <Col :md="7" :sm="7" :xs="24" class="main-right">
+                <Card class="card-mgb">
+                    <div class="user-intro-wrap">
+                        <div class="user-bg">
+                            <img src="http://placekitten.com/230/75" alt="">
+                            <router-link to="/PersonalPage" class="head-portrait">
+                                <!-- <img src="http://placekitten.com/230/75" alt=""> -->
+                            </router-link>
+                        </div>
+                        <div class="user-intro tac">
+                            <div class="user-title-wrap">
+                                <router-link to="/signIn">
+                                    <span v-if="uinfo" class="title">{{uinfo.username}}</span>
+                                    <span v-else>首页待完善</span>
+                                </router-link>
+                            </div>
+                            <Row class="user-atten">
+                                <Col span="8">
+                                <a href="#">
+                                    <p>999</p>
+                                    <span>关注</span>
+                                </a>
+                                </Col>
+                                <Col span="8">
+                                <a href="#">
+                                    <p>999</p>
+                                    <span>微博</span>
+                                </a>
+                                </Col>
+                                <Col span="8">
+                                <a href="#">
+                                    <p>999</p>
+                                    <span>粉丝</span>
+                                </a>
+                                </Col>
+                            </Row>
+                        </div>
+                    </div>
+                </Card>
+                <Row>
+                    <Col :md="24" :sm="24" :xs="0">
+                    <Card >
+                        <p slot="title">
+                            <span class="suggested-title">推荐关注</span>
+                            <span>刷新</span>
+                            <span>全部</span>
+                        </p>
+                        <div v-for="(item, index) in allList.user" class="suggested-users">
+                            <Row v-if="(uinfo && uinfo.id == item.id) ? false : true">
+                                <Col span="8">
+                                <Poptip trigger="hover" placement="top" width="400">
+                                    <div class="user-portrait">
+                                        <router-link to="/">
+                                            <img :src="item.portrait || 'http://placekitten.com/100/150'" alt="">
+                                        </router-link>
+                                    </div>
+                                    <div slot="content" class="user-poptip">
+                                        <img src="http://placekitten.com/230/75" alt="">
+                                    </div>
+                                </Poptip>
+                                </Col>
+                                <Col span="16">
+                                <div class="userinfo">
+                                    <router-link to="/" class="username">
+                                        {{item.username}}
+                                    </router-link>
+                                </div>
+                                <Button v-if="hasFollower(item.id)" @click.native="unfollower(item.id)" type="primary">取消关注</Button>
+                                <Button v-else @click.native="follower(item.id)" type="primary">关注</Button>
+                                </Col>
+                            </Row>
+                        </div>
+                    </Card>
+                    </Col>
+                </Row>
+                </Col>
+                <Col :md="17" :sm="17" :xs="24" class="main-middle">
                 <Card v-if="uinfo" class="card-mgb">
                     <div>
                         <p class="title">有什么新鲜事想告诉大家?</p>
@@ -114,8 +190,8 @@
                 </Card>
                 <Row class="weibo-items">
                     <Card class="weibo-nav-card card-mgb">
-                        <Row class="weibo-nav-wrap">
-                            <Col span="12">
+                        <Row :gutter="20" type="flex" class="weibo-nav-wrap">
+                            <Col :md="12" :sm="12" :xs="24">
                             <Menu mode="horizontal" theme="light" class="weibo-nav-items dib">
                                 <MenuItem name="1" class="weibo-nav-item">
                                 <span>全部</span>
@@ -131,91 +207,16 @@
                                 </Submenu>
                             </Menu>
                             </Col>
-                            <Col span="10">
-                            <Form @submit.native="test()" class="weibo-search-wrap">
-                                <FormItem class="weibo-form">
-                                    <Input icon="md-search" @on-click="test()" placeholder="Enter something..." />
-                                </FormItem>
-                            </Form>
+                            <Col :md="12" :sm="12" :xs="24">
+                            <AutoComplete icon="ios-search" placeholder="input here">
+                            </AutoComplete>
                             </Col>
                         </Row>
-
                     </Card>
-                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo"/>
+                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
                 </Col>
-                <Col span="7" class="main-right">
-                <Card class="card-mgb">
-                    <div class="user-intro-wrap">
-                        <div class="user-bg">
-                            <img src="http://placekitten.com/230/75" alt="">
-                            <router-link to="/PersonalPage" class="head-portrait">
-                                <!-- <img src="http://placekitten.com/230/75" alt=""> -->
-                            </router-link>
-                        </div>
-                        <div class="user-intro tac">
-                            <div class="user-title-wrap">
-                                <router-link to="/signIn">
-                                    <span v-if="uinfo" class="title">{{uinfo.username}}</span>
-                                    <span v-else>首页待完善</span>
-                                </router-link>
-                            </div>
-                            <Row class="user-atten">
-                                <Col span="8">
-                                <a href="#">
-                                    <p>999</p>
-                                    <span>关注</span>
-                                </a>
-                                </Col>
-                                <Col span="8">
-                                <a href="#">
-                                    <p>999</p>
-                                    <span>微博</span>
-                                </a>
-                                </Col>
-                                <Col span="8">
-                                <a href="#">
-                                    <p>999</p>
-                                    <span>粉丝</span>
-                                </a>
-                                </Col>
-                            </Row>
-                        </div>
-                    </div>
-                </Card>
-                <Card>
-                    <p slot="title">
-                        <span class="suggested-title">推荐关注</span>
-                        <span>刷新</span>
-                        <span>全部</span>
-                    </p>
-                    <div v-for="(item, index) in allList.user" class="suggested-users">
-                        <Row v-if="(uinfo && uinfo.id == item.id) ? false : true">
-                            <Col span="8">
-                            <Poptip trigger="hover" placement="top" width="400">
-                                <div class="user-portrait">
-                                    <router-link to="/">
-                                        <img :src="item.portrait || 'http://placekitten.com/100/150'" alt="">
-                                    </router-link>
-                                </div>
-                                <div slot="content" class="user-poptip">
-                                    <img src="http://placekitten.com/230/75" alt="">
-                                </div>
-                            </Poptip>
-                            </Col>
-                            <Col span="16">
-                            <div class="userinfo">
-                                <router-link to="/" class="username">
-                                    {{item.username}}
-                                </router-link>
-                            </div>
-                            <Button v-if="hasFollower(item.id)" @click.native="unfollower(item.id)" type="primary">取消关注</Button>
-                            <Button v-else @click.native="follower(item.id)" type="primary">关注</Button>
-                            </Col>
-                        </Row>
-                    </div>
-                </Card>
-                </Col>
+
             </Row>
             </Col>
             <!-- <Col span="6"></Col> -->
