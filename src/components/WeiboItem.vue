@@ -1,50 +1,7 @@
-<style>
+<style scoped>
 /* weibo Card */
 
-/* search */
 
-.weibo-nav-wrap {
-    display: flex;
-    align-items: center;
-}
-
-/* iview Card Reset*/
-
-.weibo-nav-card .ivu-card-body {
-    padding-top: 3px;
-    padding-bottom: 3px;
-}
-
-.weibo-nav-items.ivu-menu::after {
-    height: 0;
-}
-
-.weibo-nav-item.ivu-menu-item {
-    padding: 0 10px;
-}
-
-.weibo-nav-items.ivu-menu .weibo-nav-item.ivu-menu-item,
-.weibo-nav-items.ivu-menu .weibo-nav-item.ivu-menu-submenu {
-    border: 0;
-}
-
-.weibo-nav-items.ivu-menu .weibo-nav-item.ivu-menu-item:hover,
-.weibo-nav-items.ivu-menu .weibo-nav-item.ivu-menu-submenu:hover {
-    border: 0;
-}
-
-.weibo-form.ivu-form-item {
-    margin: 0;
-}
-
-/* iview Card Reset End*/
-
-.weibo-nav-items {
-    height: 37px;
-    line-height: 37px;
-}
-
-/* search End*/
 
 .weibo-content-item {
     margin-bottom: 15px;
@@ -104,8 +61,8 @@
 }
 
 .user-portrait {
-    width: 10%;
-    height: 54px;
+    /* width: 54px;
+    height: 54px; */
 }
 
 .user-portrait img {

@@ -53,3 +53,22 @@ h6 {
     font-weight: 500;
     line-height: 1.1;
 }
+
+
+/* iview 样式重置 */
+
+/* config 全局*/
+
+.ivu-menu::after {
+    height: 0 !important;
+}
+
+/* config end 全局结束*/
+
+/* Home 首页*/
+
+.weibo-nav-card.ivu-card .ivu-card-body {
+    padding: 7px 16px;
+}
+
+/* Home end 首页结束*/

@@ -27,7 +27,7 @@
     line-height: 47px;
 }
 
-.nav-router-items.ivu-menu::after {
+.ivu-menu::after {
     height: 0;
 }
 
