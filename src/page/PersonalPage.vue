@@ -41,7 +41,7 @@
     <div>
         <Header defRouter="/personalPage" />
         <Row class="main">
-            <Col :md="12" :sm="12" :xs="24" class="container user-cover-wrap">
+            <Col :lg="12" :md="16" :sm="20" :xs="24" class="container user-cover-wrap">
             <Card class="card-mgb">
                 <div class="user-cover">
                     <img src="http://placekitten.com/1024/512" alt="">
@@ -112,7 +112,7 @@
                 </Card>
                 <Card></Card>
                 </Col>
-                <Col span="16">
+                <Col :md="16" :sm="16" :xs="24">
                 <Card v-if="uinfo" class="card-mgb">
                     <div>
                         <p class="title">有什么新鲜事想告诉大家?</p>
@@ -151,34 +151,7 @@
                     </div>
                 </Card>
                 <Row class="weibo-items">
-                    <Card class="weibo-nav-card card-mgb">
-                        <Row class="weibo-nav-wrap">
-                            <Col span="12">
-                            <Menu mode="horizontal" theme="light" class="weibo-nav-items dib">
-                                <MenuItem name="1" class="weibo-nav-item">
-                                <span>全部</span>
-                                </MenuItem>
-                                <Submenu name="2" class="weibo-nav-item">
-                                    <template slot="title">
-                                        <span>原创</span>
-                                    </template>
-                                    <MenuItem name="3-1">图片</MenuItem>
-                                    <MenuItem name="3-2">视频</MenuItem>
-                                    <MenuItem name="3-3">音乐</MenuItem>
-                                    <MenuItem name="3-3">文章</MenuItem>
-                                </Submenu>
-                            </Menu>
-                            </Col>
-                            <Col span="10">
-                            <Form @submit.native="test()" class="weibo-search-wrap">
-                                <FormItem class="weibo-form">
-                                    <Input icon="md-search" @on-click="test()" placeholder="Enter something..." />
-                                </FormItem>
-                            </Form>
-                            </Col>
-                        </Row>
-
-                    </Card>
+                    <WeiboNavItem/>
                     <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
                 </Col>
@@ -191,6 +164,7 @@
 <script>
 import api from "../lib/api";
 
+import WeiboNavItem from "../components/WeiboNavItem";
 import WeiboItem from "../components/WeiboItem";
 import Header from "../components/Header";
 import GReadInfo from "../mixins/GReadInfo";
@@ -201,6 +175,7 @@ export default {
 
     components: {
         Header,
+        WeiboNavItem,
         WeiboItem
     },
     data() {

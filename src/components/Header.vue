@@ -47,14 +47,14 @@
     <div>
         <div class="header">
             <Row type="flex" class="nav-wrap" align="middle">
-                <Col :md="6" :sm="6" :xs="24" class="logo tar">
+                <Col :lg="6" :md="3" :sm="0" :xs="0" class="logo tar">
                 <router-link to="/">
                     Logooooooooooo
                 </router-link>
                 </Col>
-                <Col :md="12" :xs="24">
+                <Col :lg="12" :md="16" :sm="20" :xs="24" class="container">
                 <Row :gutter="20" type="flex" class="nav" align="middle">
-                    <Col :md="13" :sm="12" :xs="24" class="nav-right">
+                    <Col :md="13" :sm="13" :xs="24" class="nav-right">
                     <Row type="flex" align="middle">
                         <Menu mode="horizontal" theme="light" :active-name="defRouter" class="nav-router-items">
                             <MenuItem name="/" to="/" class="nav-router-item">
@@ -86,7 +86,7 @@
                     </Col>
                 </Row>
                 </Col>
-                <Col :md="6" :xs="0" class="tal">
+                <Col :lg="6" :md="3" :xs="0" class="tal">
                 <Dropdown trigger="hover">
                     <span class="setting cp">
                         <Icon type="md-settings cl-hv" size="24" />
@@ -106,6 +106,7 @@
 </template>
 
 <script>
+// 依赖
 import session from "../lib/session";
 export default {
     props: {

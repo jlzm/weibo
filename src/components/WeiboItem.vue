@@ -413,9 +413,13 @@
 </template>
 
 <script>
-import api from "../lib/api";
+
+// 组件
 import Header from "../components/Header";
 import GReadInfo from "../mixins/GReadInfo";
+
+// 依赖
+import api from "../lib/api";
 import session from "../lib/session";
 
 export default {

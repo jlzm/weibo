@@ -1,0 +1,13 @@
+.login-title {
+    /* font-size: 1.4rem; */
+}
+
+.login-wrap {
+    margin: 20px;
+    padding: 20px;
+}
+
+.login-form {
+    background: #fff;
+    border-bottom: 1px solid #ccc;
+}

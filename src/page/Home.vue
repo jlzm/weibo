@@ -89,25 +89,30 @@
         <Header defRouter="/" />
         <Row class="main">
             <!-- <Col span="6"></Col> -->
-            <Col :md="12" :sm="24" :xs="24" class="container">
+            <Col :lg="12" :md="16" :sm="20" :xs="24" class="container">
             <Row :gutter="14">
                 <Col :md="7" :sm="7" :xs="24" class="main-right">
                 <Card class="card-mgb">
                     <div class="user-intro-wrap">
                         <div class="user-bg">
                             <img src="http://placekitten.com/230/75" alt="">
-                            <router-link to="/PersonalPage" class="head-portrait">
+                            <router-link v-if="uinfo" to="/PersonalPage" class="head-portrait">
+                                <!-- <img src="http://placekitten.com/230/75" alt=""> -->
+                            </router-link>
+                            <router-link v-else to="/signIn" class="head-portrait">
                                 <!-- <img src="http://placekitten.com/230/75" alt=""> -->
                             </router-link>
                         </div>
                         <div class="user-intro tac">
                             <div class="user-title-wrap">
-                                <router-link to="/signIn">
-                                    <span v-if="uinfo" class="title">{{uinfo.username}}</span>
-                                    <span v-else>首页待完善</span>
+                                <router-link v-if="uinfo" to="/signIn">
+                                    <span class="title">{{uinfo.username}}</span>
                                 </router-link>
+                                <span v-else>
+                                        <router-link to="/signIn">登入</router-link>
+                                </span>
                             </div>
-                            <Row class="user-atten">
+                            <Row v-if="uinfo" class="user-atten">
                                 <Col span="8">
                                 <a href="#">
                                     <p>999</p>
@@ -139,8 +144,8 @@
                             <span>全部</span>
                         </p>
                         <div v-for="(item, index) in allList.user" class="suggested-users">
-                            <Row v-if="(uinfo && uinfo.id == item.id) ? false : true">
-                                <Col span="8">
+                            <Row :gutter="14" type="flex" v-if="(uinfo && uinfo.id == item.id) ? false : true" >
+                                <Col :lg="10" :md="10" :sm="10">
                                 <Poptip trigger="hover" placement="top" width="400">
                                     <div class="user-portrait">
                                         <router-link to="/">
@@ -152,7 +157,7 @@
                                     </div>
                                 </Poptip>
                                 </Col>
-                                <Col span="16">
+                                <Col :lg="14" :md="14" :sm="14">
                                 <div class="userinfo">
                                     <router-link to="/" class="username">
                                         {{item.username}}
@@ -210,23 +215,27 @@
                     <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
                 </Col>
-
             </Row>
             </Col>
             <!-- <Col span="6"></Col> -->
         </Row>
-        <Footer/>
+        <!-- <Footer/> -->
     </div>
 </template>
 
 <script>
-import api from "../lib/api";
 
+// 组件
 import WeiboNavItem from "../components/WeiboNavItem";
 import WeiboItem from "../components/WeiboItem";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+
+// mixin
 import GReadInfo from "../mixins/GReadInfo";
+
+// 依赖
+import api from "../lib/api";
 import session from "../lib/session";
 
 export default {

@@ -4,20 +4,6 @@
     height: 100%;
 }
 
-.signIn-title {
-    font-size: 1.5rem;
-}
-
-.signIn-wrap {
-    margin: 20px;
-    padding: 20px;
-}
-
-.signIn-form {
-    background: #fff;
-    border-bottom: 1px solid #ccc;
-}
-
 .signUp-choose {
     margin-bottom: 35px;
     font-size: 1rem;
@@ -28,20 +14,24 @@
     <div>
         <Header defRouter="/signUp" />
         <Row class="main">
-            <Col :md="9" :sm="9" :xs="24" class="container">
-            <h2 class="signIn-title tac">
+            <Col :lg="12" :md="16" :sm="20" :xs="24" class="container">
+            <h2 class="login-title tac">
                 账号注册
             </h2>
-            <Card class="signIn-wrap">
+            <Card class="login-wrap">
+                <div class="router-signIn tar">
+                    <span>已有账号？</span>
+                    <router-link to="/signIn">登入</router-link>
+                </div>
                 <Row class="signUp-choose">
                     <Col span="12">
-                    <span @click="signUpType='phone'" class="cp cl-hv">手机号码注册</span>
+                    <span @click="signUpType='phone'" :class="{'cl-act': signUpType == 'phone'}" class="cp cl-hv">手机号码注册</span>
                     </Col>
                     <Col span="12">
-                    <span @click="signUpType='mail'" class="cp cl-hv">邮箱注册</span>
+                    <span @click="signUpType='mail'" :class="{'cl-act': signUpType == 'mail'}" class="cp cl-hv">邮箱注册</span>
                     </Col>
                 </Row>
-                <Form @submit.native.prevent="handleSubmit('formValidate')" class="signIn-form" ref="formValidate" :model="formValidate" :rules="ruleValidate" label-position="top">
+                <Form @submit.native.prevent="handleSubmit('formValidate')" class="login-form" ref="formValidate" :model="formValidate" :rules="ruleValidate" label-position="top">
                     <FormItem label="用户名" prop="username">
                         <Input v-model="formValidate.username" placeholder="不可包含特殊字符">
                         <Icon type="md-person" slot="prefix" />
@@ -96,7 +86,6 @@
                         <Button html-type="submit" type="primary">注册</Button>
                         <Button @click="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
                     </FormItem>
-
                 </Form>
             </Card>
             </Col>
@@ -106,18 +95,25 @@
 </template>
 
 <script>
-import api from "../lib/api";
+import "../css/login.css";
+
+// 组件
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import session from "../lib/session";
+
+// mixins
 import GetVerificationCode from "../mixins/GetVerificationCode";
 
+// 依赖
+import api from "../lib/api";
+import session from "../lib/session";
+
 export default {
+    mixins: [GetVerificationCode],
     components: {
         Header,
         Footer
     },
-    mixins: [GetVerificationCode],
     data() {
         const validatePass = (rule, value, callback) => {
             if (this.formValidate.passwordCheck !== "") {

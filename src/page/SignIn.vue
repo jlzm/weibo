@@ -4,27 +4,19 @@
     height: 100%;
 }
 
-.signIn-wrap {
-    margin: 20px;
-    padding: 20px;
-}
 
-.signIn-form {
-    background: #fff;
-    border-bottom: 1px solid #ccc;
-}
 </style>
 
 <template>
     <div>
         <Header defRouter="/signIn" />
         <Row class="main">
-            <Col :md="6" :sm="6" :xs="24" class="container">
+            <Col :lg="12" :md="16" :sm="20" :xs="24" class="container">
             <h2 class="signIn-title tac">
                 账号登入
             </h2>
-            <Card class="signIn-wrap">
-                <Form @submit.native.prevent="handleSubmit('formValidate')" class="signIn-form" ref="formValidate" :model="formValidate" :rules="ruleValidate">
+            <Card class="login-wrap">
+                <Form @submit.native.prevent="handleSubmit('formValidate')" class="login-form" ref="formValidate" :model="formValidate" :rules="ruleValidate">
                     <div v-if="accountSignIn">
                         <FormItem prop="account">
                             <Input v-model="formValidate.account" placeholder="手机号码、邮箱或用户名">
@@ -63,18 +55,28 @@
                         <Button html-type="submit" type="primary">登入</Button>
                         <Button @click.native="handleReset('formValidate')" style="margin-left: 8px">重置</Button>
                     </FormItem>
+                    <div class="router-signUp">
+                    <span>还没有账号？</span>
+                    <router-link to="/signUp">注册</router-link>
+                </div>
                 </Form>
             </Card>
             </Col>
         </Row>
-        <Footer/>
+        <!-- <Footer/> -->
     </div>
 </template>
 
 <script>
-import api from "../lib/api";
+// 样式
+import "../css/login.css";
+
+// 组件
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+
+// 依赖
+import api from "../lib/api";
 import session from "../lib/session";
 
 export default {
@@ -133,11 +135,6 @@ export default {
     methods: {
         chooseSignIn() {
             this.accountSignIn = !this.accountSignIn;
-            // if(this.accountSignIn == false) {
-            //     this.chooseBtnText = '账号密码登入';
-            // } else {
-            //     this.chooseBtnText = '手机验证码登入';
-            // }
 
            this.chooseBtnText = this.accountSignIn ? '手机验证码登入' : '账号密码登入'
 
