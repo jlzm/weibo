@@ -366,7 +366,7 @@
                                 </FormItem>
                                 <FormItem>
                                     <Row>
-                                        <Col span="18">
+                                        <Col span="12">
                                         <ul class="extras tal cp-all dib-all cl-hv-all">
                                             <li>
                                                 <em class="icon-mgr">
@@ -380,7 +380,7 @@
                                             </li>
                                         </ul>
                                         </Col>
-                                        <Col span="6 tar">
+                                        <Col span="12 tar">
                                         <Button @click.native="hiddenReplyModal()" style="margin-right: 8px">取消</Button>
                                         <Button @click.native="replyComment(weibo.id)" :disabled="!commentContent.text" type="primary">评论</Button>
                                         </Col>
