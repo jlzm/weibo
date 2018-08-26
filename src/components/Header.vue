@@ -8,7 +8,7 @@
     background: #fff;
     box-shadow: 0px 1px 1px #888888;
     width: 100%;
-    z-index: 1;
+    z-index: 999;
 }
 
 /* logo样式 */
