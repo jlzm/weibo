@@ -56,7 +56,7 @@
                 </Menu>
                 </Col>
                 <Col :md="12" :sm="12" :xs="24">
-                <AutoComplete icon="ios-search" placeholder="input here">
+                <AutoComplete icon="ios-search" placeholder="搜索关注人的微博">
                 </AutoComplete>
                 </Col>
             </Row>

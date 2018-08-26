@@ -18,7 +18,8 @@ import Found from "./page/Found";
 import PersonalPage from "./page/PersonalPage";
 import SignIn from "./page/SignIn";
 import SignUp from "./page/SignUp";
-import test from "./page/test";
+
+import session from './lib/session.js';
 
 Vue.use(VueRouter);
 Vue.use(iView);
@@ -30,13 +31,6 @@ const routerConfig = {
       component: Home,
       meta: {
         title: '首页'
-      }
-    },
-    {
-      path: '/test',
-      component: test,
-      meta: {
-        title: '测试'
       }
     },
     {
@@ -79,8 +73,11 @@ const router = new VueRouter(
 
 
 router.beforeEach((to, from, next) => {
-  next();
-
+  // let goFound = to.fullPath.startsWith('/found');
+  // if (goFound && !session.signIned()) {
+  //   next('/signIn')
+  // } else next();
+   next();
   document.title = to.meta.title;
 });
 

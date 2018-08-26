@@ -472,6 +472,7 @@ export default {
             this.weiboContent.time = this.getCurrentTime();
             this.weiboContent.user_id = this.uinfo.id;
             api.api("weibo/create", this.weiboContent).then(res => {
+                this.$Message.info("转发成功");
                 this.weiboContent = {};
                 this.readFollowerWeibo();
                 this.relayVisible = false;
@@ -547,6 +548,11 @@ export default {
             this.commentContent.time = this.getCurrentTime();
 
             api.api("comment/create", this.commentContent).then(res => {
+                if(!this.commentContent.reply_id) {
+                    this.$Message.info("评论成功");
+                } else {
+                    this.$Message.info("回复成功");
+                }
                 this.commentContent = {};
                 this.readComment(weiboId);
             });
