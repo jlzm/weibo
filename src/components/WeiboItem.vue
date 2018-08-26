@@ -185,7 +185,7 @@
             </Row>
 
             <div class="relay-wrap">
-                <Modal v-model="relayVisible" :closable="false" :mask-closable="false" :footer-hide="true" title="转发评论" okText="评论" :loading="loading">
+                <Modal v-model="relayVisible" :closable="false" :mask-closable="false" :footer-hide="true" title="转发微博" okText="转发" :loading="loading">
                     <Row :gutter="18">
                         <Col span="3">
                         <Poptip trigger="hover" placement="top" width="400">
@@ -219,7 +219,7 @@
                     </Row>
                     <Form @submit.native.prevent="relayWeibo(weibo.id)">
                         <FormItem class="comment-text">
-                            <Input v-model.trim="weiboContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." />
+                            <Input v-model.trim="weiboContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="转发理由" />
                         </FormItem>
                         <FormItem>
                             <Row>
