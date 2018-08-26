@@ -163,7 +163,7 @@
                                         {{item.username}}
                                     </router-link>
                                 </div>
-                                <Button v-if="hasFollower(item.id)" @click.native="unfollower(item.id)" type="primary">取消关注</Button>
+                                <Button v-if="hasFollower(item.id)" @click.native="unfollower(item.id)">取消关注</Button>
                                 <Button v-else @click.native="follower(item.id)" type="primary">关注</Button>
                                 </Col>
                             </Row>
