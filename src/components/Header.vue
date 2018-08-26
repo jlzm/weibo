@@ -32,14 +32,14 @@
 }
 
 .nav-router-item.ivu-menu-item {
-    /* border: 0; */
+    border: 0;
     padding: 0 7px;
     margin: 0 4px;
     font-size: 1.1rem;
 }
 
 .nav-router-item.ivu-menu-item:hover {
-    /* border: 0; */
+    border: 0;
 }
 </style>
 
@@ -47,7 +47,7 @@
     <div>
         <div class="header">
             <Row type="flex" class="nav-wrap" align="middle">
-                <Col :md="6" :xs="0" class="logo tar">
+                <Col :md="6" :sm="6" :xs="24" class="logo tar">
                 <router-link to="/">
                     Logooooooooooo
                 </router-link>

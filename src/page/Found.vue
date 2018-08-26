@@ -74,95 +74,9 @@
         <Header defRouter="/found" />
         <Row class="main">
             <!-- <Col span="6"></Col> -->
-            <Col span="12" class="container">
+            <Col :md="12" :sm="24" :xs="24" class="container">
             <Row :gutter="14">
-                <Col span="3" class="main-middle">
-                <ul class="sidebar-router-items">
-                    <li class="sidebar-router-item">
-                        <router-link to="/" class="db">
-                            首页
-                        </router-link>
-                    </li>
-                    <li class="sidebar-router-item">
-                        <router-link to="/" class="db">
-                            首页
-                        </router-link>
-                    </li>
-                    <li class="sidebar-router-item">
-                        <router-link to="/" class="db">
-                            首页
-                        </router-link>
-                    </li>
-                    <li class="sidebar-router-item">
-                        <router-link to="/" class="db">
-                            首页
-                        </router-link>
-                    </li>
-                    <li class="sidebar-router-item">
-                        <router-link to="/" class="db">
-                            首页
-                        </router-link>
-                    </li>
-                    <li class="sidebar-router-item">
-                        <router-link to="/" class="db">
-                            首页
-                        </router-link>
-                    </li>
-                    <li class="sidebar-router-item">
-                        <router-link to="/" class="db">
-                            首页
-                        </router-link>
-                    </li>
-                    <li class="sidebar-router-item">
-                        <router-link to="/" class="db">
-                            首页
-                        </router-link>
-                    </li>
-                </ul>
-                </Col>
-                <Col span="15" class="main-middle">
-                <Card class="card-mgb">
-                    <div>
-                        <p class="title">有什么新鲜事想告诉大家?</p>
-                        <Form>
-                            <FormItem>
-                                <Input type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..." />
-                            </FormItem>
-                            <FormItem>
-                                <Col span="18">
-                                <ul class="extras tal cp-all dib-all cl-hv-all">
-                                    <li>
-                                        <em class="icon-mgr">
-                                            <Icon type="md-images" size="24" color="#72a305" />
-                                        </em>
-                                        <span>图片</span>
-                                    </li>
-                                    <li>
-                                        <em class="icon-mgr">
-                                            <Icon type="md-videocam" size="24" color="#2b85e4" />
-                                        </em>
-                                        <span>视频</span>
-                                    </li>
-                                    <li>
-                                        <em class="icon-mgr">
-                                            <Icon type="ios-grid-outline" size="24" color="#2db7f5" />
-                                        </em>
-                                        <span>话题</span>
-                                    </li>
-                                </ul>
-                                </Col>
-                                <Col span="6 tar">
-                                <Button type="primary">发布</Button>
-                                </Col>
-                            </FormItem>
-                        </Form>
-                    </div>
-                </Card>
-                <Row class="weibo-items">
-                    <WeiboItem/>
-                </Row>
-                </Col>
-                <Col span="6" class="main-right">
+                 <Col :md="7" :sm="7" :xs="24" class="main-right">
                 <Card class="card-mgb">
                     <div class="user-intro-wrap">
                         <div class="user-bg">
@@ -202,6 +116,12 @@
                     </div>
                 </Card>
                 </Col>
+                <Col :md="17" :sm="17" :xs="24" class="main-middle">
+                <Row class="weibo-items">
+                    <WeiboItem/>
+                </Row>
+                </Col>
+               
             </Row>
             </Col>
             <!-- <Col span="6"></Col> -->

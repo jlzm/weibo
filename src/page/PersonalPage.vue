@@ -16,13 +16,9 @@
     background: rgba(133, 69, 69, 0.4);
 }
 
-.cover-operation-items {
-    display: flex;
-    justify-content: center;
-}
 
 .cover-operation-item {
-    margin: 0 40px;
+    margin: 0 5px;
 }
 
 .user-detail-item {
@@ -45,7 +41,7 @@
     <div>
         <Header defRouter="/personalPage" />
         <Row class="main">
-            <Col span="12" class="container user-cover-wrap">
+            <Col :md="12" :sm="12" :xs="24" class="container user-cover-wrap">
             <Card class="card-mgb">
                 <div class="user-cover">
                     <img src="http://placekitten.com/1024/512" alt="">
@@ -69,7 +65,7 @@
                 </Menu>
             </Card>
             <Row :gutter="14">
-                <Col span="8">
+                <Col :md="8" :sm="8" :xs="24">
                 <Card class="card-mgb tac">
                     <Row class="user-atten">
                         <Col span="8">

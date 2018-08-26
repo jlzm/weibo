@@ -48,7 +48,7 @@
 
 .operation-item .tooltip {
     border-right: 1px solid #e1e1e1;
-    padding: 0 30px;
+    padding: 0 10px;
     width: 100%;
 }
 
@@ -94,8 +94,8 @@
 <template>
     <div>
         <Card class="weibo-content-item card-mgb">
-            <Row>
-                <Col span="4">
+            <Row :gutter="14">
+                <Col :md="3" :sm="3" :xs="4">
                 <Poptip trigger="hover" placement="top" width="400">
                     <div class="user-portrait">
                         <router-link to="/">
@@ -147,7 +147,7 @@
             <Row class="weibo-operation-items tac cp-all cl-hv-all">
                 <Col span="6">
                 <span class="operation-item db">
-                    <span class="tooltip">
+                    <span class="tooltip dib">
                         <em class="icon-mgr">
                             <Icon type="md-heart" size="18" />
                         </em>收藏
@@ -156,7 +156,7 @@
                 </Col>
                 <Col span="6">
                 <span @click="showRelay(weibo.id)" class="operation-item db">
-                    <span class="tooltip">
+                    <span class="tooltip dib">
                         <em class="icon-mgr">
                             <Icon type="md-share" size="18" />
                         </em>转发
@@ -165,7 +165,7 @@
                 </Col>
                 <Col span="6">
                 <span @click="showComment(weibo.id)" :class="{'cl-act': commentVisible}" class="operation-item db">
-                    <span class="tooltip">
+                    <span class="tooltip dib">
                         <em class="icon-mgr">
                             <Icon type="md-text" size="18" />
                         </em>

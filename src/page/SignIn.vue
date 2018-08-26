@@ -19,7 +19,7 @@
     <div>
         <Header defRouter="/signIn" />
         <Row class="main">
-            <Col span="6" class="container">
+            <Col :md="6" :sm="6" :xs="24" class="container">
             <h2 class="signIn-title tac">
                 账号登入
             </h2>
@@ -44,14 +44,14 @@
                             </Input>
                         </FormItem>
                         <FormItem prop="securityCode">
-                            <Row>
-                                <Col span="16">
+                            <Row :gutter="10">
+                                <Col span="15">
                                 <Input v-model="formValidate.securityCode" placeholder="手机验证码">
                                 <Icon type="md-key" slot="prefix" />
                                 </Input>
                                 </Col>
-                                <Col span="8">
-                                <Button type="primary" long>获取手机验证码</Button>
+                                <Col span="9">
+                                <Button type="primary" long>获取验证码</Button>
                                 </Col>
                             </Row>
                         </FormItem>

@@ -28,7 +28,7 @@
     <div>
         <Header defRouter="/signUp" />
         <Row class="main">
-            <Col span="9" class="container">
+            <Col :md="9" :sm="9" :xs="24" class="container">
             <h2 class="signIn-title tac">
                 账号注册
             </h2>
@@ -54,7 +54,7 @@
                             </Input>
                         </FormItem>
                         <FormItem label="手机验证码" prop="securityCode">
-                            <Row :gutter="24">
+                            <Row :gutter="10">
                                 <Col span="15">
                                 <Input v-model="formValidate.securityCode" placeholder="手机验证码">
                                 <Icon type="md-key" slot="prefix" />
@@ -62,7 +62,7 @@
                                 </Col>
                                 <Col span="9">
                                 <Button v-if="count.phone" type="primary" long>{{count.phone}}后重新获取</Button>
-                                <Button v-else @click.native="getPhoneVerificationCode()" html-type="button" type="primary" long>获取手机验证码</Button>
+                                <Button v-else @click.native="getPhoneVerificationCode()" html-type="button" type="primary" long>获取验证码</Button>
                                 </Col>
                             </Row>
                         </FormItem>
