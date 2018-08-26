@@ -47,14 +47,14 @@
     <div>
         <div class="header">
             <Row type="flex" class="nav-wrap" align="middle">
-                <Col :lg="6" :md="3" :sm="0" :xs="0" class="logo tar">
-                <router-link to="/">
-                    Logooooooooooo
-                </router-link>
-                </Col>
                 <Col :lg="12" :md="16" :sm="20" :xs="24" class="container">
                 <Row :gutter="20" type="flex" class="nav" align="middle">
-                    <Col :md="13" :sm="13" :xs="24" class="nav-right">
+                    <Col :lg="4" :md="4" :sm="4" :xs="24" class="logo">
+                    <router-link to="/">
+                        Logooooooooooo
+                    </router-link>
+                    </Col>
+                    <Col :lg="12" :md="12" :sm="12" :xs="24" class="nav-right">
                     <Row type="flex" align="middle">
                         <Menu mode="horizontal" theme="light" :active-name="defRouter" class="nav-router-items">
                             <MenuItem name="/" to="/" class="nav-router-item">
@@ -78,15 +78,27 @@
                             <span>注册</span>
                             </MenuItem>
                         </Menu>
+                        <Dropdown trigger="hover">
+                            <span class="setting cp">
+                                <Icon type="md-settings cl-hv" size="20" />
+                            </span>
+                            <DropdownMenu slot="list">
+                                <DropdownItem>驴打滚</DropdownItem>
+                                <DropdownItem>炸酱面</DropdownItem>
+                                <DropdownItem disabled>豆汁儿</DropdownItem>
+                                <DropdownItem>冰糖葫芦</DropdownItem>
+                                <DropdownItem @click.native="signOut()" divided>退出</DropdownItem>
+                            </DropdownMenu>
+                        </Dropdown>
                     </Row>
                     </Col>
-                    <Col :md="11" :sm="11" :xs="24" class="nav-left">
+                    <Col :lg="8" :md="8" :sm="8" :xs="24" class="nav-left">
                     <AutoComplete icon="ios-search" placeholder="input here">
                     </AutoComplete>
                     </Col>
                 </Row>
                 </Col>
-                <Col :lg="6" :md="3" :xs="0" class="tal">
+                <!-- <Col :lg="6" :md="3" :sm="0" :xs="0" class="tal">
                 <Dropdown trigger="hover">
                     <span class="setting cp">
                         <Icon type="md-settings cl-hv" size="24" />
@@ -99,7 +111,7 @@
                         <DropdownItem @click.native="signOut()" divided>退出</DropdownItem>
                     </DropdownMenu>
                 </Dropdown>
-                </Col>
+                </Col> -->
             </Row>
         </div>
     </div>

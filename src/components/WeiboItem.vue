@@ -248,8 +248,8 @@
             </div>
 
             <div v-if="commentVisible" class="comment-wrap">
-                <Row :gutter="18" type="flex">
-                    <Col span="2">
+                <Row :gutter="10" type="flex">
+                    <Col span="3"  >
                     <Poptip trigger="hover" placement="top" width="400">
                         <div class="user-portrait">
                             <router-link to="/">
@@ -261,7 +261,7 @@
                         </div>
                     </Poptip>
                     </Col>
-                    <Col span="22">
+                    <Col span="21" >
                     <Form @submit.native.prevent="publishComment(weibo.id)">
                         <FormItem class="comment-text">
                             <Input v-model.trim="commentContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="说点什么吧？" />
@@ -290,8 +290,8 @@
                     </Form>
                     </Col>
                 </Row>
-                <Row v-for="(comment, index) in allList.comment" :key="index" :gutter="18" class="comment-item">
-                    <Col span="2">
+                <Row v-for="(comment, index) in allList.comment" :key="index" :gutter="10" class="comment-item">
+                    <Col span="3">
                     <Poptip trigger="hover" placement="top" width="400">
                         <div class="user-portrait">
                             <router-link to="/">
@@ -303,7 +303,7 @@
                         </div>
                     </Poptip>
                     </Col>
-                    <Col span="22">
+                    <Col span="21">
                     <div class="info-head">
                         <div class="userinfo col">
                             <router-link to="/" class="username">
@@ -320,7 +320,7 @@
                         <span v-else @click="removeReply(weibo.id, comment.id)">删除</span>
                         <!-- 回复区 -->
                         <Modal v-model="commentContent.reply_id == comment.id" :closable="false" :mask-closable="false" :footer-hide="true" title="Title" okText="评论" :loading="loading">
-                            <Row :gutter="18" class="comment-item">
+                            <Row :gutter="10" class="comment-item">
                                 <Col span="3">
                                 <Poptip trigger="hover" placement="top" width="400">
                                     <div class="user-portrait">
