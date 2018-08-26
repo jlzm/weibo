@@ -11,7 +11,7 @@
     <div>
         <Header defRouter="/signIn" />
         <Row class="main">
-            <Col :lg="6" :md="16" :sm="20" :xs="24" class="container">
+            <Col :lg="6" :md="12" :sm="16" :xs="24" class="container">
             <h2 class="signIn-title tac">
                 账号登入
             </h2>

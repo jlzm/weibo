@@ -2,8 +2,6 @@
 
 /* iview样式重置 */
 
-
-
 /* search */
 
 .weibo-nav-items {

@@ -14,7 +14,7 @@
     <div>
         <Header defRouter="/signUp" />
         <Row class="main">
-            <Col :lg="8" :md="16" :sm="20" :xs="24" class="container">
+            <Col :lg="8" :md="14" :sm="18" :xs="24" class="container">
             <h2 class="login-title tac">
                 账号注册
             </h2>
@@ -90,7 +90,7 @@
             </Card>
             </Col>
         </Row>
-        <Footer/>
+        <!-- <Footer/> -->
     </div>
 </template>
 
