@@ -93,7 +93,7 @@
 
 <template>
     <div>
-        <Card class="weibo-content-item card-mgb">
+        <Card v-for="(weibo, index) in weiboList" class="weibo-content-item card-mgb">
             <Row :gutter="14">
                 <Col :md="3" :sm="3" :xs="4">
                 <Poptip trigger="hover" placement="top" width="400">
@@ -423,6 +423,7 @@ import GetCurrentTime from "../mixins/GetCurrentTime";
 
 
 
+
 // 依赖
 import api from "../lib/api";
 import session from "../lib/session";
@@ -430,15 +431,8 @@ import session from "../lib/session";
 export default {
     mixins: [GReadInfo, GetCurrentTime],
     props: {
-        weibo: {
-            default() {
-                return {};
-            }
-        },
         weiboList: {
-            default() {
-                return {};
-            }
+            default: ""
         },
         readFollowerWeibo: {
             default: ""

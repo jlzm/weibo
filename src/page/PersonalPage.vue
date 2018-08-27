@@ -16,7 +16,6 @@
     background: rgba(133, 69, 69, 0.4);
 }
 
-
 .cover-operation-item {
     margin: 0 5px;
 }
@@ -41,7 +40,7 @@
     <div>
         <Header defRouter="/personalPage" />
         <Row class="main">
-            <Col :lg="12" :md="16" :sm="20" :xs="24" class="container user-cover-wrap">
+            <Col :lg="15" :md="20" :sm="20" :xs="24" class="container user-cover-wrap">
             <Card class="card-mgb">
                 <div class="user-cover">
                     <img src="http://placekitten.com/1024/512" alt="">
@@ -65,18 +64,18 @@
                 </Menu>
             </Card>
             <Row :gutter="14">
-                <Col :md="8" :sm="8" :xs="24">
+                <Col :lg="6" :md="6" :sm="8" :xs="24">
                 <Card class="card-mgb tac">
                     <Row class="user-atten">
                         <Col span="8">
                         <a href="#">
-                            <p>999</p>
+                            <p>{{followerNumber}}</p>
                             <span>关注</span>
                         </a>
                         </Col>
                         <Col span="8">
                         <a href="#">
-                            <p>999</p>
+                            <p>{{weiboNumber}}</p>
                             <span>微博</span>
                         </a>
                         </Col>
@@ -112,7 +111,7 @@
                 </Card>
                 <Card></Card>
                 </Col>
-                <Col :md="16" :sm="16" :xs="24">
+                <Col :lg="12" :md="12" :sm="16" :xs="24">
                 <Card v-if="uinfo" class="card-mgb">
                     <div>
                         <p class="title">有什么新鲜事想告诉大家?</p>
@@ -152,47 +151,58 @@
                 </Card>
                 <Row class="weibo-items">
                     <WeiboNavItem/>
-                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
+                    <WeiboItem :weiboList="allList.weibo" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
+                </Col>
+                <Col :lg="6" :md="6" :sm="0" :xs="0" class="main-left">
+                    <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser"/>
                 </Col>
             </Row>
             </Col>
+        </Row>
+        </Col>
+
         </Row>
     </div>
 </template>
 
 <script>
-import api from "../lib/api";
 
+// 组件
+import Header from "../components/Header";
 import WeiboNavItem from "../components/WeiboNavItem";
 import WeiboItem from "../components/WeiboItem";
-import Header from "../components/Header";
+import UserItems from "../components/UserItems";
+
+// mixins
 import GReadInfo from "../mixins/GReadInfo";
+import OperateWeibo from "../mixins/OperateWeibo";
+import GetCurrentTime from "../mixins/GetCurrentTime";
+
+
+// 依赖
+import api from "../lib/api";
 import session from "../lib/session";
 
 export default {
-    mixins: [GReadInfo],
+    mixins: [GReadInfo, OperateWeibo, GetCurrentTime],
 
     components: {
         Header,
         WeiboNavItem,
-        WeiboItem
+        WeiboItem,
+        UserItems
     },
     data() {
         return {
             allList: {},
-            itemList: {
-                follower: []
-            },
-            weiboNumber: [],
             weiboContent: {},
             uinfo: session.uinfo()
         };
     },
     mounted() {
-        // this.readSuggestedUser();
+        this.readSuggestedUser();
         this.readPersonalWeibo();
-        // this.readFollowerWeibo()
     },
     methods: {
         // 发布微博
@@ -203,133 +213,6 @@ export default {
                 this.weiboContent = {};
                 this.readFollowerWeibo();
             });
-        },
-        // 渲染个人微博
-        readPersonalWeibo() {
-            this.gReadInfo("weibo", this.allList, {
-                where: [
-                    ["user_id", "=", this.uinfo.id]
-                ],
-                with: [
-                    {
-                        relation: "belongs_to",
-                        model: "user"
-                    }
-                ]
-            });
-        },
-        // 渲染关注人微博
-        readFollowerWeibo() {
-            this.gReadInfo("weibo", this.allList, {
-                where: [
-                    [
-                        "user_id",
-                        "in",
-                        this.pluck(this.itemList.follower, "id").concat(
-                            this.uinfo.id
-                        )
-                    ]
-                ],
-                with: [
-                    {
-                        relation: "belongs_to",
-                        model: "user"
-                    }
-                ]
-            });
-        },
-        // 渲染推荐用户
-        readSuggestedUser() {
-            this.gReadInfo("user", this.allList);
-        },
-        // 关注某用户
-        follower(userId) {
-            if (!this.uinfo) {
-                this.$router.push("/signIn");
-                return;
-            }
-            api
-                .api("user/bind", {
-                    model: "user",
-                    glue: {
-                        [this.uinfo.id]: userId
-                    }
-                })
-                .then(res => {
-                    this.readFollowerUser();
-                });
-        },
-        // 取关某用户
-        unfollower(userId) {
-            api
-                .api("user/unbind", {
-                    model: "user",
-                    glue: {
-                        [this.uinfo.id]: userId
-                    }
-                })
-                .then(res => {
-                    this.readFollowerUser();
-                });
-        },
-        // 渲染关注用户
-        readFollowerUser() {
-            return api
-                .api("user/find", {
-                    id: this.uinfo.id,
-                    with: [
-                        {
-                            relation: "belongs_to_many",
-                            model: "user"
-                        }
-                    ]
-                })
-                .then(res => {
-                    // this.$set(this.allList, 'follower', res.data.$user);
-                    this.itemList.follower = res.data.$user;
-                });
-        },
-        // 判断是否关注
-        hasFollower(targetId) {
-            if (!this.itemList.follower) return false;
-            return !!this.itemList.follower.find(item => {
-                return item.id == targetId;
-            });
-        },
-        pluck(arr, key) {
-            const result = [];
-            if (!arr) return result;
-            arr.forEach(item => {
-                result.push(item[key]);
-            });
-
-            return result;
-        },
-        // 获取当前时间
-        getCurrentTime() {
-            let date = new Date();
-            let y = date.getFullYear(),
-                m = date.getMonth() + 1,
-                d = date.getDate(),
-                h = date.getHours(),
-                min = date.getMinutes(),
-                s = date.getSeconds();
-            if (date.getMonth() < 10) {
-                m = "0" + m;
-            }
-            if (date.getDate() < 10) {
-                d = "0" + d;
-            }
-            if (date.getHours() < 10) {
-                h = "0" + h;
-            }
-            if (date.getMinutes() < 10) {
-                min = "0" + min;
-            }
-            if (date.getSeconds() < 10) {
-                s = "0" + s;
-            }
-            return `${y}-${m}-${d} ${h}:${min}:${s}`;
         }
     }
 };

@@ -47,7 +47,7 @@
     <div>
         <div class="header">
             <Row type="flex" class="nav-wrap" align="middle">
-                <Col :lg="12" :md="16" :sm="20" :xs="24" class="container">
+                <Col :lg="15" :md="20" :sm="20" :xs="24" class="container">
                 <Row :gutter="20" type="flex" class="nav" align="middle">
                     <Col :lg="4" :md="4" :sm="4" :xs="24" class="logo">
                     <router-link to="/">

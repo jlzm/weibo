@@ -85,9 +85,9 @@
         <Header defRouter="/" />
         <Row class="main">
             <!-- <Col span="6"></Col> -->
-            <Col :lg="12" :md="16" :sm="20" :xs="24" class="container">
+            <Col :lg="15" :md="20" :sm="20" :xs="24" class="container">
             <Row :gutter="14">
-                <Col :md="7" :sm="7" :xs="24" class="main-right">
+                <Col :lg="6" :md="6" :sm="8" :xs="24" class="main-left">
                 <Card class="card-mgb">
                     <div class="user-intro-wrap">
                         <div class="user-bg">
@@ -111,7 +111,7 @@
                             <Row v-if="uinfo" class="user-atten">
                                 <Col span="8">
                                 <a href="#">
-                                    <p>999</p>
+                                    <p>{{followerNumber}}</p>
                                     <span>关注</span>
                                 </a>
                                 </Col>
@@ -133,42 +133,11 @@
                 </Card>
                 <Row>
                     <Col :md="24" :sm="24" :xs="0">
-                    <Card>
-                        <p slot="title">
-                            <span class="suggested-title">推荐关注</span>
-                            <span>刷新</span>
-                            <span>全部</span>
-                        </p>
-                        <div v-for="(item, index) in allList.user" class="suggested-users">
-                            <Row :gutter="14" type="flex" v-if="(uinfo && uinfo.id == item.id) ? false : true">
-                                <Col :lg="10" :md="10" :sm="10">
-                                <Poptip trigger="hover" placement="top" width="400">
-                                    <div class="user-portrait">
-                                        <router-link to="/">
-                                            <img :src="item.portrait || 'http://placekitten.com/100/150'" alt="">
-                                        </router-link>
-                                    </div>
-                                    <div slot="content" class="user-poptip">
-                                        <img src="http://placekitten.com/230/75" alt="">
-                                    </div>
-                                </Poptip>
-                                </Col>
-                                <Col :lg="14" :md="14" :sm="14">
-                                <div class="userinfo">
-                                    <router-link to="/" class="username">
-                                        {{item.username}}
-                                    </router-link>
-                                </div>
-                                <Button v-if="hasFollower(item.id)" @click.native="unfollower(item.id)">取消关注</Button>
-                                <Button v-else @click.native="follower(item.id)" type="primary">关注</Button>
-                                </Col>
-                            </Row>
-                        </div>
-                    </Card>
+                        <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser"/>
                     </Col>
                 </Row>
                 </Col>
-                <Col :md="17" :sm="17" :xs="24" class="main-middle">
+                <Col :lg="12" :md="12" :sm="16" :xs="24" class="main-middle">
                 <Card v-if="uinfo" class="card-mgb">
                     <div>
                         <p class="title">有什么新鲜事想告诉大家?</p>
@@ -208,8 +177,11 @@
                 </Card>
                 <Row class="weibo-items">
                     <WeiboNavItem v-if="uinfo" />
-                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
+                    <WeiboItem :weiboList="allList.weibo" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
+                </Col>
+                <Col :lg="6" :md="6" :sm="0" :xs="0" class="main-left">
+                    <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser"/>
                 </Col>
             </Row>
             </Col>
@@ -221,9 +193,11 @@
 
 <script>
 // 组件
+import Header from "../components/Header";
 import WeiboNavItem from "../components/WeiboNavItem";
 import WeiboItem from "../components/WeiboItem";
-import Header from "../components/Header";
+import UserItems from "../components/UserItems";
+
 import Footer from "../components/Footer";
 
 // mixin
@@ -241,15 +215,12 @@ export default {
         Header,
         WeiboNavItem,
         WeiboItem,
+        UserItems,
         Footer
     },
     data() {
         return {
             allList: {},
-            itemList: {
-                follower: []
-            },
-            weiboNumber: 0,
             weiboContent: {},
             uinfo: session.uinfo()
         };
@@ -265,73 +236,7 @@ export default {
         }
     },
     methods: {
-        // 发布微博
-        publishWeibo() {
-            this.weiboContent.time = this.getCurrentTime();
-            this.weiboContent.user_id = this.uinfo.id;
-            api.api("weibo/create", this.weiboContent).then(res => {
-                this.weiboContent = {};
-                this.readFollowerWeibo();
-            });
-        },
-        // 渲染推荐用户
-        readSuggestedUser() {
-            this.gReadInfo("user", this.allList);
-        },
-        // 关注某用户
-        follower(userId) {
-            if (!this.uinfo) {
-                this.$router.push("/signIn");
-                return;
-            }
-            api
-                .api("user/bind", {
-                    model: "user",
-                    glue: {
-                        [this.uinfo.id]: userId
-                    }
-                })
-                .then(res => {
-                    this.readFollowerUser();
-                });
-        },
-        // 取关某用户
-        unfollower(userId) {
-            api
-                .api("user/unbind", {
-                    model: "user",
-                    glue: {
-                        [this.uinfo.id]: userId
-                    }
-                })
-                .then(res => {
-                    this.readFollowerUser();
-                });
-        },
-        // 渲染关注用户
-        readFollowerUser() {
-            return api
-                .api("user/find", {
-                    id: this.uinfo.id,
-                    with: [
-                        {
-                            relation: "belongs_to_many",
-                            model: "user"
-                        }
-                    ]
-                })
-                .then(res => {
-                    // this.$set(this.allList, 'follower', res.data.$user);
-                    this.itemList.follower = res.data.$user;
-                });
-        },
-        // 判断是否关注
-        hasFollower(targetId) {
-            if (!this.itemList.follower) return false;
-            return !!this.itemList.follower.find(item => {
-                return item.id == targetId;
-            });
-        },
+
     }
 };
 </script>
