@@ -239,7 +239,7 @@
                                 </Col>
                                 <Col span="6 tar">
                                 <Button @click.native="hiddenRelayModal()" style="margin-right: 8px">取消</Button>
-                                <Button @click.native="relayWeibo(weibo.id)" :disabled="!weiboContent.text" type="primary">转发</Button>
+                                <Button @click.native="relayWeibo(weibo.id)" type="primary">转发</Button>
                                 </Col>
                             </Row>
                         </FormItem>
@@ -416,14 +416,19 @@
 
 // 组件
 import Header from "../components/Header";
+
+// mixins
 import GReadInfo from "../mixins/GReadInfo";
+import GetCurrentTime from "../mixins/GetCurrentTime";
+
+
 
 // 依赖
 import api from "../lib/api";
 import session from "../lib/session";
 
 export default {
-    mixins: [GReadInfo],
+    mixins: [GReadInfo, GetCurrentTime],
     props: {
         weibo: {
             default() {
@@ -557,32 +562,6 @@ export default {
                 this.readComment(weiboId);
             });
         },
-        // 获取系统当前时间
-        getCurrentTime() {
-            let date = new Date();
-            let y = date.getFullYear(),
-                m = date.getMonth() + 1,
-                d = date.getDate(),
-                h = date.getHours(),
-                min = date.getMinutes(),
-                s = date.getSeconds();
-            if (date.getMonth() < 10) {
-                m = "0" + m;
-            }
-            if (date.getDate() < 10) {
-                d = "0" + d;
-            }
-            if (date.getHours() < 10) {
-                h = "0" + h;
-            }
-            if (date.getMinutes() < 10) {
-                min = "0" + min;
-            }
-            if (date.getSeconds() < 10) {
-                s = "0" + s;
-            }
-            return `${y}-${m}-${d} ${h}:${min}:${s}`;
-        }
     }
 };
 </script>

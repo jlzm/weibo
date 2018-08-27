@@ -190,7 +190,7 @@ export default {
     },
     mounted() {
         // this.readSuggestedUser();
-        this.readPublicWeibo();
+        this.readPersonalWeibo();
         // this.readFollowerWeibo()
     },
     methods: {
@@ -200,13 +200,15 @@ export default {
             this.weiboContent.user_id = this.uinfo.id;
             api.api("weibo/create", this.weiboContent).then(res => {
                 this.weiboContent = {};
-                // this.allList.weibo.push(res.data);
                 this.readFollowerWeibo();
             });
         },
-        // 渲染全部微博
-        readPublicWeibo() {
+        // 渲染个人微博
+        readPersonalWeibo() {
             this.gReadInfo("weibo", this.allList, {
+                where: [
+                    ["user_id", "=", this.uinfo.id]
+                ],
                 with: [
                     {
                         relation: "belongs_to",

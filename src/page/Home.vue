@@ -1,5 +1,4 @@
 <style scoped>
-
 .main-middle {
     padding: 0 10px;
 }
@@ -79,9 +78,6 @@
 }
 
 /* iview样式重置 */
-
-
-
 </style>
 
 <template>
@@ -109,7 +105,7 @@
                                     <span class="title">{{uinfo.username}}</span>
                                 </router-link>
                                 <span v-else>
-                                        <router-link to="/signIn">登入</router-link>
+                                    <router-link to="/signIn">登入</router-link>
                                 </span>
                             </div>
                             <Row v-if="uinfo" class="user-atten">
@@ -137,14 +133,14 @@
                 </Card>
                 <Row>
                     <Col :md="24" :sm="24" :xs="0">
-                    <Card >
+                    <Card>
                         <p slot="title">
                             <span class="suggested-title">推荐关注</span>
                             <span>刷新</span>
                             <span>全部</span>
                         </p>
                         <div v-for="(item, index) in allList.user" class="suggested-users">
-                            <Row :gutter="14" type="flex" v-if="(uinfo && uinfo.id == item.id) ? false : true" >
+                            <Row :gutter="14" type="flex" v-if="(uinfo && uinfo.id == item.id) ? false : true">
                                 <Col :lg="10" :md="10" :sm="10">
                                 <Poptip trigger="hover" placement="top" width="400">
                                     <div class="user-portrait">
@@ -211,7 +207,7 @@
                     </div>
                 </Card>
                 <Row class="weibo-items">
-                    <WeiboNavItem v-if="uinfo"/>
+                    <WeiboNavItem v-if="uinfo" />
                     <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
                 </Col>
@@ -224,7 +220,6 @@
 </template>
 
 <script>
-
 // 组件
 import WeiboNavItem from "../components/WeiboNavItem";
 import WeiboItem from "../components/WeiboItem";
@@ -233,13 +228,15 @@ import Footer from "../components/Footer";
 
 // mixin
 import GReadInfo from "../mixins/GReadInfo";
+import GetCurrentTime from "../mixins/GetCurrentTime";
+import OperateWeibo from "../mixins/OperateWeibo";
 
 // 依赖
 import api from "../lib/api";
 import session from "../lib/session";
 
 export default {
-    mixins: [GReadInfo],
+    mixins: [GReadInfo, OperateWeibo, GetCurrentTime],
     components: {
         Header,
         WeiboNavItem,
@@ -273,39 +270,7 @@ export default {
             this.weiboContent.user_id = this.uinfo.id;
             api.api("weibo/create", this.weiboContent).then(res => {
                 this.weiboContent = {};
-                // this.allList.weibo.push(res.data);
                 this.readFollowerWeibo();
-            });
-        },
-        // 渲染全部微博
-        readPublicWeibo() {
-            this.gReadInfo("weibo", this.allList, {
-                with: [
-                    {
-                        relation: "belongs_to",
-                        model: "user"
-                    }
-                ]
-            });
-        },
-        // 渲染关注人微博
-        readFollowerWeibo() {
-            this.gReadInfo("weibo", this.allList, {
-                where: [
-                    [
-                        "user_id",
-                        "in",
-                        this.pluck(this.itemList.follower, "id").concat(
-                            this.uinfo.id
-                        )
-                    ]
-                ],
-                with: [
-                    {
-                        relation: "belongs_to",
-                        model: "user"
-                    }
-                ]
             });
         },
         // 渲染推荐用户
@@ -366,41 +331,6 @@ export default {
                 return item.id == targetId;
             });
         },
-        pluck(arr, key) {
-            const result = [];
-            if (!arr) return result;
-            arr.forEach(item => {
-                result.push(item[key]);
-            });
-
-            return result;
-        },
-        // 获取当前时间
-        getCurrentTime() {
-            let date = new Date();
-            let y = date.getFullYear(),
-                m = date.getMonth() + 1,
-                d = date.getDate(),
-                h = date.getHours(),
-                min = date.getMinutes(),
-                s = date.getSeconds();
-            if (date.getMonth() < 10) {
-                m = "0" + m;
-            }
-            if (date.getDate() < 10) {
-                d = "0" + d;
-            }
-            if (date.getHours() < 10) {
-                h = "0" + h;
-            }
-            if (date.getMinutes() < 10) {
-                min = "0" + min;
-            }
-            if (date.getSeconds() < 10) {
-                s = "0" + s;
-            }
-            return `${y}-${m}-${d} ${h}:${min}:${s}`;
-        }
     }
 };
 </script>
