@@ -114,7 +114,7 @@
                             {{weibo && weibo.$user && weibo.$user.username || '账号已注销'}}
                         </router-link>
                     </div>
-                    <Dropdown class="flr">
+                    <Dropdown class="flr" trigger="click">
                         <Icon type="md-arrow-dropdown" class="cp cl-hv" size="30" />
                         <DropdownMenu slot="list">
                             <DropdownItem>驴打滚</DropdownItem>

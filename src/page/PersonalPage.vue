@@ -184,6 +184,7 @@ export default {
             itemList: {
                 follower: []
             },
+            weiboNumber: [],
             weiboContent: {},
             uinfo: session.uinfo()
         };

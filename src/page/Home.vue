@@ -116,10 +116,10 @@
                                 </a>
                                 </Col>
                                 <Col span="8">
-                                <a href="#">
-                                    <p>999</p>
+                                <router-link to="/personalPage">
+                                    <p>{{weiboNumber}}</p>
                                     <span>微博</span>
-                                </a>
+                                </router-link>
                                 </Col>
                                 <Col span="8">
                                 <a href="#">
@@ -249,6 +249,7 @@ export default {
             itemList: {
                 follower: []
             },
+            weiboNumber: 0,
             weiboContent: {},
             uinfo: session.uinfo()
         };

@@ -78,9 +78,9 @@
                             <span>注册</span>
                             </MenuItem>
                         </Menu>
-                        <Dropdown v-if="uinfo" trigger="hover">
+                        <Dropdown v-if="uinfo" trigger="click">
                             <span class="setting cp">
-                                <Icon type="md-settings cl-hv" size="20" />
+                                <Icon type="md-settings cl-hv" size="16" />
                             </span>
                             <DropdownMenu slot="list">
                                 <DropdownItem>驴打滚</DropdownItem>
