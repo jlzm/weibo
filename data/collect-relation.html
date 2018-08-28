@@ -1,0 +1,17 @@
+<script src="../node_modules/axios/dist/axios.js"></script>
+<script src="./api.js"></script>
+
+<script>
+    api('MODEL/BIND', {
+        left: 'user',
+        right: 'weibo',
+        left_key: 'user_id',
+        right_key: 'weibo_id ',
+
+    })
+
+    // api('MODEL/UNBIND', {
+    //     left: 'weibo', // 左模型
+    //     right: 'user', // 右模型
+    // });
+</script>

@@ -2,10 +2,12 @@
 <script src="./api.js"></script>
 
 <script>
-    api('MODEL/BIND', {
-        left: 'user',
-        right: 'user',
-        left_key: 'follower_id',
-        right_key: 'target_id',
-    })
+    // api('MODEL/BIND', {
+    //     left: 'user',
+    //     right: 'user',
+    //     left_key: 'follower_id',
+    //     right_key: 'target_id',
+    // })
+
+    api('MODEL/READ', {key: 'user'});
 </script>

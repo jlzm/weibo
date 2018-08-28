@@ -1,8 +1,6 @@
 <style scoped>
 /* weibo Card */
 
-
-
 .weibo-content-item {
     margin-bottom: 15px;
 }
@@ -149,9 +147,16 @@
                 <span class="operation-item db">
                     <span class="tooltip dib">
                         <em class="icon-mgr">
-                            <Icon type="md-heart" size="18" />
-                        </em>收藏
+                            <Icon type="md-star-outline" size="18" />
+                        </em>
+                        <span>收藏</span>
                     </span>
+                    <!-- <span class="tooltip dib">
+                        <em class="icon-mgr">
+                            <Icon type="md-star-outline" size="18" />
+                        </em>
+                        <span>收藏</span>
+                    </span> -->
                 </span>
                 </Col>
                 <Col span="6">
@@ -159,7 +164,8 @@
                     <span class="tooltip dib">
                         <em class="icon-mgr">
                             <Icon type="md-share" size="18" />
-                        </em>转发
+                        </em>
+                        <span>转发</span>
                     </span>
                 </span>
                 </Col>
@@ -174,11 +180,20 @@
                 </span>
                 </Col>
                 <Col span="6">
-                <span class="operation-item db">
+                <span v-if="hasLike(weibo.id)" @click="unLikeWeibo(weibo.id)" class="operation-item db">
                     <span>
                         <em class="icon-mgr">
                             <Icon type="md-thumbs-up" size="18" />
-                        </em>999
+                        </em>
+                        <span>{{weibo.collectList && weibo.collectList.length}}</span>
+                    </span>
+                </span>
+                <span v-else @click="likeWeibo(weibo.id)" class="operation-item db">
+                    <span>
+                        <em class="icon-mgr">
+                            <Icon type="ios-thumbs-up-outline" size="18" />
+                        </em>
+                        <span>{{weibo.collectList && weibo.collectList.length}}</span>
                     </span>
                 </span>
                 </Col>
@@ -249,7 +264,7 @@
 
             <div v-if="commentVisible" class="comment-wrap">
                 <Row :gutter="10" type="flex">
-                    <Col span="3"  >
+                    <Col span="3">
                     <Poptip trigger="hover" placement="top" width="400">
                         <div class="user-portrait">
                             <router-link to="/">
@@ -261,7 +276,7 @@
                         </div>
                     </Poptip>
                     </Col>
-                    <Col span="21" >
+                    <Col span="21">
                     <Form @submit.native.prevent="publishComment(weibo.id)">
                         <FormItem class="comment-text">
                             <Input v-model.trim="commentContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="说点什么吧？" />
@@ -413,16 +428,12 @@
 </template>
 
 <script>
-
 // 组件
 import Header from "../components/Header";
 
 // mixins
 import GReadInfo from "../mixins/GReadInfo";
 import GetCurrentTime from "../mixins/GetCurrentTime";
-
-
-
 
 // 依赖
 import api from "../lib/api";
@@ -444,6 +455,8 @@ export default {
     data() {
         return {
             loading: true,
+            collectList: [],
+            likeList: [],
             uinfo: session.uinfo(),
             allList: {},
             commentContent: {},
@@ -452,8 +465,83 @@ export default {
             commentVisible: false
         };
     },
-    mounted() {},
+    mounted() {
+        if (session.signIned()) {
+            this.readLikeWeibo();
+        }
+    },
     methods: {
+        // 赞
+        likeWeibo(weiboId) {
+            if (!this.uinfo) {
+                this.$router.push("/signIn");
+                return;
+            }
+            api
+                .api("user/bind", {
+                    model: "weibo",
+                    glue: {
+                        [this.uinfo.id]: weiboId
+                    }
+                })
+                .then(res => {
+                    this.readLikeWeibo();
+                    this.getLikeWiebo();
+                });
+        },
+        // 取消赞
+        unLikeWeibo(weiboId) {
+            api
+                .api("user/unbind", {
+                    model: "weibo",
+                    glue: {
+                        [this.uinfo.id]: weiboId
+                    }
+                })
+                .then(res => {
+                    this.readLikeWeibo();
+                    this.getLikeWiebo();
+                });
+        },
+        // 渲染收藏数
+        getLikeWiebo() {
+            this.weiboList.forEach(item => {
+                api
+                    .api("_bind__user_weibo/read", {
+                        where: {
+                            weibo_id: item.id
+                        }
+                    })
+                    .then(res => {
+                        item.collectList = res.data;
+                    });
+            });
+        },
+        // 判断是否关注
+        hasLike(likeId) {
+            if (!this.likeList) {
+                return false;
+            }
+            return !!this.likeList.find(item => {
+                return item.id == likeId;
+            });
+        },
+        // 渲染赞的微博
+        readLikeWeibo() {
+            return api
+                .api("user/find", {
+                    id: this.uinfo.id,
+                    with: [
+                        {
+                            relation: "belongs_to_many",
+                            model: "weibo"
+                        }
+                    ]
+                })
+                .then(res => {
+                    this.likeList = res.data.$weibo;
+                });
+        },
         // 打开转发微博弹出层
         showRelay(relayId) {
             if (!this.uinfo) {
@@ -547,7 +635,7 @@ export default {
             this.commentContent.time = this.getCurrentTime();
 
             api.api("comment/create", this.commentContent).then(res => {
-                if(!this.commentContent.reply_id) {
+                if (!this.commentContent.reply_id) {
                     this.$Message.info("评论成功");
                 } else {
                     this.$Message.info("回复成功");
@@ -555,7 +643,7 @@ export default {
                 this.commentContent = {};
                 this.readComment(weiboId);
             });
-        },
+        }
     }
 };
 </script>
