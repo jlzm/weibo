@@ -177,7 +177,8 @@
                 </Card>
                 <Row class="weibo-items">
                     <WeiboNavItem v-if="uinfo" />
-                    <WeiboItem :weiboList="allList.weibo" :readFollowerWeibo="readFollowerWeibo" />
+                    
+                    <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
                 </Col>
                 <Col :lg="6" :md="6" :sm="0" :xs="0" class="main-left">
