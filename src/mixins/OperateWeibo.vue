@@ -35,7 +35,7 @@ export default {
                 ]
             }).then(res => {
                 this.getLikeWiebo();
-            })
+            });
         },
         // 渲染关注人微博
         readFollowerWeibo() {
@@ -87,17 +87,33 @@ export default {
         },
         // 渲染收藏数
         getLikeWiebo() {
-            this.allList.weibo.forEach(item => {
-                api
-                    .api("_bind__user_weibo/read", {
-                        where: {
-                            weibo_id: item.id
+            api.api("_bind__user_weibo/read").then(res => {
+                this.allList.weibo.forEach(item => {
+                    res.data.forEach(like => {
+                    let test = [];
+                        if (like.weibo_id == item.id) {
+                           console.log('true:', true);
+                           
+                            test.push(like);
+                            this.$set(item, "collectList", test);
+                            console.log('test下:', test.length);
+                            
                         }
-                    })
-                    .then(res => {
-                        this.$set(item, 'collectList', res.data);
                     });
+                });
             });
+
+            // this.allList.weibo.forEach(item => {
+            //     api
+            //         .api("_bind__user_weibo/read", {
+            //             where: {
+            //                 weibo_id: item.id
+            //             }
+            //         })
+            //         .then(res => {
+            //             this.$set(item, 'collectList', res.data);
+            //         });
+            // });
         },
         // 渲染推荐用户
         readSuggestedUser() {

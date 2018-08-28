@@ -485,7 +485,7 @@ export default {
                     }
                 })
                 .then(res => {
-                    this.readLikeWeibo();
+                    
                     this.getLikeWiebo();
                 });
         },
@@ -505,17 +505,43 @@ export default {
         },
         // 渲染收藏数
         getLikeWiebo() {
-            this.weiboList.forEach(item => {
-                api
-                    .api("_bind__user_weibo/read", {
-                        where: {
-                            weibo_id: item.id
+            api.api("_bind__user_weibo/read").then(res => {
+                this.weiboList.forEach(item => {
+                    res.data.forEach(like => {
+                    let test = [];
+                        if (like.weibo_id == item.id) {
+                           console.log('true:', true);
+                           
+                            test.push(like);
+                            this.$set(item, "collectList", test);
+                            console.log('test下:', test.length);
+                            
                         }
-                    })
-                    .then(res => {
-                        item.collectList = res.data;
                     });
+                });
             });
+
+            // this.allList.weibo.forEach(item => {
+            //     api
+            //         .api("_bind__user_weibo/read", {
+            //             where: {
+            //                 weibo_id: item.id
+            //             }
+            //         })
+            //         .then(res => {
+            //             this.$set(item, 'collectList', res.data);
+            //         });
+            // });
+        },
+        // 获取对象键值
+        pluck(arr, key) {
+            const result = [];
+            if (!arr) return result;
+            arr.forEach(item => {
+                result.push(item[key]);
+            });
+
+            return result;
         },
         // 判断是否关注
         hasLike(likeId) {
@@ -540,6 +566,7 @@ export default {
                 })
                 .then(res => {
                     this.likeList = res.data.$weibo;
+                    this.getLikeWiebo();
                 });
         },
         // 打开转发微博弹出层
