@@ -65,6 +65,10 @@
                             <Icon type="md-eye" size="16" />
                             <span>发现</span>
                             </MenuItem>
+                            <MenuItem name="/search" to="/search" class="nav-router-item">
+                            <Icon type="md-eye" size="16" />
+                            <span>搜索</span>
+                            </MenuItem>
                             <MenuItem v-if="uinfo" name="/personalPage" to="/personalPage" class="nav-router-item">
                             <Icon type="md-person " size="16" />
                             <span>{{uinfo.username}}</span>

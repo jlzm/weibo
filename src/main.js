@@ -16,6 +16,7 @@ Vue.config.productionTip = false;
 import Home from "./page/Home";
 import Found from "./page/Found";
 import PersonalPage from "./page/PersonalPage";
+import Search from "./page/Search";
 import SignIn from "./page/SignIn";
 import SignUp from "./page/SignUp";
 
@@ -45,6 +46,13 @@ const routerConfig = {
       component: PersonalPage,
       meta: {
         title: '个人中心'
+      }
+    },
+    {
+      path: '/search',
+      component: Search,
+      meta: {
+        title: '搜索'
       }
     },
     {

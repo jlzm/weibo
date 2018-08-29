@@ -87,33 +87,32 @@ export default {
         },
         // 渲染收藏数
         getLikeWiebo() {
-            // api.api("_bind__user_weibo/read").then(res => {
-            //     console.log('res.data:', res.data);
-                
-            //     this.allList.weibo.forEach((item) => {
-            //     let likeList = []
-            //         res.data.forEach((like) => {
-            //             if (like.user_id &&like.weibo_id === item.id) {
-            //                 console.log('true:', true);
-                            
-            //                 likeList.push(like);
-            //                 this.$set(item, "collectList", likeList);
-            //             }
-            //         });
-            //     });
-            // });
-
-            this.allList.weibo.forEach(item => {
-                api
-                    .api("_bind__user_weibo/read", {
-                        where: {
-                            weibo_id: item.id
+            api.api("_bind__user_weibo/read").then(res => {
+                console.log("res.data:", res.data);
+                this.allList.weibo.forEach(item => {
+                    let likeList = [];
+                    res.data.forEach(like => {
+                        if (like.weibo_id == item.id) {
+                            likeList.push(like);
+                            this.$set(item, "collectList", likeList);
+                        } else {
+                            this.$set(item, "collectList", likeList);
                         }
-                    })
-                    .then(res => {
-                        this.$set(item, 'collectList', res.data);
                     });
+                });
             });
+
+            // this.allList.weibo.forEach(item => {
+            //     api
+            //         .api("_bind__user_weibo/read", {
+            //             where: {
+            //                 weibo_id: item.id
+            //             }
+            //         })
+            //         .then(res => {
+            //             this.$set(item, 'collectList', res.data);
+            //         });
+            // });
         },
         // 渲染推荐用户
         readSuggestedUser() {
