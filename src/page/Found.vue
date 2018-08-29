@@ -141,13 +141,15 @@ import Footer from "../components/Footer";
 
 // mixin
 import GReadInfo from "../mixins/GReadInfo";
+import GetCurrentTime from "../mixins/GetCurrentTime";
+import OperateWeibo from "../mixins/OperateWeibo";
 
 // 依赖
 import api from "../lib/api";
 import session from "../lib/session";
 
 export default {
-    mixins: [GReadInfo],
+    mixins: [GReadInfo, OperateWeibo],
     components: {
         Header,
         WeiboItem,
@@ -156,9 +158,6 @@ export default {
     data() {
         return {
             allList: {},
-            itemList: {
-                follower: []
-            },
             weiboContent: {},
             uinfo: session.uinfo()
         };
@@ -168,141 +167,6 @@ export default {
         this.readPublicWeibo();
         // this.readFollowerWeibo()
     },
-    methods: {
-        // 发布微博
-        publishWeibo() {
-            this.weiboContent.time = this.getCurrentTime();
-            this.weiboContent.user_id = this.uinfo.id;
-            api.api("weibo/create", this.weiboContent).then(res => {
-                this.weiboContent = {};
-                // this.allList.weibo.push(res.data);
-                this.readFollowerWeibo();
-            });
-        },
-        // 渲染全部微博
-        readPublicWeibo() {
-            this.gReadInfo("weibo", this.allList, {
-                with: [
-                    {
-                        relation: "belongs_to",
-                        model: "user"
-                    }
-                ]
-            });
-        },
-        // 渲染关注人微博
-        readFollowerWeibo() {
-            this.gReadInfo("weibo", this.allList, {
-                where: [
-                    [
-                        "user_id",
-                        "in",
-                        this.pluck(this.itemList.follower, "id").concat(
-                            this.uinfo.id
-                        )
-                    ]
-                ],
-                with: [
-                    {
-                        relation: "belongs_to",
-                        model: "user"
-                    }
-                ]
-            });
-        },
-        // 渲染推荐用户
-        readSuggestedUser() {
-            this.gReadInfo("user", this.allList);
-        },
-        // 关注某用户
-        follower(userId) {
-            if (!this.uinfo) {
-                this.$router.push("/signIn");
-                return;
-            }
-            api
-                .api("user/bind", {
-                    model: "user",
-                    glue: {
-                        [this.uinfo.id]: userId
-                    }
-                })
-                .then(res => {
-                    this.readFollowerUser();
-                });
-        },
-        // 取关某用户
-        unfollower(userId) {
-            api
-                .api("user/unbind", {
-                    model: "user",
-                    glue: {
-                        [this.uinfo.id]: userId
-                    }
-                })
-                .then(res => {
-                    this.readFollowerUser();
-                });
-        },
-        // 渲染关注用户
-        readFollowerUser() {
-            return api
-                .api("user/find", {
-                    id: this.uinfo.id,
-                    with: [
-                        {
-                            relation: "belongs_to_many",
-                            model: "user"
-                        }
-                    ]
-                })
-                .then(res => {
-                    // this.$set(this.allList, 'follower', res.data.$user);
-                    this.itemList.follower = res.data.$user;
-                });
-        },
-        // 判断是否关注
-        hasFollower(targetId) {
-            if (!this.itemList.follower) return false;
-            return !!this.itemList.follower.find(item => {
-                return item.id == targetId;
-            });
-        },
-        pluck(arr, key) {
-            const result = [];
-            if (!arr) return result;
-            arr.forEach(item => {
-                result.push(item[key]);
-            });
-
-            return result;
-        },
-        // 获取当前时间
-        getCurrentTime() {
-            let date = new Date();
-            let y = date.getFullYear(),
-                m = date.getMonth() + 1,
-                d = date.getDate(),
-                h = date.getHours(),
-                min = date.getMinutes(),
-                s = date.getSeconds();
-            if (date.getMonth() < 10) {
-                m = "0" + m;
-            }
-            if (date.getDate() < 10) {
-                d = "0" + d;
-            }
-            if (date.getHours() < 10) {
-                h = "0" + h;
-            }
-            if (date.getMinutes() < 10) {
-                min = "0" + min;
-            }
-            if (date.getSeconds() < 10) {
-                s = "0" + s;
-            }
-            return `${y}-${m}-${d} ${h}:${min}:${s}`;
-        }
-    }
+ 
 };
 </script>
