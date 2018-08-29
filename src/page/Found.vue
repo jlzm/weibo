@@ -97,16 +97,16 @@
                             </div>
                             <Row v-if="uinfo" class="user-atten">
                                 <Col span="8">
-                                <a href="#">
+                                <router-link to="/personalPage">
                                     <p>{{followerNumber}}</p>
                                     <span>关注</span>
-                                </a>
+                                </router-link>
                                 </Col>
                                 <Col span="8">
-                                <a href="#">
+                                <router-link to="/personalPage">
                                     <p>{{targetNumber}}</p>
                                     <span>粉丝</span>
-                                </a>
+                                </router-link>
                                 </Col>
                                 <Col span="8">
                                 <router-link to="/personalPage">

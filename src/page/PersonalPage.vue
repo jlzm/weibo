@@ -43,7 +43,7 @@
             <Col :lg="15" :md="20" :sm="20" :xs="24" class="container user-cover-wrap">
             <Card class="card-mgb">
                 <div class="user-cover">
-                    <img src="http://placekitten.com/1024/512" alt="">
+                    <img src="http://placekitten.com/1920/1080" alt="">
                     <div class="intro">
 
                     </div>
@@ -68,16 +68,16 @@
                 <Card class="card-mgb tac">
                     <Row class="user-atten">
                         <Col span="8">
-                        <a href="#">
+                        <router-link to="/personalPage">
                             <p>{{followerNumber}}</p>
                             <span>关注</span>
-                        </a>
+                        </router-link>
                         </Col>
                         <Col span="8">
-                        <a href="#">
+                        <router-link to="/personalPage">
                             <p>{{targetNumber}}</p>
                             <span>粉丝</span>
-                        </a>
+                        </router-link>
                         </Col>
                         <Col span="8">
                         <router-link to="/personalPage">

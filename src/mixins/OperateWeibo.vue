@@ -37,11 +37,13 @@ export default {
             }).then(res => {
                 this.getAllLikeWiebo();
                 this.weiboNumber = 0;
-                this.allList.weibo.forEach(item => {
+                if(this.uinfo) {
+                    this.allList.weibo.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
                         this.weiboNumber++;
                     }
                 });
+                }
             });
         },
         // 渲染关注人微博

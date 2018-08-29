@@ -54,7 +54,7 @@
                         Logooooooooooo
                     </router-link>
                     </Col>
-                    <Col :lg="12" :md="12" :sm="12" :xs="24" class="nav-right">
+                    <Col :lg="10" :md="12" :sm="12" :xs="24" class="nav-right">
                     <Row type="flex" align="middle">
                         <Menu mode="horizontal" theme="light" :active-name="defRouter" class="nav-router-items">
                             <MenuItem name="/" to="/" class="nav-router-item">
@@ -97,8 +97,11 @@
                     </Row>
                     </Col>
                     <Col :lg="8" :md="8" :sm="8" :xs="24" class="nav-left">
-                    <AutoComplete icon="ios-search" placeholder="input here">
-                    </AutoComplete>
+                    <Form>
+                        <Input placeholder="搜索感兴趣的吧">
+                        <Icon type="ios-search" slot="suffix" />
+                        </Input>
+                    </Form>
                     </Col>
                 </Row>
                 </Col>

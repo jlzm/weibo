@@ -331,8 +331,8 @@
                         </Col>
                         <Col span="12" class="tar cp-all">
 
-                        <span v-if="uinfo.id!=comment.user_id" @click="showReplyModal(comment.id)" class="cl-hv">回复</span>
-                        <span v-else @click="removeReply(weibo.id, comment.id)">删除</span>
+                        <span v-if="uinfo && uinfo.id!=comment.user_id" @click="showReplyModal(comment.id)" class="cl-hv">回复</span>
+                        <span v-else-if="uinfo && uinfo.id==comment.user_id" @click="removeReply(weibo.id, comment.id)">删除</span>>
                         <!-- 回复区 -->
                         <Modal v-model="commentContent.reply_id == comment.id" :closable="false" :mask-closable="false" :footer-hide="true" title="Title" okText="评论" :loading="loading">
                             <Row :gutter="10" class="comment-item">
@@ -381,21 +381,21 @@
                                 </FormItem>
                                 <FormItem>
                                     <Row>
-                                        <Col span="12">
+                                        <Col span="11">
                                         <ul class="extras tal cp-all dib-all cl-hv-all">
                                             <li>
                                                 <em class="icon-mgr">
-                                                    <Icon type="md-images" size="24" color="#72a305" />
+                                                    <Icon type="md-images" size="18" color="#72a305" />
                                                 </em>
                                             </li>
                                             <li>
                                                 <em class="icon-mgr">
-                                                    <Icon type="md-videocam" size="24" color="#2b85e4" />
+                                                    <Icon type="md-videocam" size="18" color="#2b85e4" />
                                                 </em>
                                             </li>
                                         </ul>
                                         </Col>
-                                        <Col span="12 tar">
+                                        <Col span="13 tar">
                                         <Button @click.native="hiddenReplyModal()" style="margin-right: 8px">取消</Button>
                                         <Button @click.native="replyComment(weibo.id)" :disabled="!commentContent.text" type="primary">评论</Button>
                                         </Col>
@@ -626,10 +626,10 @@ export default {
         },
         // 显示或关闭评论区
         showComment(weiboId) {
-            if (!this.uinfo) {
-                this.$router.push("/signIn");
-                return;
-            }
+            // if (!this.uinfo) {
+            //     this.$router.push("/signIn");
+            //     return;
+            // }
             if (!this.commentVisible) {
                 this.readComment(weiboId);
             }
@@ -638,14 +638,17 @@ export default {
         // 渲染当前微博的评论
         readComment(weiboId) {
             this.gReadInfo("comment", this.allList, {
-                where: { weibo_id: weiboId },
+                where: { 'weibo_id': weiboId },
                 with: [
                     {
                         relation: "belongs_to",
                         model: "user"
                     }
                 ]
-            });
+            }).then(res => {
+                console.log('this.allList.comment:', this.allList.comment);
+                
+            })
         },
         // 发表评论
         publishComment(weiboId) {
