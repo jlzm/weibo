@@ -510,7 +510,7 @@ export default {
                     this.getLikeWiebo();
                 });
         },
-        // 渲染收藏数
+        // 渲染赞数
         getLikeWiebo() {
             api.api("_bind__user_weibo/read").then(res => {
                 this.weiboList.forEach(item => {

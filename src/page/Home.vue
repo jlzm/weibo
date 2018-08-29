@@ -227,7 +227,6 @@ export default {
     },
     mounted() {
         this.readSuggestedUser();
-        // this.readPublicWeibo();
         if (session.signIned()) {
             this.readTargetUser();
             this.readFollowerUser().then(res => this.readFollowerWeibo());

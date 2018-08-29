@@ -35,7 +35,7 @@ export default {
                     }
                 ]
             }).then(res => {
-                this.getAllLikeWiebo();
+                this.getLikeWiebo();
                 this.weiboNumber = 0;
                 this.allList.weibo.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
@@ -63,7 +63,7 @@ export default {
                     }
                 ]
             }).then(res => {
-                this.getAllLikeWiebo();
+                this.getLikeWiebo();
                 this.weiboNumber = 0;
                 this.allList.weibo.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
@@ -83,7 +83,7 @@ export default {
                     }
                 ]
             }).then(res => {
-                this.getAllLikeWiebo();
+                this.getLikeWiebo();
                 this.weiboNumber = 0;
                 this.allList.weibo.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
@@ -93,8 +93,7 @@ export default {
             });
         },
         // 渲染赞数
-        getAllLikeWiebo() {
-            
+        getLikeWiebo() {
             api.api("_bind__user_weibo/read").then(res => {
                 this.allList.weibo.forEach(item => {
                     let likeList = [];
@@ -102,6 +101,8 @@ export default {
                         if (like.weibo_id == item.id) {
                             likeList.push(like);
                             this.$set(item, "collectList", likeList);
+                        } else {
+                            this.$set(item, "collectList", []);
                         }
                     });
                 });

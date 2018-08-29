@@ -166,7 +166,7 @@ export default {
                                 return;
                             }
                             session.signIn(item);
-                            this.$router.push("/");
+                            location.href = '/';
                             this.$Message.success("登入成功");
                         });
                 } 
