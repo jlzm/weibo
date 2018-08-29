@@ -16,6 +16,7 @@ export default {
         };
     },
     methods: {
+
         // 发布微博
         publishWeibo() {
             this.weiboContent.time = this.getCurrentTime();
@@ -25,6 +26,7 @@ export default {
                 this.readFollowerWeibo();
             });
         },
+
         // 渲染全部微博
         readPublicWeibo() {
             this.gReadInfo("weibo", this.allList, {
@@ -35,7 +37,7 @@ export default {
                     }
                 ]
             }).then(res => {
-                this.getAllLikeWiebo();
+                this.getAllLikeNumber();
                 this.weiboNumber = 0;
                 if(this.uinfo) {
                     this.allList.weibo.forEach(item => {
@@ -46,6 +48,7 @@ export default {
                 }
             });
         },
+
         // 渲染关注人微博
         readFollowerWeibo() {
             this.gReadInfo("weibo", this.allList, {
@@ -65,7 +68,7 @@ export default {
                     }
                 ]
             }).then(res => {
-                this.getAllLikeWiebo();
+                this.getAllLikeNumber();
                 this.weiboNumber = 0;
                 this.allList.weibo.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
@@ -74,7 +77,8 @@ export default {
                 });
             });
         },
-        // 渲染个人微博
+
+        // 获取个人微博
         readPersonalWeibo() {
             this.gReadInfo("weibo", this.allList, {
                 where: [["user_id", "=", this.uinfo.id]],
@@ -85,7 +89,7 @@ export default {
                     }
                 ]
             }).then(res => {
-                this.getAllLikeWiebo();
+                this.getAllLikeNumber();
                 this.weiboNumber = 0;
                 this.allList.weibo.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
@@ -94,8 +98,9 @@ export default {
                 });
             });
         },
+
         // 渲染赞数
-        getAllLikeWiebo() {
+        getAllLikeNumber() {
             
             api.api("_bind__user_weibo/read").then(res => {
                 this.allList.weibo.forEach(item => {
@@ -120,6 +125,13 @@ export default {
             //         });
             // });
         },
+
+        // 获取转发数量
+        getRelayNumber() {},
+
+        // 获取评论数量
+        getReplyNumber() {},
+
         // 渲染推荐用户
         readSuggestedUser() {
             this.gReadInfo("user", this.allList);
@@ -134,6 +146,7 @@ export default {
                 this.targetNumber = res.data.length;
             })
         },
+        
         // 渲染关注用户
         readFollowerUser() {
             return api

@@ -478,6 +478,12 @@ export default {
         }
     },
     methods: {
+        // 获取转发数量
+        getRelayNumber() {},
+
+        // 获取评论数量
+        getReplyNumber() {},
+
         // 赞
         likeWeibo(weiboId) {
             if (!this.uinfo) {
@@ -493,9 +499,10 @@ export default {
                 })
                 .then(res => {
                     this.readLikeWeibo();
-                    this.getLikeWiebo();
+                    this.getLikeNumber();
                 });
         },
+
         // 取消赞
         unLikeWeibo(weiboId) {
             api
@@ -507,11 +514,12 @@ export default {
                 })
                 .then(res => {
                     this.readLikeWeibo();
-                    this.getLikeWiebo();
+                    this.getLikeNumber();
                 });
         },
+
         // 渲染赞数
-        getLikeWiebo() {
+        getLikeNumber() {
             api.api("_bind__user_weibo/read").then(res => {
                 this.weiboList.forEach(item => {
                     let likeList = [];
@@ -526,6 +534,7 @@ export default {
                 });
             });
         },
+
         // 获取对象键值
         pluck(arr, key) {
             const result = [];
@@ -536,6 +545,7 @@ export default {
 
             return result;
         },
+
         // 判断是否关注
         hasLike(likeId) {
             if (!this.likeList) {
@@ -545,6 +555,7 @@ export default {
                 return item.id == likeId;
             });
         },
+
         // 渲染赞的微博
         readLikeWeibo() {
             return api
@@ -561,6 +572,7 @@ export default {
                     this.likeList = res.data.$weibo;
                 });
         },
+
         // 打开转发微博弹出层
         showRelay(relayId) {
             if (!this.uinfo) {
@@ -570,6 +582,7 @@ export default {
             this.$set(this.weiboContent, "relay_id", relayId);
             this.relayVisible = !this.relayVisible;
         },
+
         // 转发微博
         relayWeibo(weiboId) {
             if (!this.weiboContent.text) {
@@ -584,10 +597,12 @@ export default {
                 this.relayVisible = false;
             });
         },
+
         // 隐藏转发弹出层
         hiddenRelayModal() {
             this.relayVisible = false;
         },
+
         //删除微博
         removeWeibo(weiboId) {
             if (!confirm("确认删除？")) return;
@@ -600,6 +615,7 @@ export default {
                     if (this.readFollowerWeibo) this.readFollowerWeibo();
                 });
         },
+
         // 删除评论或者回复
         removeReply(weiboId, commentId) {
             if (!confirm("确认删除？")) return;
@@ -612,18 +628,22 @@ export default {
                     this.readComment(weiboId);
                 });
         },
+
         // 打开回复评论弹出层
         showReplyModal(replyId) {
             this.$set(this.commentContent, "reply_id", replyId);
         },
+
         // 关闭回复评论弹出层
         hiddenReplyModal() {
             this.$set(this.commentContent, "reply_id", null);
         },
+
         // 回复评论
         replyComment(weiboId) {
             this.publishComment(weiboId);
         },
+
         // 显示或关闭评论区
         showComment(weiboId) {
             // if (!this.uinfo) {
@@ -635,10 +655,11 @@ export default {
             }
             this.commentVisible = !this.commentVisible;
         },
+
         // 渲染当前微博的评论
         readComment(weiboId) {
             this.gReadInfo("comment", this.allList, {
-                where: { 'weibo_id': weiboId },
+                where: { weibo_id: weiboId },
                 with: [
                     {
                         relation: "belongs_to",
@@ -646,10 +667,10 @@ export default {
                     }
                 ]
             }).then(res => {
-                console.log('this.allList.comment:', this.allList.comment);
-                
-            })
+                console.log("this.allList.comment:", this.allList.comment);
+            });
         },
+        
         // 发表评论
         publishComment(weiboId) {
             this.commentContent.user_id = this.uinfo.id;
