@@ -513,7 +513,6 @@ export default {
         // 渲染收藏数
         getLikeWiebo() {
             api.api("_bind__user_weibo/read").then(res => {
-                console.log("res.data:", res.data);
                 this.weiboList.forEach(item => {
                     let likeList = [];
                     res.data.forEach(like => {
@@ -526,18 +525,6 @@ export default {
                     });
                 });
             });
-
-            // this.weiboList.forEach(item => {
-            //     api
-            //         .api("_bind__user_weibo/read", {
-            //             where: {
-            //                 weibo_id: item.id
-            //             }
-            //         })
-            //         .then(res => {
-            //             this.$set(item, 'collectList', res.data);
-            //         });
-            // });
         },
         // 获取对象键值
         pluck(arr, key) {

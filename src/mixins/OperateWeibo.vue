@@ -9,6 +9,7 @@ export default {
         return {
             weiboNumber: 0,
             followerNumber: 0,
+            targetNumber: 0,
             itemList: {
                 follower: []
             }
@@ -35,6 +36,12 @@ export default {
                 ]
             }).then(res => {
                 this.getLikeWiebo();
+                this.weiboNumber = 0;
+                this.allList.weibo.forEach(item => {
+                    if (item.user_id == this.uinfo.id) {
+                        this.weiboNumber++;
+                    }
+                });
             });
         },
         // 渲染关注人微博
@@ -88,7 +95,6 @@ export default {
         // 渲染收藏数
         getLikeWiebo() {
             api.api("_bind__user_weibo/read").then(res => {
-                console.log("res.data:", res.data);
                 this.allList.weibo.forEach(item => {
                     let likeList = [];
                     res.data.forEach(like => {
@@ -96,27 +102,25 @@ export default {
                             likeList.push(like);
                             this.$set(item, "collectList", likeList);
                         } else {
-                            this.$set(item, "collectList", likeList);
+                            this.$set(item, "collectList", []);
                         }
                     });
                 });
             });
-
-            // this.allList.weibo.forEach(item => {
-            //     api
-            //         .api("_bind__user_weibo/read", {
-            //             where: {
-            //                 weibo_id: item.id
-            //             }
-            //         })
-            //         .then(res => {
-            //             this.$set(item, 'collectList', res.data);
-            //         });
-            // });
         },
         // 渲染推荐用户
         readSuggestedUser() {
             this.gReadInfo("user", this.allList);
+        },
+        // 渲染粉丝
+        readTargetUser() {
+            return api.api("_bind__user_user/read", {
+                where: {
+                    'target_id': this.uinfo.id
+                }
+            }).then(res => {
+                this.targetNumber = res.data.length;
+            })
         },
         // 渲染关注用户
         readFollowerUser() {
@@ -131,10 +135,7 @@ export default {
                     ]
                 })
                 .then(res => {
-                    // this.$set(this.allList, 'follower', res.data.$user);
-
                     this.itemList.follower = res.data.$user;
-
                     if (!res.data.$user || !res.data.$user.length) {
                         this.followerNumber = 0;
                     } else {

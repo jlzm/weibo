@@ -116,16 +116,16 @@
                                 </a>
                                 </Col>
                                 <Col span="8">
+                                <a href="#">
+                                    <p>{{targetNumber}}</p>
+                                    <span>粉丝</span>
+                                </a>
+                                </Col>
+                                <Col span="8">
                                 <router-link to="/personalPage">
                                     <p>{{weiboNumber}}</p>
                                     <span>微博</span>
                                 </router-link>
-                                </Col>
-                                <Col span="8">
-                                <a href="#">
-                                    <p>999</p>
-                                    <span>粉丝</span>
-                                </a>
                                 </Col>
                             </Row>
                         </div>
@@ -133,7 +133,7 @@
                 </Card>
                 <Row>
                     <Col :md="24" :sm="24" :xs="0">
-                        <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser"/>
+                    <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser" />
                     </Col>
                 </Row>
                 </Col>
@@ -181,7 +181,7 @@
                 </Row>
                 </Col>
                 <Col :lg="6" :md="6" :sm="0" :xs="0" class="main-left">
-                    <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser"/>
+                <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser" />
                 </Col>
             </Row>
             </Col>
@@ -228,15 +228,13 @@ export default {
     mounted() {
         this.readSuggestedUser();
         // this.readPublicWeibo();
-
         if (session.signIned()) {
+            this.readTargetUser();
             this.readFollowerUser().then(res => this.readFollowerWeibo());
         } else {
             this.readPublicWeibo();
         }
     },
-    methods: {
-
-    }
+    methods: {}
 };
 </script>

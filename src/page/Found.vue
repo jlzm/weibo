@@ -98,21 +98,21 @@
                             <Row v-if="uinfo" class="user-atten">
                                 <Col span="8">
                                 <a href="#">
-                                    <p>999</p>
+                                    <p>{{followerNumber}}</p>
                                     <span>关注</span>
                                 </a>
                                 </Col>
                                 <Col span="8">
                                 <a href="#">
-                                    <p>999</p>
-                                    <span>微博</span>
+                                    <p>{{targetNumber}}</p>
+                                    <span>粉丝</span>
                                 </a>
                                 </Col>
                                 <Col span="8">
-                                <a href="#">
-                                    <p>999</p>
-                                    <span>粉丝</span>
-                                </a>
+                                <router-link to="/personalPage">
+                                    <p>{{weiboNumber}}</p>
+                                    <span>微博</span>
+                                </router-link>
                                 </Col>
                             </Row>
                         </div>
@@ -165,8 +165,11 @@ export default {
     mounted() {
         // this.readSuggestedUser();
         this.readPublicWeibo();
+        if (session.signIned()) {
+            this.readTargetUser();
+            this.readFollowerUser();
+        }
         // this.readFollowerWeibo()
-    },
- 
+    }
 };
 </script>

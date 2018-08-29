@@ -75,15 +75,15 @@
                         </Col>
                         <Col span="8">
                         <a href="#">
-                            <p>{{weiboNumber}}</p>
-                            <span>微博</span>
+                            <p>{{targetNumber}}</p>
+                            <span>粉丝</span>
                         </a>
                         </Col>
                         <Col span="8">
-                        <a href="#">
-                            <p>999</p>
-                            <span>粉丝</span>
-                        </a>
+                        <router-link to="/personalPage">
+                            <p>{{weiboNumber}}</p>
+                            <span>微博</span>
+                        </router-link>
                         </Col>
                     </Row>
                 </Card>
@@ -155,7 +155,7 @@
                 </Row>
                 </Col>
                 <Col :lg="6" :md="6" :sm="0" :xs="0" class="main-left">
-                    <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser"/>
+                <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser" />
                 </Col>
             </Row>
             </Col>
@@ -167,7 +167,6 @@
 </template>
 
 <script>
-
 // 组件
 import Header from "../components/Header";
 import WeiboNavItem from "../components/WeiboNavItem";
@@ -178,7 +177,6 @@ import UserItems from "../components/UserItems";
 import GReadInfo from "../mixins/GReadInfo";
 import OperateWeibo from "../mixins/OperateWeibo";
 import GetCurrentTime from "../mixins/GetCurrentTime";
-
 
 // 依赖
 import api from "../lib/api";
@@ -202,9 +200,11 @@ export default {
     },
     mounted() {
         this.readSuggestedUser();
+
         this.readPersonalWeibo();
         if (session.signIned()) {
-            this.readFollowerUser()
+            this.readTargetUser();
+            this.readFollowerUser();
         }
     },
     methods: {
