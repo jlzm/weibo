@@ -92,7 +92,7 @@
                 <Card class="card-mgb">
                     <div class="user-intro-wrap">
                         <div class="user-bg">
-                            <img src="http://placekitten.com/400/200" alt="">
+                            <img src="http://placekitten.com/400/75" alt="">
                             <router-link v-if="uinfo" to="/PersonalPage" class="head-portrait">
                                 <!-- <img src="http://placekitten.com/230/75" alt=""> -->
                             </router-link>
