@@ -332,7 +332,7 @@
                         <Col span="12" class="tar cp-all">
 
                         <span v-if="uinfo && uinfo.id!=comment.user_id" @click="showReplyModal(comment.id)" class="cl-hv">回复</span>
-                        <span v-else-if="uinfo && uinfo.id==comment.user_id" @click="removeReply(weibo.id, comment.id)">删除</span>>
+                        <span v-else-if="uinfo && uinfo.id==comment.user_id" @click="removeReply(weibo.id, comment.id)">删除</span>
                         <!-- 回复区 -->
                         <Modal v-model="commentContent.reply_id == comment.id" :closable="false" :mask-closable="false" :footer-hide="true" title="Title" okText="评论" :loading="loading">
                             <Row :gutter="10" class="comment-item">
