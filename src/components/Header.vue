@@ -125,9 +125,17 @@
 </template>
 
 <script>
+
+// mixin
+import GReadInfo from "../mixins/GReadInfo";
+import GetCurrentTime from "../mixins/GetCurrentTime";
+
 // 依赖
+import api from "../lib/api";
 import session from "../lib/session";
+
 export default {
+    mixins: [GReadInfo],
     props: {
         defRouter: {
             default: "/"
@@ -135,14 +143,36 @@ export default {
     },
     data() {
         return {
-            uinfo: session.uinfo()
+            allList: {
+                notice: []
+            },
+            uinfo: session.uinfo(),
         };
     },
+    mounted() {
+        this.readNotice()
+    },
     methods: {
+        // 获取通知
+        readNotice() {
+            this.gReadInfo('notice', {
+                with: [
+                    {
+                        relation: 'belongs_to',
+                        model: 'notice_tpl'
+                    }
+                ]
+            }).then(res => {
+                
+            })
+        },
+        // 登出
         signOut() {
             session.signOut();
             this.$router.push("/signIn");
         }
     }
+
+
 };
 </script>

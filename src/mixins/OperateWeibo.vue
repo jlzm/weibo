@@ -29,7 +29,7 @@ export default {
 
         // 渲染全部微博
         readPublicWeibo() {
-            this.gReadInfo("weibo", this.allList, {
+            this.gReadInfo("weibo", {
                 with: [
                     {
                         relation: "belongs_to",
@@ -51,7 +51,7 @@ export default {
 
         // 渲染关注人微博
         readFollowerWeibo() {
-            this.gReadInfo("weibo", this.allList, {
+            this.gReadInfo("weibo", {
                 where: [
                     [
                         "user_id",
@@ -80,7 +80,7 @@ export default {
 
         // 获取个人微博
         readPersonalWeibo() {
-            this.gReadInfo("weibo", this.allList, {
+            this.gReadInfo("weibo", {
                 where: [["user_id", "=", this.uinfo.id]],
                 with: [
                     {
@@ -125,7 +125,7 @@ export default {
             //         });
             // });
         },
-
+        
         // 获取转发数量
         getRelayNumber() {},
 
@@ -146,7 +146,6 @@ export default {
                 this.targetNumber = res.data.length;
             })
         },
-        
         // 渲染关注用户
         readFollowerUser() {
             return api

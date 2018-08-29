@@ -193,7 +193,6 @@ export default {
     },
     data() {
         return {
-            allList: {},
             weiboContent: {},
             uinfo: session.uinfo()
         };
