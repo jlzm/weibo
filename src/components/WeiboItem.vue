@@ -658,7 +658,7 @@ export default {
 
         // 渲染当前微博的评论
         readComment(weiboId) {
-            this.gReadInfo("comment", this.allList, {
+            this.gReadInfo("comment", {
                 where: { weibo_id: weiboId },
                 with: [
                     {
