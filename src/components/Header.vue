@@ -13,11 +13,17 @@
 
 /* logo样式 */
 .logo {
-    padding-right: 40px;
+    padding: 0 40px 0 10px;
 }
 
 .setting {
     margin-left: 10px;
+}
+
+/* nav-search start */
+
+.nav-search {
+    padding: 0 10px 7px 10px;
 }
 
 /* iview 样式重置 */
@@ -33,7 +39,7 @@
 
 .nav-router-item.ivu-menu-item {
     border: 0;
-    padding: 0 7px;
+    padding: 0 5px;
     margin: 0 4px;
     font-size: 1.1rem;
 }
@@ -49,11 +55,12 @@
             <Row type="flex" class="nav-wrap" align="middle">
                 <Col :lg="15" :md="20" :sm="20" :xs="24" class="container">
                 <Row :gutter="20" type="flex" class="nav" align="middle">
-                    <Col :lg="4" :md="4" :sm="4" :xs="24" class="logo">
-                    <router-link to="/">
+                    <Col :lg="4" :md="4" :sm="4" :xs="0">
+                    <router-link to="/" class="logo">
                         Logooooooooooo
                     </router-link>
                     </Col>
+
                     <Col :lg="10" :md="12" :sm="12" :xs="24" class="nav-right">
                     <Row type="flex" align="middle">
                         <Menu mode="horizontal" theme="light" :active-name="defRouter" class="nav-router-items">
@@ -66,7 +73,7 @@
                             <span>发现</span>
                             </MenuItem>
                             <MenuItem name="/search" to="/search" class="nav-router-item">
-                            <Icon type="md-eye" size="16" />
+                            <Icon type="md-search" size="16" />
                             <span>搜索</span>
                             </MenuItem>
                             <MenuItem v-if="uinfo" name="/personalPage" to="/personalPage" class="nav-router-item">
@@ -97,7 +104,7 @@
                     </Row>
                     </Col>
                     <Col :lg="8" :md="8" :sm="8" :xs="24" class="nav-left">
-                    <Form>
+                    <Form class="nav-search">
                         <Input placeholder="搜索感兴趣的吧">
                         <Icon type="ios-search" slot="suffix" />
                         </Input>
@@ -125,7 +132,6 @@
 </template>
 
 <script>
-
 // mixin
 import GReadInfo from "../mixins/GReadInfo";
 import GetCurrentTime from "../mixins/GetCurrentTime";
@@ -146,25 +152,23 @@ export default {
             allList: {
                 notice: []
             },
-            uinfo: session.uinfo(),
+            uinfo: session.uinfo()
         };
     },
     mounted() {
-        this.readNotice()
+        this.readNotice();
     },
     methods: {
         // 获取通知
         readNotice() {
-            this.gReadInfo('notice', {
+            this.gReadInfo("notice", {
                 with: [
                     {
-                        relation: 'belongs_to',
-                        model: 'notice_tpl'
+                        relation: "belongs_to",
+                        model: "notice_tpl"
                     }
                 ]
-            }).then(res => {
-                
-            })
+            }).then(res => {});
         },
         // 登出
         signOut() {
@@ -172,7 +176,5 @@ export default {
             this.$router.push("/signIn");
         }
     }
-
-
 };
 </script>

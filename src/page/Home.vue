@@ -46,6 +46,7 @@
 /* 个人信息卡片 */
 .user-bg {
     position: relative;
+    max-height: 75px;
 }
 
 /* 头像缩略图 */
@@ -91,7 +92,7 @@
                 <Card class="card-mgb">
                     <div class="user-intro-wrap">
                         <div class="user-bg">
-                            <img src="http://placekitten.com/230/75" alt="">
+                            <img src="http://placekitten.com/400/200" alt="">
                             <router-link v-if="uinfo" to="/PersonalPage" class="head-portrait">
                                 <!-- <img src="http://placekitten.com/230/75" alt=""> -->
                             </router-link>
