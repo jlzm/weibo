@@ -15,9 +15,10 @@
 .logo {
     padding: 0 40px 0 10px;
 }
-//
+
 .setting {
-    margin-left: 10px;
+    margin-left: 12px;
+
 }
 
 /* nav-search start */
@@ -29,8 +30,8 @@
 /* iview 样式重置 */
 
 .nav-router-items {
-    /* height: 47px;
-    line-height: 47px; */
+    /* height: 52px;
+    line-height: 52px; */
 }
 
 .ivu-menu::after {
@@ -48,13 +49,11 @@
     border: 0;
 }
 
-
-.demo-badge{
-        height: 38px;
-        line-height: 38px;
-        border-radius: 6px;
-        display: inline-block;
-    }
+.demo-badge {
+    height: 35px;
+    line-height: 35px;
+    display: inline-block;
+}
 </style>
 
 <template>
@@ -100,10 +99,11 @@
                         </Menu>
                         <Poptip trigger="click" title="Title" content="content">
                             <Badge :count="2">
-                                <span class="demo-badge"> <Icon type="md-chatboxes" size="16" />消息</span>
+                                <span class="demo-badge">
+                                    <Icon type="md-chatboxes" size="16" />消息</span>
                             </Badge>
                         </Poptip>
-                        <Dropdown v-if="uinfo" trigger="click">
+                        <Dropdown v-if="uinfo" trigger="click" style="margin-bottom: 4px">
                             <span class="setting cp">
                                 <Icon type="md-settings cl-hv" size="16" />
                             </span>
