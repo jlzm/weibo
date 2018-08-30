@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        <h2>这里是通知模板</h2>
+        <h2>这里是通告模板</h2>
     </div>
 </template>
 

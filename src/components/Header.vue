@@ -15,7 +15,7 @@
 .logo {
     padding: 0 40px 0 10px;
 }
-
+//
 .setting {
     margin-left: 10px;
 }
@@ -29,8 +29,8 @@
 /* iview 样式重置 */
 
 .nav-router-items {
-    height: 47px;
-    line-height: 47px;
+    /* height: 47px;
+    line-height: 47px; */
 }
 
 .ivu-menu::after {
@@ -47,6 +47,14 @@
 .nav-router-item.ivu-menu-item:hover {
     border: 0;
 }
+
+
+.demo-badge{
+        height: 38px;
+        line-height: 38px;
+        border-radius: 6px;
+        display: inline-block;
+    }
 </style>
 
 <template>
@@ -76,6 +84,7 @@
                             <Icon type="md-search" size="16" />
                             <span>搜索</span>
                             </MenuItem>
+
                             <MenuItem v-if="uinfo" name="/personalPage" to="/personalPage" class="nav-router-item">
                             <Icon type="md-person " size="16" />
                             <span>{{uinfo.username}}</span>
@@ -89,6 +98,11 @@
                             <span>注册</span>
                             </MenuItem>
                         </Menu>
+                        <Poptip trigger="click" title="Title" content="content">
+                            <Badge :count="2">
+                                <span class="demo-badge"> <Icon type="md-chatboxes" size="16" />消息</span>
+                            </Badge>
+                        </Poptip>
                         <Dropdown v-if="uinfo" trigger="click">
                             <span class="setting cp">
                                 <Icon type="md-settings cl-hv" size="16" />

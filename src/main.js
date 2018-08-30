@@ -20,6 +20,11 @@ import Search from "./page/Search";
 import SignIn from "./page/SignIn";
 import SignUp from "./page/SignUp";
 
+
+import AdminBase from './page/admin/Base.vue';
+import AdminNoticeTpl from './page/admin/NoticeTpl.vue';
+import AdminAnnounceTpl from './page/admin/AnnounceTpl.vue';
+
 import session from './lib/session.js';
 
 Vue.use(VueRouter);
@@ -69,6 +74,29 @@ const routerConfig = {
         title: '注册'
       }
     },
+    {
+      path: '/admin',
+      component: AdminBase,
+      meta: {
+        title: '管理员'
+      },
+      children: [{
+          path: '/noticeTpl',
+          component: AdminNoticeTpl,
+          meta: {
+            title: '管理员'
+          },
+        },
+        {
+          path: '/announceTpl',
+          component: AdminAnnounceTpl,
+          meta: {
+            title: '管理员'
+          },
+        },
+        
+      ]
+    },
   ]
 };
 
@@ -85,7 +113,7 @@ router.beforeEach((to, from, next) => {
   // if (goFound && !session.signIned()) {
   //   next('/signIn')
   // } else next();
-   next();
+  next();
   document.title = to.meta.title;
 });
 
