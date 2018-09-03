@@ -73,7 +73,7 @@
                         <Menu mode="horizontal" theme="light" :active-name="defRouter" class="nav-router-items">
                             <MenuItem name="/" to="/" class="nav-router-item">
                             <Icon type="md-home" size="16" />
-                            <span>首页</span>
+                            <span>测试</span>
                             </MenuItem>
                             <MenuItem name="/found" to="/found" class="nav-router-item">
                             <Icon type="md-eye" size="16" />
