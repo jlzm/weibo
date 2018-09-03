@@ -61,7 +61,7 @@
                             </Input>
                         </div>
                         <ul class="user-list cp-all bg-hv-all">
-                            <li v-for="(user, index) in allList.user" :key="index" @click="userSelected(user)" :class="{'bg-act': userItem.index == user.id}" class="user">
+                            <li v-for="(user, index) in allList.user" :key="index" @click="userSelected(user)" :class="{'bg-act': $store.state.form.to_id == user.id}" class="user">
                                 {{user.username}}
                             </li>
                         </ul>
@@ -83,6 +83,7 @@
                     </div>
                     <div class="edit-message">
                         <Input type="textarea" @on-keydown="handlerMultiEnter" v-model="$store.state.form.text" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />
+                        {{$store.state.form}}
                     </div>
                     </Col>
                 </Row>
@@ -111,11 +112,8 @@ export default {
         this.gReadInfo("user");
     },
     methods: {
-        sendMessage() {
-            console.log("1:", 1);
-        },
         userSelected(user) {
-            this.$set(this.userItem, "index", user.id);
+            this.$set(this.$store.state.form, "to_id", user.id);
             this.$set(this.userItem, "username", user.username);
         },
         handlerMultiEnter(e) {
@@ -131,12 +129,10 @@ export default {
             if (code == "13" && !ctrl && !shift && !alt) {
                 //只按了enter
                 e.preventDefault();
-                this.test();
+                this.$store.dispatch('sendMessage')
             }
         },
-        test() {
-            console.log("回车:");
-        }
+
     }
 };
 </script>
