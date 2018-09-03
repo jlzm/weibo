@@ -137,6 +137,7 @@ router.beforeEach((to, from, next) => {
 
 const store = new Vuex.Store({
   state: {
+    form: {},
     showChat: true
   },
   mutations: {
@@ -146,6 +147,9 @@ const store = new Vuex.Store({
     hideChat(state) {
       state.showChat = false;
     }
+  },
+  actions: {
+    
   }
 })
 
