@@ -3,6 +3,8 @@ import "./main.css";
 import "./rest.css";
 import 'font-awesome/css/font-awesome.css';
 
+import api from "./lib/api";
+
 import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from "vue-router";
@@ -112,7 +114,7 @@ const routerConfig = {
             title: '管理-通告模板'
           },
         },
-        
+
       ]
     },
   ]
@@ -137,7 +139,10 @@ router.beforeEach((to, from, next) => {
 
 const store = new Vuex.Store({
   state: {
-    form: {},
+    allList: {},
+    form: {
+      from_id: session.uinfo()  && session.uinfo().id,
+    },
     showChat: true
   },
   mutations: {
@@ -149,7 +154,20 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    
+    sendMessage({
+      commit,
+      state
+    }) {
+      api.api('message/create', state.form)
+        .then(res => {
+          
+      })
+    },
+    readMessage({commit, state}) {
+      api.api('message/read', {
+
+      })
+    }
   }
 })
 

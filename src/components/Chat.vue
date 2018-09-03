@@ -23,8 +23,8 @@
 }
 
 .message-item {
-     word-wrap:break-word;
-    word-break:break-all;
+    word-wrap: break-word;
+    word-break: break-all;
 }
 
 .message-text {
@@ -45,32 +45,20 @@
 </style>
 
 <template>
-    <div>
+    <div v-if="uinfo">
         <Row>
             <Col v-if="$store.state.showChat" class="chat-container" :lg="7">
             <Row class="chat-wrap">
                 <Row class="head">
-                    <Col :lg="6">
-                    <div class="chat-user">
-                        <div class="user-serch">
-                            <Input placeholder="Enter text">
-                            <Icon type="ios-search" slot="suffix" />
-                            </Input>
-                        </div>
-                        <ul class="user-list cp-all bg-hv-all">
-                            <li v-for="(user, index) in allList.user" :key="index" 
-                            @click="userSelected(user)"
-                             :class="{'bg-act': userItem.index == user.id}" 
-                             class="user">
-                                {{user.username}}
-                            </li>
-                        </ul>
-                    </div>
+                    <Col :lg="6" class="user-serch">
+                    <Input placeholder="Enter text">
+                    <Icon type="ios-search" slot="suffix" />
+                    </Input>
                     </Col>
                     <Col :lg="18">
                     <Row class="chat-title">
                         <Col :lg="16">
-                        <span>{{userItem.username}}</span>
+                        <span>{{userItem.username || '暂无新消息'}}</span>
                         </Col>
                         <Col :lg="8" class="tar">
                         <span @click="$store.commit('hideChat')" class="cp cl-hv">
@@ -78,6 +66,21 @@
                         </span>
                         </Col>
                     </Row>
+                    </Col>
+                </Row>
+                <Row class="content">
+                    <Col :lg="6">
+                    <div class="chat-user">
+
+                        <ul class="user-list cp-all bg-hv-all">
+                            <li v-for="(user, index) in allList.user" :key="index" @click="userSelected(user)" :class="{'bg-act': userItem.index == user.id}" class="user">
+                                {{user.username}}
+                            </li>
+                        </ul>
+                    </div>
+                    </Col>
+                    <Col :lg="18">
+
                     <div class="message-wrap">
                         <div class="message-item tal">
                             <p class="message-text">在吗？</p>
@@ -105,29 +108,32 @@
 </template>
 
 <script>
-
 import GReadInfo from "../mixins/GReadInfo";
+
+import session from "../lib/session";
 
 export default {
     mixins: [GReadInfo],
     data() {
         return {
             userItem: {},
+            uinfo: session.uinfo(),
             splitLeft: 0.2,
-            splitRight: 0.8,
+            splitRight: 0.8
         };
     },
     mounted() {
-        this.gReadInfo('user');
+        console.log("this.uinfo:", this.uinfo);
+
+        this.gReadInfo("user");
     },
     methods: {
         sendMessage() {
-            console.log('1:', 1);
-            
+            console.log("1:", 1);
         },
         userSelected(user) {
-            this.$set(this.userItem, 'index', user.id);
-            this.$set(this.userItem, 'username', user.username);
+            this.$set(this.userItem, "index", user.id);
+            this.$set(this.userItem, "username", user.username);
         }
     }
 };
