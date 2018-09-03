@@ -22,8 +22,12 @@
 }
 
 .message-wrap {
+    /* min-height: 300px; */
+}
+
+.message-items {
     background: #aaa;
-    min-height: 300px;
+    height: 320px;
 }
 
 .message-item {
@@ -46,6 +50,14 @@
 .user {
     padding: 5px 7px;
 }
+
+.null-message {
+    height: 460px;
+}
+
+.null-message .null-title {
+    margin-top: 35%;
+}
 </style>
 
 <template>
@@ -67,13 +79,13 @@
                         </ul>
                     </div>
                     </Col>
-                    <Col :lg="18">
+                    <Col v-if="userItem.username" class="message-wrap" :lg="18">
                     <Row class="message-title">
                         <Col :lg="16">
                         <span>{{userItem.username}}</span>
                         </Col>
                     </Row>
-                    <div class="message-wrap">
+                    <div class="message-items">
                         <div class="message-item tal">
                             <p class="message-text">在吗？</p>
                         </div>
@@ -82,9 +94,15 @@
                         </div>
                     </div>
                     <div class="edit-message">
-                        <Input type="textarea" @on-keydown="handlerMultiEnter" v-model="$store.state.form.text" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />
-                        {{$store.state.form}}
+                        <Input type="textarea" @on-keydown="handlerMultiEnter" v-model="$store.state.form.text" :autosize="{minRows: 4,maxRows: 4}" placeholder="按下Enter发送内容/ Ctrl+Enter换行" />
                     </div>
+                    </Col>
+                    <Col v-else :lg="18" class="null-message">
+                       <div class="null-title">
+                            <h2 class="tac">
+                            暂无对话
+                        </h2>
+                       </div>
                     </Col>
                 </Row>
             </Row>

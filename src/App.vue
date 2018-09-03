@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <router-view class="view"></router-view>
-    <!-- <Chat/> -->
+    <Chat/>
   </div>
 </template>
 
 <script>
-// import Chat from "./components/Chat";
+import Chat from "./components/Chat";
 
 export default {
   name: 'app',
   components: {
-    // Chat
+    Chat
   }
 }
 </script>
