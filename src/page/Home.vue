@@ -188,7 +188,7 @@
             </Col>
             <!-- <Col span="6"></Col> -->
         </Row>
-        <!-- <Chat/> -->
+        <Chat/>
         <!-- <Footer/> -->
     </div>
 </template>
@@ -199,6 +199,7 @@ import Header from "../components/Header";
 import WeiboNavItem from "../components/WeiboNavItem";
 import WeiboItem from "../components/WeiboItem";
 import UserItems from "../components/UserItems";
+import Chat from "../components/Chat";
 
 import Footer from "../components/Footer";
 
@@ -218,7 +219,7 @@ export default {
         WeiboNavItem,
         WeiboItem,
         UserItems,
-        // Chat,
+        Chat,
         Footer
     },
     data() {
