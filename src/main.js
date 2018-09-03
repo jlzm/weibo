@@ -7,6 +7,7 @@ import Vue from 'vue';
 import App from './App.vue';
 import VueRouter from "vue-router";
 
+import Vuex from "vuex"
 
 import iView from 'iview';
 import 'iview/dist/styles/iview.css';
@@ -24,10 +25,12 @@ import SignUp from "./page/SignUp";
 import AdminBase from './page/admin/Base.vue';
 import AdminNoticeTpl from './page/admin/NoticeTpl.vue';
 import AdminAnnounceTpl from './page/admin/AnnounceTpl.vue';
+import AdminUser from './page/admin/User.vue';
 
 import session from './lib/session.js';
 
 Vue.use(VueRouter);
+Vue.use(Vuex);
 Vue.use(iView);
 
 
@@ -84,14 +87,21 @@ const routerConfig = {
           path: '/noticeTpl',
           component: AdminNoticeTpl,
           meta: {
-            title: '管理员'
+            title: '管理-通知模板'
           },
         },
         {
           path: '/announceTpl',
           component: AdminAnnounceTpl,
           meta: {
-            title: '管理员'
+            title: '管理-通告模板'
+          },
+        },
+        {
+          path: '/user',
+          component: AdminUser,
+          meta: {
+            title: '管理-通告模板'
           },
         },
         
@@ -117,7 +127,25 @@ router.beforeEach((to, from, next) => {
   document.title = to.meta.title;
 });
 
+const store = new Vuex.Store({
+  state: {
+    showChat: true
+  },
+  mutations: {
+    showChat(state) {
+      state.showChat = true;
+    },
+    hideChat(state) {
+      state.showChat = false;
+    }
+  }
+})
+
+
+
+
 new Vue({
   render: h => h(App),
-  router
+  router,
+  store
 }).$mount('#app')

@@ -8,16 +8,13 @@
                 <label for="">属性</label>
                 <input type="text" v-model="current.type">
             </div>
-            {{current.type}}
             <div>
                 <label for="">内容</label>
                 <input type="text" v-model="current.content">
             </div>
-            {{current.content}}
             <button type="submit">提交</button>
         </form>
         <Table stripe :columns="columns" :data="allList.notice_tpl"></Table>
-        内容{{this.allList && this.allList.notice_tpl}}
     </div>
 </template>
 
@@ -33,6 +30,7 @@ export default {
     },
     data() {
         return {
+            model: 'notice_tpl',
             tableTitle: [
                 {
                     title: "属性",
@@ -48,46 +46,11 @@ export default {
     },
     mounted() {
         this.readItems();
-        console.log("this.columns:", this.columns);
     },
     methods: {
         submit() {
             this.addItem();
-        }
-        // show(index) {
-        //     this.$Modal.info({
-        //         title: "模板信息",
-        //         content: `属性：${
-        //             this.allList.notice_tpl[index].type
-        //         }<br>内容：${this.allList.notice_tpl[index].content}`
-        //     });
-        // },
-        // remove(index) {
-        //     this.removeItem(this.allList.notice_tpl[index].id);
-        // },
-        // modify(index) {
-        //     this.current = this.allList.notice_tpl[index];
-        // },
-        // addItem() {
-        //     let action = this.current.id ? 'update' : 'create';
-
-        //     api.api(`notice_tpl/${action}`, this.current).then(res => {
-        //         this.current = {};
-        //         this.gReadInfo("notice_tpl");
-        //     });
-        // },
-        // readItems() {
-        //     this.gReadInfo("notice_tpl");
-        // },
-        // removeItem(id) {
-        //     api
-        //         .api("notice_tpl/delete", {
-        //             id: id
-        //         })
-        //         .then(res => {
-        //             this.readItems();
-        //         });
-        // }
+        },
     }
 };
 </script>

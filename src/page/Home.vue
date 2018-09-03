@@ -188,6 +188,7 @@
             </Col>
             <!-- <Col span="6"></Col> -->
         </Row>
+        <!-- <Chat/> -->
         <!-- <Footer/> -->
     </div>
 </template>
@@ -217,6 +218,7 @@ export default {
         WeiboNavItem,
         WeiboItem,
         UserItems,
+        // Chat,
         Footer
     },
     data() {
@@ -234,6 +236,8 @@ export default {
             this.readPublicWeibo();
         }
     },
-    methods: {}
+    methods: {
+        
+    }
 };
 </script>

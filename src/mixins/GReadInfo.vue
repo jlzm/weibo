@@ -8,11 +8,13 @@ export default {
     },
     methods: {
         gReadInfo(model, condition) {
+            model = this.model || model;
           return api.api(`${model}/read`, condition).then(res => {
                 this.$set(this.allList, model, res.data || []);
                 // this.allList[model] = res.data;
             })
         },
+        // gRemoveItem()
     }
 };
 </script>

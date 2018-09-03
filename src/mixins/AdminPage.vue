@@ -1,14 +1,13 @@
 <script>
 import api from "../lib/api";
-import GReadInfo from "./GReadInfo";
 export default {
-    mixins: [GReadInfo],
     data() {
         return {
+            allList: {},
             current: {},
             operationBtn: [
                 {
-                    title: "Action",
+                    title: "编辑",
                     key: "action",
                     width: 300,
                     align: "center",
@@ -76,36 +75,36 @@ export default {
             this.$Modal.info({
                 title: "模板信息",
                 content: `属性：${
-                    this.allList.notice_tpl[index].type
-                }<br>内容：${this.allList.notice_tpl[index].content}`
+                    this.allList[this.model][index].type
+                }<br>内容：${this.allList[this.model][index].content}`
             });
         },
         remove(index) {
-            this.removeItem(this.allList.notice_tpl[index].id);
+            this.removeItem(this.allList[this.model][index].id);
         },
         modify(index) {
-            this.current = this.allList.notice_tpl[index];
+            this.current = this.allList[this.model][index];
         },
         addItem() {
             let action = this.current.id ? "update" : "create";
 
-            api.api(`notice_tpl/${action}`, this.current).then(res => {
-                this.gReadInfo("notice_tpl");
-            });
+            api.api(`${this.model}/${action}`, this.current).then(res => {
+                this.readItems();
+            })
         },
         readItems() {
-            console.log("1:", 1);
-
-            this.gReadInfo("notice_tpl");
+            api.api(`${this.model}/read`).then(res => {
+                this.$set(this.allList, this.model, res.data);
+            })
         },
         removeItem(id) {
             api
-                .api("notice_tpl/delete", {
+                .api(`${this.model}/delete`, {
                     id: id
                 })
                 .then(res => {
-                    this.readItems();
-                });
+                    this.readItems(this.model);
+                })
         }
     }
 };

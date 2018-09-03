@@ -18,7 +18,6 @@
 
 .setting {
     margin-left: 12px;
-
 }
 
 /* nav-search start */
@@ -50,6 +49,7 @@
 }
 
 .demo-badge {
+    padding: 0 10px;
     height: 35px;
     line-height: 35px;
     display: inline-block;
@@ -99,13 +99,14 @@
                         </Menu>
                         <Poptip trigger="click" title="Title" content="content">
                             <Badge :count="2">
-                                <span class="demo-badge">
-                                    <Icon type="md-chatboxes" size="16" />消息</span>
+                                <span class="demo-badge cp">
+                                    <Icon type="md-chatboxes" size="18" />
+                                </span>
                             </Badge>
                         </Poptip>
                         <Dropdown v-if="uinfo" trigger="click" style="margin-bottom: 4px">
                             <span class="setting cp">
-                                <Icon type="md-settings cl-hv" size="16" />
+                                <Icon type="md-settings cl-hv" size="18" />
                             </span>
                             <DropdownMenu slot="list">
                                 <DropdownItem>驴打滚</DropdownItem>
