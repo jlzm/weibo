@@ -156,15 +156,6 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    sendMessage({state}) {
-      if (!state.form && !state.form.from_id && !state.form.to_id && !state.form.text) {
-        return;
-      }
-      api.api('message/create', state.form)
-        .then(res => {
-          
-      })
-    },
     readMessage({commit, state}) {
       api.api('message/read', {
         sort_by: ['id', 'up'],
@@ -173,7 +164,18 @@ const store = new Vuex.Store({
           to_id: state.form.to_id
         }
       })
-    }
+    },
+    sendMessage({ state }) {
+      if (!state.form && !state.form.from_id && !state.form.to_id && !state.form.text) {
+        return;
+      }
+      console.log('1:', 1);
+      return;
+      // api.api('message/create', state.form)
+      //   .then(res => {
+      //     store.dispatch('readMessage');
+      //   })
+    },
   }
 })
 
