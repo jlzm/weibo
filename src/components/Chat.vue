@@ -10,11 +10,15 @@
 }
 
 .chat-wrap {
-    padding: 10px 0;
+    padding: 0px 0;
 }
 
-.chat-title {
+.message-title {
     padding: 10px 4px;
+}
+
+.user-serch {
+    padding: 3px 4px;
 }
 
 .message-wrap {
@@ -46,32 +50,16 @@
 
 <template>
     <div v-if="uinfo">
-        <Row>
-            <Col v-if="$store.state.showChat" class="chat-container" :lg="7">
+        <Modal v-model="$store.state.showChat" class="chat-container" width="700" footer-hide>
             <Row class="chat-wrap">
-                <Row class="head">
-                    <Col :lg="6" class="user-serch">
-                    <Input placeholder="Enter text">
-                    <Icon type="ios-search" slot="suffix" />
-                    </Input>
-                    </Col>
-                    <Col :lg="18">
-                    <Row class="chat-title">
-                        <Col :lg="16">
-                        <span>{{userItem.username || '暂无新消息'}}</span>
-                        </Col>
-                        <Col :lg="8" class="tar">
-                        <span @click="$store.commit('hideChat')" class="cp cl-hv">
-                            <Icon type="md-close-circle" size="16" />
-                        </span>
-                        </Col>
-                    </Row>
-                    </Col>
-                </Row>
-                <Row class="content">
+                <Row class="chat-main">
                     <Col :lg="6">
                     <div class="chat-user">
-
+                        <div class="user-serch">
+                            <Input placeholder="Enter text">
+                            <Icon type="ios-search" slot="suffix" />
+                            </Input>
+                        </div>
                         <ul class="user-list cp-all bg-hv-all">
                             <li v-for="(user, index) in allList.user" :key="index" @click="userSelected(user)" :class="{'bg-act': userItem.index == user.id}" class="user">
                                 {{user.username}}
@@ -80,7 +68,11 @@
                     </div>
                     </Col>
                     <Col :lg="18">
-
+                    <Row class="message-title">
+                        <Col :lg="16">
+                        <span>{{userItem.username}}</span>
+                        </Col>
+                    </Row>
                     <div class="message-wrap">
                         <div class="message-item tal">
                             <p class="message-text">在吗？</p>
@@ -90,20 +82,13 @@
                         </div>
                     </div>
                     <div class="edit-message">
-                        <Form>
-                            <Input type="textarea" v-model="$store.state.form.text" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />
-                            <div class="tar">
-                                <Button @click.native="sendMessage()">发送</Button>
-                            </div>
-                        </Form>
+                        <Input type="textarea" @on-keydown="handlerMultiEnter" v-model="$store.state.form.text" :autosize="{minRows: 2,maxRows: 5}" placeholder="" />
                     </div>
                     </Col>
                 </Row>
-
             </Row>
-            </Col>
-            <button v-else @click="$store.commit('showChat')" class="chat-container">私信聊天</button>
-        </Row>
+        </Modal>
+        <button @click="$store.commit('showChat')" class="chat-container">私信聊天</button>
     </div>
 </template>
 
@@ -123,8 +108,6 @@ export default {
         };
     },
     mounted() {
-        console.log("this.uinfo:", this.uinfo);
-
         this.gReadInfo("user");
     },
     methods: {
@@ -134,6 +117,25 @@ export default {
         userSelected(user) {
             this.$set(this.userItem, "index", user.id);
             this.$set(this.userItem, "username", user.username);
+        },
+        handlerMultiEnter(e) {
+            let code = e.keyCode;
+            let ctrl = e.ctrlKey;
+            let shift = e.shiftKey;
+            let alt = e.altKey;
+            if (code == "13" && ctrl && !shift && !alt) {
+                //ctrl + enter
+                e.target.value += "\n";
+                // return;
+            }
+            if (code == "13" && !ctrl && !shift && !alt) {
+                //只按了enter
+                e.preventDefault();
+                this.test();
+            }
+        },
+        test() {
+            console.log("回车:");
         }
     }
 };
