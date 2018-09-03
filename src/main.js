@@ -26,6 +26,7 @@ import AdminBase from './page/admin/Base.vue';
 import AdminNoticeTpl from './page/admin/NoticeTpl.vue';
 import AdminAnnounceTpl from './page/admin/AnnounceTpl.vue';
 import AdminUser from './page/admin/User.vue';
+import AdminTest from './page/admin/AdminTest.vue';
 
 import session from './lib/session.js';
 
@@ -100,6 +101,13 @@ const routerConfig = {
         {
           path: '/user',
           component: AdminUser,
+          meta: {
+            title: '管理-通告模板'
+          },
+        },
+        {
+          path: '/test',
+          component: AdminTest,
           meta: {
             title: '管理-通告模板'
           },

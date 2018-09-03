@@ -51,6 +51,14 @@ export default {
         submit() {
             this.addItem();
         },
+         show(index) {
+            this.$Modal.info({
+                title: "模板详情",
+                content: `属性：${
+                    this.allList[this.model][index].type
+                }<br>内容：${this.allList[this.model][index].content}`
+            });
+        },
     }
 };
 </script>

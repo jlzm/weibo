@@ -25,7 +25,7 @@
                         <span>用户管理</span>
                     </template>
                     <MenuItem name="2-1" to="/user">账号信息</MenuItem>
-                    <MenuItem name="2-2" to="/announceTpl">通告</MenuItem>
+                    <MenuItem name="2-2" to="/test">测试</MenuItem>
                 </Submenu>
             </Menu>
 

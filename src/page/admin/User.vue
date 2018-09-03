@@ -37,7 +37,7 @@ export default {
     },
     data() {
         return {
-            model: 'user',
+            model: "user",
             tableTitle: [
                 {
                     title: "用户名",
@@ -54,9 +54,9 @@ export default {
                 {
                     title: "密码",
                     key: "password"
-                },
+                }
             ],
-            columns: this.columns,
+            columns: this.columns
         };
     },
     mounted() {
@@ -66,6 +66,17 @@ export default {
         submit() {
             this.addItem();
         },
+        show(index) {
+            this.$Modal.info({
+                title: "用户详情",
+                content: `
+                用户名：${this.allList[this.model][index].username || '空'}<br>
+                手机号：${this.allList[this.model][index].phone || '空'}<br>
+                邮箱：${this.allList[this.model][index].mail || '空'}<br>
+                密码：${this.allList[this.model][index].password || '空'}
+                `
+            });
+        }
     }
 };
 </script>

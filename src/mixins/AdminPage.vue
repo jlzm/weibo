@@ -71,14 +71,6 @@ export default {
         };
     },
     methods: {
-        show(index) {
-            this.$Modal.info({
-                title: "模板信息",
-                content: `属性：${
-                    this.allList[this.model][index].type
-                }<br>内容：${this.allList[this.model][index].content}`
-            });
-        },
         remove(index) {
             this.removeItem(this.allList[this.model][index].id);
         },
