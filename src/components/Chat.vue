@@ -23,6 +23,8 @@
     padding: 8px 4px;
 }
 
+
+/* 聊天窗口 */
 .message-wrap {
     /* min-height: 300px; */
 }
@@ -45,6 +47,11 @@
     margin: 5px;
     border-radius: 6px;
 }
+
+.message-submit-btn {
+    margin-top: 2px;
+}
+
 
 .edit-message {
     padding: 4px 0;
@@ -104,9 +111,13 @@
                             <p class="message-text">{{message.text}}</p>
                         </div>
                     </div>
-                    <div class="edit-message">
+                    <Form class="edit-message">
                         <Input type="textarea" @on-keydown="handlerMultiEnter" v-model="$store.state.form.text" :autosize="{minRows: 4,maxRows: 4}" placeholder="按下Enter发送内容/ Ctrl+Enter换行" />
-                    </div>
+                        <div class="message-submit-btn tar">
+                            <Button @click.native="$store.state.form.text = null">重置</Button>
+                            <Button @click.native="$store.dispatch('sendMessage')" type="primary" style="margin-left: 6px">发送</Button>
+                        </div>
+                    </Form>
                     </Col>
                     <Col v-else :lg="18" class="null-message">
                     <div class="null-title">
