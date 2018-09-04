@@ -152,9 +152,9 @@ export default {
             this.$set(this.$store.state.form, "to_id", user.id);
             this.$set(this.userItem, "username", user.username);
             this.$store.dispatch("readMessage");
-        //     setInterval(() => {
-        //     this.$store.dispatch('readMessage');
-        // }, 3000);
+            setInterval(() => {
+            this.$store.dispatch('readMessage');
+        }, 4000);
         },
         handlerMultiEnter(e) {
             let code = e.keyCode;
