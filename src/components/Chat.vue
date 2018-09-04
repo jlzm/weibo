@@ -9,9 +9,6 @@
     background: #fff;
 }
 
-
-
-
 .chat-wrap {
 }
 
@@ -22,7 +19,6 @@
 .user-serch {
     padding: 8px 4px;
 }
-
 
 /* 聊天窗口 */
 .message-wrap {
@@ -51,7 +47,6 @@
 .message-submit-btn {
     margin-top: 2px;
 }
-
 
 .edit-message {
     padding: 4px 0;
@@ -104,18 +99,19 @@
                         </Col>
                     </Row>
                     <div class="message-items">
-                        <div v-for="(message, index) in $store.state.itemList.message" 
-                        v-if="(message.from_id == uinfo.id && message.to_id == $store.state.form.to_id) ||
-                             (message.from_id == $store.state.form.to_id && message.to_id == uinfo.id)" 
-                             class="message-item" :class="{'tar': message.from_id == uinfo.id}">
+                        <div v-for="(message, index) in $store.state.itemList.message" v-if="(message.from_id == uinfo.id && message.to_id == $store.state.form.to_id) ||
+                             (message.from_id == $store.state.form.to_id && message.to_id == uinfo.id)" class="message-item" :class="{'tar': message.from_id == uinfo.id}">
                             <p class="message-text">{{message.text}}</p>
                         </div>
                     </div>
+                    
                     <Form class="edit-message">
-                        <Input type="textarea" @on-keydown="handlerMultiEnter" v-model="$store.state.form.text" :autosize="{minRows: 4,maxRows: 4}" placeholder="按下Enter发送内容/ Ctrl+Enter换行" />
+                        <Input type="textarea" @on-keydown="handlerMultiEnter" v-model.trim="$store.state.form.text" :autosize="{minRows: 4,maxRows: 4}" placeholder="按下Enter发送内容/ Ctrl+Enter换行" />
                         <div class="message-submit-btn tar">
-                            <Button @click.native="$store.state.form.text = null">重置</Button>
-                            <Button @click.native="$store.dispatch('sendMessage')" type="primary" style="margin-left: 6px">发送</Button>
+                            <Button @click.native="$store.state.form.text = null" :disabled="!$store.state.form.text">重置</Button>
+                            <Button @click.native="$store.dispatch('sendMessage')" 
+                            :disabled="!$store.state.form.text"
+                            type="primary" style="margin-left: 6px">发送</Button>
                         </div>
                     </Form>
                     </Col>
@@ -129,9 +125,7 @@
                 </Row>
             </Row>
         </Modal>
-        <div @click="$store.commit('showChat')" 
-        v-if="!$store.state.showChat"
-        class="show-chat-btn chat-container cp cl-hv">
+        <div @click="$store.commit('showChat')" v-if="!$store.state.showChat" class="show-chat-btn chat-container cp cl-hv">
             <p class="show-chat-content">
                 <Icon type="md-mail" class="icon-mgr" size="25" />
                 <span class="show-chat-title">私信聊天</span>
@@ -151,6 +145,7 @@ export default {
         return {
             userItem: {},
             uinfo: session.uinfo(),
+            messageTimer: null,
             splitLeft: 0.2,
             splitRight: 0.8
         };
@@ -163,9 +158,12 @@ export default {
             this.$set(this.$store.state.form, "to_id", user.id);
             this.$set(this.userItem, "username", user.username);
             this.$store.dispatch("readMessage");
-            setInterval(() => {
-            this.$store.dispatch('readMessage');
-        }, 4000);
+            if (this.messageTimer) {
+                clearInterval(this.messageTimer);
+            }
+            this.messageTimer = setInterval(() => {
+                this.$store.dispatch("readMessage");
+            }, 5000);
         },
         handlerMultiEnter(e) {
             let code = e.keyCode;
@@ -181,6 +179,12 @@ export default {
                 //只按了enter
                 e.preventDefault();
                 this.$store.dispatch("sendMessage");
+                if (this.messageTimer) {
+                    clearInterval(this.messageTimer);
+                }
+                this.messageTimer = setInterval(() => {
+                    this.$store.dispatch("readMessage");
+                }, 5000);
             }
         }
     }

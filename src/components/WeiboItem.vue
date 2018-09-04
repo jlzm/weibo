@@ -170,7 +170,7 @@
                 </span>
                 </Col>
                 <Col span="6">
-                <span @click="showComment(weibo.id)" :class="{'cl-act': commentVisible}" class="operation-item db">
+                <span @click="toggleComment(weibo.id)" :class="{'cl-act': commentVisible}" class="operation-item db">
                     <span class="tooltip dib">
                         <em class="icon-mgr">
                             <Icon type="md-text" size="18" />
@@ -263,7 +263,7 @@
             </div>
 
             <div v-if="commentVisible" class="comment-wrap">
-                <Row :gutter="10" type="flex">
+                <Row v-if="uinfo" :gutter="10" type="flex">
                     <Col span="3">
                     <Poptip trigger="hover" placement="top" width="400">
                         <div class="user-portrait">
@@ -277,32 +277,69 @@
                     </Poptip>
                     </Col>
                     <Col span="21">
-                    <Form @submit.native.prevent="publishComment(weibo.id)">
-                        <FormItem class="comment-text">
-                            <Input v-model.trim="commentContent.text" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="说点什么吧？" />
-                        </FormItem>
-                        <FormItem>
-                            <Row>
-                                <Col span="18">
-                                <ul class="extras tal cp-all dib-all cl-hv-all">
-                                    <li>
-                                        <em class="icon-mgr">
-                                            <Icon type="md-images" size="18" color="#72a305" />
-                                        </em>
-                                    </li>
-                                    <li>
-                                        <em class="icon-mgr">
-                                            <Icon type="md-videocam" size="18" color="#2b85e4" />
-                                        </em>
-                                    </li>
-                                </ul>
-                                </Col>
-                                <Col span="6 tar">
-                                <Button @click.native="publishComment(weibo.id)" :disabled="!commentContent.text" type="primary">评论</Button>
-                                </Col>
-                            </Row>
-                        </FormItem>
-                    </Form>
+                    <Input @click.native="showCommentModal()" placeholder="评论">
+                    <Icon type="md-create" slot="prefix" />
+                    </Input>
+                    <Modal v-model="commentModal" title="评论微博" :footer-hide="true" okText="评论" :loading="loading">
+                        <Row :gutter="18">
+                            <Col span="3">
+                            <Poptip trigger="hover" placement="top" width="400">
+                                <div class="user-portrait">
+                                    <router-link to="/">
+                                        <img :src="weibo && weibo.portrait || 'http://placekitten.com/100/150'" alt="">
+                                    </router-link>
+                                </div>
+                                <div slot="content" class="user-poptip">
+                                    <img src="http://placekitten.com/230/75" alt="">
+                                </div>
+                            </Poptip>
+                            </Col>
+                            <Col span="21">
+                            <div class="info-head">
+                                <div class="userinfo col">
+                                    <router-link to="/" class="username">
+                                        {{weibo && weibo.$user && weibo.$user.username || '账号已注销'}}
+                                    </router-link>
+                                </div>
+                            </div>
+                            <div class="weibo-time">
+                                {{weibo && weibo.time || '-'}}
+                            </div>
+                            <div class="weibo-detail-wrap">
+                                <p class="detail-text">
+                                    {{weibo && weibo.text || '微博内容'}}
+                                </p>
+                            </div>
+                            </Col>
+                        </Row>
+                        <Form @submit.native.prevent="relayWeibo()">
+                            <FormItem class="comment-text">
+                                <Input v-model.trim="commentContent.text" type="textarea" :autosize="{minRows: 4,maxRows: 4}" placeholder="说点什么吧！" />
+                            </FormItem>
+                            <FormItem>
+                                <Row>
+                                    <Col span="18">
+                                    <ul class="extras tal cp-all dib-all cl-hv-all">
+                                        <li>
+                                            <em class="icon-mgr">
+                                                <Icon type="md-images" size="18" color="#72a305" />
+                                            </em>
+                                        </li>
+                                        <li>
+                                            <em class="icon-mgr">
+                                                <Icon type="md-videocam" size="18" color="#2b85e4" />
+                                            </em>
+                                        </li>
+                                    </ul>
+                                    </Col>
+                                    <Col span="6 tar">
+                                    <Button @click.native="hideCommentModal()" style="margin-right: 8px">取消</Button>
+                                    <Button @click.native="publishComment(weibo.id)" :disabled="!commentContent.text" type="primary">评论</Button>
+                                    </Col>
+                                </Row>
+                            </FormItem>
+                        </Form>
+                    </Modal>
                     </Col>
                 </Row>
                 <Row v-for="(comment, index) in allList.comment" :key="index" :gutter="10" class="comment-item">
@@ -469,7 +506,8 @@ export default {
             commentContent: {},
             weiboContent: {},
             relayVisible: false,
-            commentVisible: false
+            commentVisible: false,
+            commentModal: false
         };
     },
     mounted() {
@@ -580,7 +618,44 @@ export default {
                 return;
             }
             this.$set(this.weiboContent, "relay_id", relayId);
-            this.relayVisible = !this.relayVisible;
+            this.relayVisible = true;
+        },
+
+        // 隐藏转发弹出层
+        hiddenRelayModal() {
+            this.relayVisible = false;
+        },
+
+        // 显示或关闭评论区
+        toggleComment(weiboId) {
+            if (!this.commentVisible) {
+                this.readComment(weiboId);
+            }
+            this.commentVisible = !this.commentVisible;
+        },
+
+        // 显示评论弹出层
+        showCommentModal() {
+            if (!this.uinfo) {
+                this.$router.push("/signIn");
+                return;
+            }
+            this.commentModal = true;
+        },
+
+        // 隐藏评论弹出层
+        hideCommentModal() {
+            this.commentModal = false;
+        },
+
+        // 打开回复评论弹出层
+        showReplyModal(replyId) {
+            this.$set(this.commentContent, "reply_id", replyId);
+        },
+
+        // 隐藏回复评论弹出层
+        hiddenReplyModal() {
+            this.$set(this.commentContent, "reply_id", null);
         },
 
         // 转发微博
@@ -596,11 +671,6 @@ export default {
                 this.readFollowerWeibo();
                 this.relayVisible = false;
             });
-        },
-
-        // 隐藏转发弹出层
-        hiddenRelayModal() {
-            this.relayVisible = false;
         },
 
         //删除微博
@@ -629,31 +699,9 @@ export default {
                 });
         },
 
-        // 打开回复评论弹出层
-        showReplyModal(replyId) {
-            this.$set(this.commentContent, "reply_id", replyId);
-        },
-
-        // 关闭回复评论弹出层
-        hiddenReplyModal() {
-            this.$set(this.commentContent, "reply_id", null);
-        },
-
         // 回复评论
         replyComment(weiboId) {
             this.publishComment(weiboId);
-        },
-
-        // 显示或关闭评论区
-        showComment(weiboId) {
-            // if (!this.uinfo) {
-            //     this.$router.push("/signIn");
-            //     return;
-            // }
-            if (!this.commentVisible) {
-                this.readComment(weiboId);
-            }
-            this.commentVisible = !this.commentVisible;
         },
 
         // 渲染当前微博的评论
@@ -666,11 +714,9 @@ export default {
                         model: "user"
                     }
                 ]
-            }).then(res => {
-                console.log("this.allList.comment:", this.allList.comment);
             });
         },
-        
+
         // 发表评论
         publishComment(weiboId) {
             this.commentContent.user_id = this.uinfo.id;
@@ -685,6 +731,7 @@ export default {
                 }
                 this.commentContent = {};
                 this.readComment(weiboId);
+                this.commentModal = false;
             });
         }
     }

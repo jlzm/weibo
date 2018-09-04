@@ -97,7 +97,7 @@
                             <span>注册</span>
                             </MenuItem>
                         </Menu>
-                        <Poptip trigger="click" title="Title" content="content">
+                        <Poptip v-if="uinfo" trigger="click" title="Title" content="content">
                             <Badge :count="2">
                                 <span class="demo-badge cp">
                                     <Icon type="md-chatboxes" size="18" />
@@ -188,8 +188,8 @@ export default {
         // 登出
         signOut() {
             session.signOut();
-            // this.$router.push("/signIn");
-            location.href = "/signIn";
+            this.$router.push("/signIn");
+            // location.href = "#/signIn";
         }
     }
 };
