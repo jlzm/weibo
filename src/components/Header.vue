@@ -188,7 +188,8 @@ export default {
         // 登出
         signOut() {
             session.signOut();
-            this.$router.push("/signIn");
+            // this.$router.push("/signIn");
+            location.href = "/signIn";
         }
     }
 };
