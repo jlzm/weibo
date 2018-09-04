@@ -166,7 +166,8 @@ export default {
                                 return;
                             }
                             session.signIn(item);
-                            location.href = '/';
+                            this.$store.state.chatComponent = true;
+                            this.$router.push('/');
                             this.$Message.success("登入成功");
                         });
                 } 

@@ -146,7 +146,8 @@ const store = new Vuex.Store({
       to_id: null,
       text: null
     },
-    showChat: false
+    showChat: false,
+    chatComponent: null
   },
   mutations: {
     showChat(state) {

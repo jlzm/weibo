@@ -72,10 +72,9 @@
 </style>
 
 <template>
-    <div v-if="uinfo">
+    <div v-if="uinfo || $store.state.chatComponent">
         <Modal v-model="$store.state.showChat" class="chat-container" width="700" footer-hide>
             <Row class="chat-wrap">
-                <!-- {{$store.state.allList.message}} -->
                 <Row class="chat-main">
                     <Col :lg="6">
                     <div class="chat-user">
@@ -85,7 +84,7 @@
                             </Input>
                         </div>
                         <ul class="user-list cp-all bg-hv-all">
-                            <li v-for="(user, index) in allList.user" :key="index" @click="userSelected(user)" v-if="user.id!=uinfo.id" :class="{'bg-act': $store.state.form.to_id == user.id}" class="user">
+                            <li v-for="(user, index) in allList.user" :key="index" @click="userSelected(user)" v-if="uinfo && user.id!=uinfo.id" :class="{'bg-act': $store.state.form.to_id == user.id}" class="user">
                                 {{user.username}}
                             </li>
                         </ul>
@@ -171,12 +170,9 @@ export default {
             let shift = e.shiftKey;
             let alt = e.altKey;
             if (code == "13" && ctrl && !shift && !alt) {
-                //ctrl + enter
                 e.target.value += "\n";
-                // return;
             }
             if (code == "13" && !ctrl && !shift && !alt) {
-                //只按了enter
                 e.preventDefault();
                 this.$store.dispatch("sendMessage");
                 if (this.messageTimer) {

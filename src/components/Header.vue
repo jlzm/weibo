@@ -83,7 +83,6 @@
                             <Icon type="md-search" size="16" />
                             <span>搜索</span>
                             </MenuItem>
-
                             <MenuItem v-if="uinfo" name="/personalPage" to="/personalPage" class="nav-router-item">
                             <Icon type="md-person " size="16" />
                             <span>{{uinfo.username}}</span>
@@ -188,6 +187,7 @@ export default {
         // 登出
         signOut() {
             session.signOut();
+            this.$store.state.chatComponent = false;
             this.$router.push("/signIn");
             // location.href = "#/signIn";
         }
