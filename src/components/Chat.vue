@@ -129,7 +129,7 @@ export default {
             this.$store.dispatch('readMessage');
             console.log('1:', 1);
             
-        }, 5000);
+        }, 3000);
     },
     methods: {
         userSelected(user) {
