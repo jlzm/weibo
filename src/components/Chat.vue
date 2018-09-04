@@ -89,6 +89,7 @@
                         </ul>
                     </div>
                     </Col>
+                    <!-- {{$store.state.allList.message}} -->
                     <Col v-if="userItem.username" class="message-wrap" :lg="18">
                     <Row class="message-title">
                         <Col :lg="16">
@@ -96,7 +97,7 @@
                         </Col>
                     </Row>
                     <div class="message-items">
-                        <div v-for="(message, index) in $store.state.allList.message" 
+                        <div v-for="(message, index) in $store.state.itemList.message" 
                         v-if="(message.from_id == uinfo.id && message.to_id == $store.state.form.to_id) ||
                              (message.from_id == $store.state.form.to_id && message.to_id == uinfo.id)" 
                              class="message-item" :class="{'tar': message.from_id == uinfo.id}">
@@ -151,9 +152,9 @@ export default {
             this.$set(this.$store.state.form, "to_id", user.id);
             this.$set(this.userItem, "username", user.username);
             this.$store.dispatch("readMessage");
-            setInterval(() => {
-            this.$store.dispatch('readMessage');
-        }, 3000);
+        //     setInterval(() => {
+        //     this.$store.dispatch('readMessage');
+        // }, 3000);
         },
         handlerMultiEnter(e) {
             let code = e.keyCode;

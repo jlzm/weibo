@@ -140,6 +140,7 @@ router.beforeEach((to, from, next) => {
 const store = new Vuex.Store({
   state: {
     allList: {},
+    itemList: {},
     form: {
       from_id: session.uinfo() && session.uinfo().id,
       to_id: null,
@@ -156,10 +157,11 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    readMessage({
-      state
-    }) {
+    readAllMessage({
+        state
+      }) {
       api.api('message/read', {
+        // limit: 50,
         // sort_by: ['id', 'up'],
         // where: {
         //   from_id: [state.form.from_id, state.form.to_id],
@@ -167,6 +169,20 @@ const store = new Vuex.Store({
         // }
       }).then(res => {
         Vue.set(state.allList, 'message', res.data);
+      })
+    },
+    readMessage({
+      state
+    }) {
+      api.api('message/read', {
+        // limit: 50,
+        // sort_by: ['id', 'up'],
+        where: {
+          from_id: [state.form.from_id, state.form.to_id],
+        //   to_id: state.form.to_id
+        }
+      }).then(res => {
+        Vue.set(state.itemList, 'message', res.data.reverse());
       })
     },
 
