@@ -72,3 +72,9 @@ h6 {
 }
 
 /* Home end 首页结束*/
+
+/* 私信对话框 */
+
+.chat-container .ivu-modal-body {
+    padding: 4px 0;
+}

@@ -9,16 +9,18 @@
     background: #fff;
 }
 
+
+
+
 .chat-wrap {
-    padding: 0px 0;
 }
 
 .message-title {
-    padding: 10px 4px;
+    padding: 15px;
 }
 
 .user-serch {
-    padding: 3px 4px;
+    padding: 8px 4px;
 }
 
 .message-wrap {
@@ -28,6 +30,7 @@
 .message-items {
     background: #aaa;
     height: 320px;
+    overflow: auto;
 }
 
 .message-item {
@@ -58,12 +61,19 @@
 .null-message .null-title {
     margin-top: 35%;
 }
+
+/* 显示私信窗口按钮 */
+.show-chat-btn .show-chat-content {
+    padding: 4px 10px;
+    font-size: 1.2rem;
+}
 </style>
 
 <template>
     <div v-if="uinfo">
         <Modal v-model="$store.state.showChat" class="chat-container" width="700" footer-hide>
             <Row class="chat-wrap">
+                <!-- {{$store.state.allList.message}} -->
                 <Row class="chat-main">
                     <Col :lg="6">
                     <div class="chat-user">
@@ -73,7 +83,7 @@
                             </Input>
                         </div>
                         <ul class="user-list cp-all bg-hv-all">
-                            <li v-for="(user, index) in allList.user" :key="index" @click="userSelected(user)" :class="{'bg-act': $store.state.form.to_id == user.id}" class="user">
+                            <li v-for="(user, index) in allList.user" :key="index" @click="userSelected(user)" v-if="user.id!=uinfo.id" :class="{'bg-act': $store.state.form.to_id == user.id}" class="user">
                                 {{user.username}}
                             </li>
                         </ul>
@@ -86,8 +96,11 @@
                         </Col>
                     </Row>
                     <div class="message-items">
-                        <div v-for="(message, index) in $store.state.allList.message"  class="message-item tal" :class="{'tar': message.from_id}">
-                            <p class="message-text" >{{message.text}}</p>
+                        <div v-for="(message, index) in $store.state.allList.message" 
+                        v-if="(message.from_id == uinfo.id && message.to_id == $store.state.form.to_id) ||
+                             (message.from_id == $store.state.form.to_id && message.to_id == uinfo.id)" 
+                             class="message-item" :class="{'tar': message.from_id == uinfo.id}">
+                            <p class="message-text">{{message.text}}</p>
                         </div>
                     </div>
                     <div class="edit-message">
@@ -95,16 +108,23 @@
                     </div>
                     </Col>
                     <Col v-else :lg="18" class="null-message">
-                       <div class="null-title">
-                            <h2 class="tac">
+                    <div class="null-title">
+                        <h2 class="tac">
                             暂无对话
                         </h2>
-                       </div>
+                    </div>
                     </Col>
                 </Row>
             </Row>
         </Modal>
-        <button @click="$store.commit('showChat')" class="chat-container">私信聊天</button>
+        <div @click="$store.commit('showChat')" 
+        v-if="!$store.state.showChat"
+        class="show-chat-btn chat-container cp cl-hv">
+            <p class="show-chat-content">
+                <Icon type="md-mail" class="icon-mgr" size="25" />
+                <span class="show-chat-title">私信聊天</span>
+            </p>
+        </div>
     </div>
 </template>
 
@@ -125,17 +145,15 @@ export default {
     },
     mounted() {
         this.gReadInfo("user");
-        setInterval(() => {
-            this.$store.dispatch('readMessage');
-            console.log('1:', 1);
-            
-        }, 3000);
     },
     methods: {
         userSelected(user) {
             this.$set(this.$store.state.form, "to_id", user.id);
             this.$set(this.userItem, "username", user.username);
+            this.$store.dispatch("readMessage");
+            setInterval(() => {
             this.$store.dispatch('readMessage');
+        }, 3000);
         },
         handlerMultiEnter(e) {
             let code = e.keyCode;
@@ -150,10 +168,9 @@ export default {
             if (code == "13" && !ctrl && !shift && !alt) {
                 //只按了enter
                 e.preventDefault();
-                this.$store.dispatch('sendMessage')
+                this.$store.dispatch("sendMessage");
             }
-        },
-
+        }
     }
 };
 </script>

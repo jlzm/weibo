@@ -145,7 +145,7 @@ const store = new Vuex.Store({
       to_id: null,
       text: null
     },
-    showChat: true
+    showChat: false
   },
   mutations: {
     showChat(state) {
@@ -159,28 +159,26 @@ const store = new Vuex.Store({
     readMessage({
       state
     }) {
-      if (!state.form && !state.form.from_id && !state.form.to_id && !state.form.text) {
-        return;
-      }
       api.api('message/read', {
-        sort_by: ['id', 'up'],
-        where: {
-          from_id: state.form.from_id,
-          to_id: state.form.to_id
-        }
+        // sort_by: ['id', 'up'],
+        // where: {
+        //   from_id: [state.form.from_id, state.form.to_id],
+        //   to_id: state.form.to_id
+        // }
       }).then(res => {
         Vue.set(state.allList, 'message', res.data);
       })
     },
+
     sendMessage({
       state
     }) {
       if (!state.form && !state.form.from_id && !state.form.to_id && !state.form.text) {
         return;
       }
-
       api.api('message/create', state.form)
         .then(res => {
+          Vue.set(state.form, 'text', null);
           store.dispatch('readMessage');
         })
     },

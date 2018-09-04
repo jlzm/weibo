@@ -143,7 +143,7 @@ export default {
                     'target_id': this.uinfo.id
                 }
             }).then(res => {
-                this.targetNumber = res.data.length;
+                this.targetNumber = res.data && res.data.length || 0 ;
             })
         },
         // 渲染关注用户
