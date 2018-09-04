@@ -141,7 +141,7 @@ const store = new Vuex.Store({
   state: {
     allList: {},
     form: {
-      from_id: session.uinfo()  && session.uinfo().id,
+      from_id: session.uinfo() && session.uinfo().id,
       to_id: null,
       text: null
     },
@@ -156,25 +156,33 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    readMessage({commit, state}) {
+    readMessage({
+      state
+    }) {
+      if (!state.form && !state.form.from_id && !state.form.to_id && !state.form.text) {
+        return;
+      }
       api.api('message/read', {
         sort_by: ['id', 'up'],
         where: {
           from_id: state.form.from_id,
           to_id: state.form.to_id
         }
+      }).then(res => {
+        Vue.set(state.allList, 'message', res.data);
       })
     },
-    sendMessage({ state }) {
+    sendMessage({
+      state
+    }) {
       if (!state.form && !state.form.from_id && !state.form.to_id && !state.form.text) {
         return;
       }
-      console.log('1:', 1);
-      return;
-      // api.api('message/create', state.form)
-      //   .then(res => {
-      //     store.dispatch('readMessage');
-      //   })
+
+      api.api('message/create', state.form)
+        .then(res => {
+          store.dispatch('readMessage');
+        })
     },
   }
 })

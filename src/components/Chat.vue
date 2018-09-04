@@ -86,11 +86,8 @@
                         </Col>
                     </Row>
                     <div class="message-items">
-                        <div class="message-item tal">
-                            <p class="message-text">在吗？</p>
-                        </div>
-                        <div class="message-item tar">
-                            <p class="message-text">不在</p>
+                        <div v-for="(message, index) in $store.state.allList.message"  class="message-item tal" :class="{'tar': message.from_id}">
+                            <p class="message-text" >{{message.text}}</p>
                         </div>
                     </div>
                     <div class="edit-message">
@@ -128,11 +125,17 @@ export default {
     },
     mounted() {
         this.gReadInfo("user");
+        setInterval(() => {
+            this.$store.dispatch('readMessage');
+            console.log('1:', 1);
+            
+        }, 5000);
     },
     methods: {
         userSelected(user) {
             this.$set(this.$store.state.form, "to_id", user.id);
             this.$set(this.userItem, "username", user.username);
+            this.$store.dispatch('readMessage');
         },
         handlerMultiEnter(e) {
             let code = e.keyCode;
