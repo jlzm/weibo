@@ -143,23 +143,17 @@
                 </Col>
             </Row>
             <Row class="weibo-operation-items tac cp-all cl-hv-all">
-                <Col span="6">
-                <span class="operation-item db">
+                <Col span="8">
+                <!-- <span class="operation-item db">
                     <span class="tooltip dib">
                         <em class="icon-mgr">
                             <Icon type="md-star-outline" size="18" />
                         </em>
                         <span>收藏</span>
                     </span>
-                    <!-- <span class="tooltip dib">
-                        <em class="icon-mgr">
-                            <Icon type="md-star-outline" size="18" />
-                        </em>
-                        <span>收藏</span>
-                    </span> -->
-                </span>
+                </span> -->
                 </Col>
-                <Col span="6">
+                <Col span="8">
                 <span @click="showRelay(weibo.id)" class="operation-item db">
                     <span class="tooltip dib">
                         <em class="icon-mgr">
@@ -169,7 +163,7 @@
                     </span>
                 </span>
                 </Col>
-                <Col span="6">
+                <Col span="8">
                 <span @click="toggleComment(weibo.id)" :class="{'cl-act': commentVisible}" class="operation-item db">
                     <span class="tooltip dib">
                         <em class="icon-mgr">
