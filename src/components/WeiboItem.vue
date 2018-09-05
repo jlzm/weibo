@@ -91,7 +91,6 @@
 
 <template>
     <div>
-        {{getRelayNumber(weibo.id)}}
         <Card class="weibo-content-item card-mgb">
             <Row :gutter="14">
                 <Col :md="3" :sm="3" :xs="4">
@@ -151,7 +150,7 @@
                             <Icon type="md-share" size="18" />
                         </em>
                         
-                        <span>转发 </span>
+                        <span>{{weibo.relayList && weibo.relayList.length || '转发'}}</span>
                     </span>
                 </span>
                 </Col>
@@ -171,7 +170,7 @@
                         <em class="icon-mgr">
                             <Icon type="md-thumbs-up" size="18" />
                         </em>
-                        <span>{{weibo.collectList && weibo.collectList.length}}</span>
+                        <span>{{weibo.collectList && weibo.collectList.length || "赞"}}</span>
                     </span>
                 </span>
                 <span v-else @click="likeWeibo(weibo.id)" class="operation-item db">
@@ -179,7 +178,7 @@
                         <em class="icon-mgr">
                             <Icon type="ios-thumbs-up-outline" size="18" />
                         </em>
-                        <span>{{weibo.collectList && weibo.collectList.length > 0 ? weibo.collectList.length : ''}}</span>
+                        <span>{{weibo.collectList && weibo.collectList.length || "赞"}}</span>
                     </span>
                 </span>
                 </Col>
