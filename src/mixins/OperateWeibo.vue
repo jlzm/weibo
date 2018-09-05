@@ -7,6 +7,8 @@ import session from "../lib/session";
 export default {
     data() {
         return {
+            count: {},
+            allList: {},
             weiboNumber: 0,
             followerNumber: 0,
             targetNumber: 0,
@@ -16,7 +18,6 @@ export default {
         };
     },
     methods: {
-
         // 发布微博
         publishWeibo() {
             this.weiboContent.time = this.getCurrentTime();
@@ -29,30 +30,32 @@ export default {
 
         // 渲染全部微博
         readPublicWeibo() {
-            this.gReadInfo("weibo", {
-                with: [
+            api.api('weibo/read', {
+                    with: [
                     {
                         relation: "belongs_to",
                         model: "user"
                     }
                 ]
-            }).then(res => {
-                this.getAllLikeNumber();
+                }).then(res => {
+                this.$set(this.allList, 'weibo', res.data);
+                this.getAllLikeNumber(res.data);
+                this.getAllReplyNumber(res.data);
                 this.weiboNumber = 0;
-                if(this.uinfo) {
+                if (this.uinfo) {
                     this.allList.weibo.forEach(item => {
-                    if (item.user_id == this.uinfo.id) {
-                        this.weiboNumber++;
-                    }
-                });
+                        if (item.user_id == this.uinfo.id) {
+                            this.weiboNumber++;
+                        }
+                    });
                 }
             });
         },
 
         // 渲染关注人微博
         readFollowerWeibo() {
-            this.gReadInfo("weibo", {
-                where: [
+            api.api('weibo/read', {
+                    where: [
                     [
                         "user_id",
                         "in",
@@ -67,8 +70,10 @@ export default {
                         model: "user"
                     }
                 ]
-            }).then(res => {
-                this.getAllLikeNumber();
+                }).then(res => {
+                this.$set(this.allList, 'weibo', res.data);
+                this.getAllLikeNumber(res.data);
+                this.getAllReplyNumber(res.data);
                 this.weiboNumber = 0;
                 this.allList.weibo.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
@@ -80,7 +85,7 @@ export default {
 
         // 获取个人微博
         readPersonalWeibo() {
-            this.gReadInfo("weibo", {
+            api.api('weibo/read', {
                 where: [["user_id", "=", this.uinfo.id]],
                 with: [
                     {
@@ -88,10 +93,13 @@ export default {
                         model: "user"
                     }
                 ]
-            }).then(res => {
-                this.getAllLikeNumber();
+            })
+            .then(res => {
+                this.$set(this.allList, 'weibo', res.data);
+                this.getAllLikeNumber(res.data);
+                this.getAllReplyNumber(res.data);
                 this.weiboNumber = 0;
-                this.allList.weibo.forEach(item => {
+                res.data.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
                         this.weiboNumber++;
                     }
@@ -100,10 +108,9 @@ export default {
         },
 
         // 渲染赞数
-        getAllLikeNumber() {
-            
+        getAllLikeNumber(weiboList) {
             api.api("_bind__user_weibo/read").then(res => {
-                this.allList.weibo.forEach(item => {
+                weiboList.forEach(item => {
                     let likeList = [];
                     res.data.forEach(like => {
                         if (like.weibo_id == item.id) {
@@ -113,38 +120,41 @@ export default {
                     });
                 });
             });
-            // this.allList.weibo.forEach(item => {
-            //     api
-            //         .api("_bind__user_weibo/read", {
-            //             where: {
-            //                 weibo_id: item.id
-            //             }
-            //         })
-            //         .then(res => {
-            //             this.$set(item, 'collectList', res.data);
-            //         });
-            // });
         },
-        
-        // 获取转发数量
-        getRelayNumber() {},
+
 
         // 获取评论数量
-        getReplyNumber() {},
+        getAllReplyNumber(weiboList) {
+            api.api("comment/read").then(res => {
+                weiboList.forEach(item => {
+                    let commentList = [];
+                    res.data.forEach(like => {
+                        if (like.weibo_id == item.id) {
+                            commentList.push(like);
+                            this.$set(item, "commentCount", commentList);
+                        }
+                    });
+                });
+            });
+        },
 
         // 渲染推荐用户
         readSuggestedUser() {
-            this.gReadInfo("user", this.allList);
+            api.api('user/read').then(res => {
+                this.$set(this.allList, 'user', res.data);
+            })
         },
         // 渲染粉丝
         readTargetUser() {
-            return api.api("_bind__user_user/read", {
-                where: {
-                    'target_id': this.uinfo.id
-                }
-            }).then(res => {
-                this.targetNumber = res.data && res.data.length || 0 ;
-            })
+            return api
+                .api("_bind__user_user/read", {
+                    where: {
+                        target_id: this.uinfo.id
+                    }
+                })
+                .then(res => {
+                    this.targetNumber = (res.data && res.data.length) || 0;
+                });
         },
         // 渲染关注用户
         readFollowerUser() {

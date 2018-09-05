@@ -203,7 +203,6 @@ import UserItems from "../components/UserItems";
 import Footer from "../components/Footer";
 
 // mixin
-import GReadInfo from "../mixins/GReadInfo";
 import GetCurrentTime from "../mixins/GetCurrentTime";
 import OperateWeibo from "../mixins/OperateWeibo";
 
@@ -212,7 +211,7 @@ import api from "../lib/api";
 import session from "../lib/session";
 
 export default {
-    mixins: [GReadInfo, OperateWeibo, GetCurrentTime],
+    mixins: [OperateWeibo, GetCurrentTime],
     components: {
         Header,
         WeiboNavItem,

@@ -91,6 +91,7 @@
 
 <template>
     <div>
+        {{getRelayNumber(weibo.id)}}
         <Card class="weibo-content-item card-mgb">
             <Row :gutter="14">
                 <Col :md="3" :sm="3" :xs="4">
@@ -144,22 +145,13 @@
             </Row>
             <Row class="weibo-operation-items tac cp-all cl-hv-all">
                 <Col span="8">
-                <!-- <span class="operation-item db">
-                    <span class="tooltip dib">
-                        <em class="icon-mgr">
-                            <Icon type="md-star-outline" size="18" />
-                        </em>
-                        <span>收藏</span>
-                    </span>
-                </span> -->
-                </Col>
-                <Col span="8">
                 <span @click="showRelay(weibo.id)" class="operation-item db">
                     <span class="tooltip dib">
                         <em class="icon-mgr">
                             <Icon type="md-share" size="18" />
                         </em>
-                        <span>转发</span>
+                        
+                        <span>转发 </span>
                     </span>
                 </span>
                 </Col>
@@ -169,7 +161,7 @@
                         <em class="icon-mgr">
                             <Icon type="md-text" size="18" />
                         </em>
-                        <span>评论</span>
+                        <span>{{weibo.commentCount && weibo.commentCount.length || '评论 '}}</span>
                     </span>
                 </span>
                 </Col>
@@ -271,7 +263,7 @@
                     </Poptip>
                     </Col>
                     <Col span="21">
-                    <Input @click.native="showCommentModal()" placeholder="评论">
+                    <Input @click.native="showCommentModal()" placeholder="评论" readonly>
                     <Icon type="md-create" slot="prefix" />
                     </Input>
                     <Modal v-model="commentModal" title="评论微博" :footer-hide="true" okText="评论" :loading="loading">
@@ -453,7 +445,7 @@
                     </Col>
                 </Row>
             </div>
-
+            
         </Card>
     </div>
 </template>
@@ -469,6 +461,7 @@ import GetCurrentTime from "../mixins/GetCurrentTime";
 // 依赖
 import api from "../lib/api";
 import session from "../lib/session";
+import operateModel from "../lib/operateModel";
 
 export default {
     mixins: [GReadInfo, GetCurrentTime],
@@ -501,7 +494,8 @@ export default {
             weiboContent: {},
             relayVisible: false,
             commentVisible: false,
-            commentModal: false
+            commentModal: false,
+            count: {}
         };
     },
     mounted() {
@@ -510,12 +504,6 @@ export default {
         }
     },
     methods: {
-        // 获取转发数量
-        getRelayNumber() {},
-
-        // 获取评论数量
-        getReplyNumber() {},
-
         // 赞
         likeWeibo(weiboId) {
             if (!this.uinfo) {
@@ -550,6 +538,20 @@ export default {
                 });
         },
 
+        // 获取转发数量
+        getRelayNumber(weiboId) {
+           console.log('weiboId:', weiboId);
+           
+            // api.api("weibo/read", {
+            //     where: {
+            //         relay_id: weiboId
+            //     }
+            // }).then(res => {
+            //     console.log('res.data:', res.data);
+                
+            // })
+        },
+
         // 渲染赞数
         getLikeNumber() {
             api.api("_bind__user_weibo/read").then(res => {
@@ -561,6 +563,23 @@ export default {
                             this.$set(item, "collectList", likeList);
                         } else {
                             this.$set(item, "collectList", likeList);
+                        }
+                    });
+                });
+            });
+        },
+
+        // 获取评论数量
+        getReplyNumber(weiboId) {
+            api.api("comment/read").then(res => {
+                this.weiboList.forEach(item => {
+                    let commentList = [];
+                    res.data.forEach(like => {
+                        if (like.weibo_id == item.id) {
+                            commentList.push(like);
+                            this.$set(item, "commentCount", commentList);
+                        } else {
+                            this.$set(item, "commentCount", commentList);
                         }
                     });
                 });
@@ -725,6 +744,7 @@ export default {
                 }
                 this.commentContent = {};
                 this.readComment(weiboId);
+                this.getReplyNumber();
                 this.commentModal = false;
             });
         }
