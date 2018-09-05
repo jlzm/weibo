@@ -39,8 +39,8 @@ export default {
                 ]
                 }).then(res => {
                 this.$set(this.allList, 'weibo', res.data);
-                this.getAllLikeNumber(res.data);
-                this.getAllReplyNumber(res.data);
+                this.getAllLikeCount(res.data);
+                this.getAllReplyCount(res.data);
                 this.weiboNumber = 0;
                 if (this.uinfo) {
                     this.allList.weibo.forEach(item => {
@@ -72,14 +72,16 @@ export default {
                 ]
                 }).then(res => {
                 this.$set(this.allList, 'weibo', res.data);
-                this.getAllLikeNumber(res.data);
-                this.getAllReplyNumber(res.data);
-                this.weiboNumber = 0;
-                this.allList.weibo.forEach(item => {
-                    if (item.user_id == this.uinfo.id) {
-                        this.weiboNumber++;
-                    }
-                });
+                console.log('res.data:', res.data);
+                
+                this.getAllLikeCount(res.data);
+                this.getAllReplyCount(res.data);
+                // this.weiboNumber = 0;
+                // this.allList.weibo.forEach(item => {
+                //     if (item.user_id == this.uinfo.id) {
+                //         this.weiboNumber++;
+                //     }
+                // });
             });
         },
 
@@ -96,8 +98,8 @@ export default {
             })
             .then(res => {
                 this.$set(this.allList, 'weibo', res.data);
-                this.getAllLikeNumber(res.data);
-                this.getAllReplyNumber(res.data);
+                this.getAllLikeCount(res.data);
+                this.getAllReplyCount(res.data);
                 this.weiboNumber = 0;
                 res.data.forEach(item => {
                     if (item.user_id == this.uinfo.id) {
@@ -108,7 +110,7 @@ export default {
         },
 
         // 渲染赞数
-        getAllLikeNumber(weiboList) {
+        getAllLikeCount(weiboList) {
             api.api("_bind__user_weibo/read").then(res => {
                 weiboList.forEach(item => {
                     let likeList = [];
@@ -124,7 +126,7 @@ export default {
 
 
         // 获取评论数量
-        getAllReplyNumber(weiboList) {
+        getAllReplyCount(weiboList) {
             api.api("comment/read").then(res => {
                 weiboList.forEach(item => {
                     let commentList = [];
