@@ -248,7 +248,7 @@
             </div>
 
             <div v-if="commentVisible" class="comment-wrap">
-                <Row v-if="uinfo" :gutter="10" type="flex">
+                <Row :gutter="10" type="flex">
                     <Col span="3">
                     <Poptip trigger="hover" placement="top" width="400">
                         <div class="user-portrait">
@@ -444,7 +444,6 @@
                     </Col>
                 </Row>
             </div>
-            
         </Card>
     </div>
 </template>
@@ -596,7 +595,7 @@ export default {
             return result;
         },
 
-        // 判断是否关注
+        // 判断是否攒了
         hasLike(likeId) {
             if (!this.likeList) {
                 return false;
