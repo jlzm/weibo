@@ -42,76 +42,76 @@ const routerConfig = {
       path: '/',
       component: Home,
       meta: {
-        title: '首页'
+        title: 'weibo-首页'
       }
     },
     {
       path: '/found',
       component: Found,
       meta: {
-        title: '发现'
+        title: 'weibo-发现'
       }
     },
     {
       path: '/personalPage',
       component: PersonalPage,
       meta: {
-        title: '个人中心'
+        title: 'weibo-个人中心'
       }
     },
     {
       path: '/search',
       component: Search,
       meta: {
-        title: '搜索'
+        title: 'weibo-搜索'
       }
     },
     {
       path: '/signIn',
       component: SignIn,
       meta: {
-        title: '登入'
+        title: 'weibo-登入'
       }
     },
     {
       path: '/signUp',
       component: SignUp,
       meta: {
-        title: '注册'
+        title: 'weibo-注册'
       }
     },
     {
       path: '/admin',
       component: AdminBase,
       meta: {
-        title: '管理员'
+        title: 'weibo-管理员'
       },
       children: [{
           path: '/noticeTpl',
           component: AdminNoticeTpl,
           meta: {
-            title: '管理-通知模板'
+            title: 'weibo-管理-通知模板'
           },
         },
         {
           path: '/announceTpl',
           component: AdminAnnounceTpl,
           meta: {
-            title: '管理-通告模板'
+            title: 'weibo-管理-通告模板'
           },
         },
         {
           path: '/user',
           component: AdminUser,
           meta: {
-            title: '管理-通告模板'
+            title: 'weibo-管理-通告模板'
           },
         },
         {
           path: '/test',
           component: AdminTest,
           meta: {
-            title: '管理-通告模板'
+            title: 'weibo-管理-通告模板'
           },
         },
 
