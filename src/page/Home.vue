@@ -181,9 +181,9 @@
                     <WeiboItem v-for="(item, index) in allList.weibo" :key="index" :weiboList="allList.weibo" :weibo="item" :readFollowerWeibo="readFollowerWeibo" />
                 </Row>
                 </Col>
-                <Col :lg="6" :md="6" :sm="0" :xs="0" class="main-left">
+                <!-- <Col :lg="6" :md="6" :sm="0" :xs="0" class="main-left">
                 <UserItems :userList="allList.user" :followerList="itemList.follower" :readFollowerUser="readFollowerUser" />
-                </Col>
+                </Col> -->
             </Row>
             </Col>
             <!-- <Col span="6"></Col> -->

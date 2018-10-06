@@ -419,7 +419,7 @@
                                         </Col>
                                         <Col span="13 tar">
                                         <Button @click.native="hiddenReplyModal()" style="margin-right: 8px">取消</Button>
-                                        <Button @click.native="replyComment(weibo.id)" :disabled="!commentContent.text" type="primary">评论</Button>
+                                        <Button @click.native="replyComment(weibo.id)" :disabled="!commentContent.text" type="primary">回复</Button>
                                         </Col>
                                     </Row>
                                 </FormItem>

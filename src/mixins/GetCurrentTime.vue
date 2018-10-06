@@ -10,19 +10,19 @@ export default {
                 h = date.getHours(),
                 min = date.getMinutes(),
                 s = date.getSeconds();
-            if (date.getMonth() < 10) {
+            if (m < 10) {
                 m = "0" + m;
             }
-            if (date.getDate() < 10) {
+            if (d < 10) {
                 d = "0" + d;
             }
-            if (date.getHours() < 10) {
+            if (h < 10) {
                 h = "0" + h;
             }
-            if (date.getMinutes() < 10) {
+            if (min < 10) {
                 min = "0" + min;
             }
-            if (date.getSeconds() < 10) {
+            if (s < 10) {
                 s = "0" + s;
             }
             return `${y}-${m}-${d} ${h}:${min}:${s}`;
